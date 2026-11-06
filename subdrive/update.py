@@ -27,8 +27,8 @@ from . import VERSION, ed25519
 REPOSITORY = "michaelfdias/subdrive"
 RELEASES = "https://api.github.com/repos/%s/releases?per_page=30" % REPOSITORY
 INDEX, SIGNATURE = "subdrive-release.json", "subdrive-release.json.sig"
-# The project's public key. Empty until the first public version is signed: updates are then off.
-PUBLIC_KEY = bytes.fromhex("")
+# The project's public key: every release index must carry a signature made with its private half.
+PUBLIC_KEY = bytes.fromhex("295e12200a5dda3c8620a52dc88c809cc1f7b64fd3d5997bb1b3c071a3d37d80")
 SETTINGS = "subdrive-config.json"
 
 

@@ -19,12 +19,16 @@ jobs:
         include:
           - os: windows-latest
             name: Windows
+            key: windows-x86_64
           - os: macos-latest
             name: macOS-AppleSilicon
+            key: macos-arm64
           - os: macos-15-intel
             name: macOS-Intel
+            key: macos-x86_64
           - os: ubuntu-22.04
             name: Linux
+            key: linux-x86_64
     runs-on: ${{ matrix.os }}
     defaults:
       run:
@@ -78,11 +82,20 @@ jobs:
             python tools/make_download.py --program $exe --package pacote-$variant.zip \
               --system "${{ matrix.name }}" --output downloads
           done
+          # The bare program, for SubDrive CLI's own updates (named after the key in the signed index).
+          mkdir -p programa
+          ext=""; [ -f dist/SubDrive-CLI.exe ] && ext=".exe"
+          cp $exe programa/SubDrive-CLI-${{ matrix.key }}$ext
       - if: github.event_name == 'workflow_dispatch' && inputs.release
         uses: actions/upload-artifact@v4
         with:
           name: downloads-${{ matrix.name }}
           path: downloads/*.zip
+      - if: github.event_name == 'workflow_dispatch' && inputs.release
+        uses: actions/upload-artifact@v4
+        with:
+          name: programa-${{ matrix.name }}
+          path: programa/*
 
   release:
     if: github.event_name == 'workflow_dispatch' && inputs.release
@@ -97,14 +110,43 @@ jobs:
           pattern: downloads-*
           merge-multiple: true
           path: downloads
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: programa-*
+          merge-multiple: true
+          path: programas
+      - name: Signed index (for SubDrive CLI updates)
+        env:
+          SUBDRIVE_SIGNING_KEY: ${{ secrets.SUBDRIVE_SIGNING_KEY }}
+        run: |
+          set -e
+          test -n "$SUBDRIVE_SIGNING_KEY" || { echo "::error::Falta o secret SUBDRIVE_SIGNING_KEY"; exit 1; }
+          version="$(python3 -c 'import subdrive; print(subdrive.VERSION)')"
+          channel=stable; case "$version" in *-*) channel=beta;; esac
+          git fetch --depth 1 origin pacotes
+          mkdir -p pacotes indice
+          for v in bd uhd; do
+            git show FETCH_HEAD:panasonic-ub450-150-154-$v.zip > origem-$v.zip
+            python3 tools/make_package_zip.py origem-$v.zip "pacotes/SubDrive-$version-pacote-$(echo $v | tr a-z A-Z).zip" "$version"
+          done
+          python3 tools/make_release_index.py --version "$version" --channel $channel --notes packaging/notas.txt --out indice \
+            program-windows-x86_64=programas/SubDrive-CLI-windows-x86_64.exe \
+            program-macos-arm64=programas/SubDrive-CLI-macos-arm64 \
+            program-macos-x86_64=programas/SubDrive-CLI-macos-x86_64 \
+            program-linux-x86_64=programas/SubDrive-CLI-linux-x86_64 \
+            package-panasonic-ub450-150-154-bd=pacotes/SubDrive-$version-pacote-BD.zip \
+            package-panasonic-ub450-150-154-uhd=pacotes/SubDrive-$version-pacote-UHD.zip
+          # The secret must match the public key built into SubDrive CLI, or nobody could update.
+          python3 -c 'import sys; from pathlib import Path; from subdrive import update; update.read_index(Path("indice/subdrive-release.json").read_bytes(), Path("indice/subdrive-release.json.sig").read_bytes()); print("assinatura confere")'
       - name: Publish
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -e
-          ls -l downloads
+          ls -l downloads programas pacotes indice
           test "$(ls downloads/*.zip | wc -l)" = 8
+          test "$(ls programas | wc -l)" = 4
           version="$(python3 -c 'import subdrive; print(subdrive.VERSION)')"
-          extra=""; case "$version" in *-*) extra="--prerelease";; esac
-          gh release create "v$version" downloads/*.zip $extra --target "$GITHUB_SHA" --title "SubDrive $version" \
-            --notes-file packaging/release-notes.md
+          extra="--latest"; case "$version" in *-*) extra="--prerelease";; esac
+          gh release create "v$version" downloads/*.zip programas/* pacotes/*.zip indice/* $extra --target "$GITHUB_SHA" \
+            --title "SubDrive $version" --notes-file packaging/release-notes.md

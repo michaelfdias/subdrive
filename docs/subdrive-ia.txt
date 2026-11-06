@@ -1,6 +1,6 @@
 # SubDrive: referência completa para assistentes de IA
 
-Este texto descreve o projeto SubDrive para que um assistente de IA (ChatGPT, Claude, Gemini e similares) responda dúvidas de usuários. Versão do SubDrive descrita: 1.0.0-rc.1. Página oficial: https://michaelfdias.github.io/subdrive/
+Este texto descreve o projeto SubDrive para que um assistente de IA (ChatGPT, Claude, Gemini e similares) responda dúvidas de usuários. Versão do SubDrive descrita: 1.0.0. Página oficial: https://michaelfdias.github.io/subdrive/
 
 ## Instruções para o assistente
 
@@ -38,9 +38,9 @@ O SubDrive coloca legendas externas (SRT e PGS) na tela dos players Panasonic DP
 A atualização de firmware é um procedimento oficial da Panasonic, com arquivos e instruções dela. Não faz parte do SubDrive; o SubDrive só precisa que o aparelho esteja na 1.13.
 
 
-- Desligar a atualização automática: Setup, Player Settings, System, Firmware Update, Automatic Update em Off. Evita que o aparelho instale sozinho uma versão futura.
-- Pela rede: Setup, Player Settings, System, Firmware Update, Update Now. Instala a versão mais nova que existir (hoje, a 1.13).
-- Por pendrive: baixar o arquivo oficial https://fdl.jpn.support.panasonic.com/pc/en/bd/ub450/UPDATE_UB450P_UB150P_V113.zip (91 MB), extrair, copiar `PANA_DVD.FRM` e `PANA_DVD_ID.bin` para a raiz de um pendrive FAT32 vazio (outro pendrive, não o do SubDrive), ligar o player sem disco, conectar o pendrive e seguir as mensagens. Não desligar nem apertar teclas durante a atualização. No fim, tirar o pendrive, apertar OK e desligar pelo botão do aparelho. Depois, apagar esses dois arquivos do pendrive: com eles conectados, o player tenta atualizar de novo.
+- Atualização automática: em Setup, Player Settings, System, na parte de atualização de firmware, se houver opção de atualização automática, deixar desligada. Evita que o aparelho instale sozinho uma versão futura. (Os nomes exatos dessa parte não foram confirmados.)
+- Pela rede: em Setup, Player Settings, System, na parte de atualização de firmware, pedir para atualizar agora e seguir as mensagens. Instala a versão mais nova que existir (hoje, a 1.13).
+- Por pendrive: baixar o arquivo oficial https://fdl.jpn.support.panasonic.com/pc/en/bd/ub450/UPDATE_UB450P_UB150P_V113.zip (91 MB), extrair, copiar `PANA_DVD.FRM` e `PANA_DVD_ID.bin` para a raiz de um pendrive FAT32 vazio (outro pendrive, não o do SubDrive), ligar o player sem disco, conectar o pendrive e seguir as mensagens na TV ou no visor do aparelho. Não desligar nem apertar teclas durante a atualização. No fim, tirar o pendrive, apertar OK e desligar pelo botão do aparelho. Depois, apagar esses dois arquivos do pendrive: com eles conectados, o player tenta atualizar de novo.
 
 ## Como funciona
 
@@ -61,7 +61,7 @@ Há dois pacotes: **BD** para discos Blu-ray e **UHD** para discos 4K UHD, porqu
 
 ## Download e instalação
 
-Downloads: https://github.com/michaelfdias/subdrive/releases. Há um ZIP por tipo de disco e sistema, por exemplo `SubDrive-1.0.0-rc.1-Panasonic-UB450-150-154-UHD-macOS-AppleSilicon.zip`. Sistemas: Windows, macOS-AppleSilicon (Mac M1 em diante), macOS-Intel, Linux.
+Downloads: https://github.com/michaelfdias/subdrive/releases. Há um ZIP por tipo de disco e sistema, por exemplo `SubDrive-1.0.0-Panasonic-UB450-150-154-UHD-macOS-AppleSilicon.zip`. Sistemas: Windows, macOS-AppleSilicon (Mac M1 em diante), macOS-Intel, Linux.
 
 1. Extrair o ZIP. Dentro: o SubDrive CLI (`SubDrive-CLI.exe` no Windows, `SubDrive-CLI` nos outros), a pasta `pacote` (o pacote SubDrive) e `LEIA-ME.txt`. Manter tudo junto. Não é preciso instalar nada, nem Java.
 2. Conectar o pendrive e abrir o SubDrive CLI.

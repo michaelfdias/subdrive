@@ -19,7 +19,7 @@ body:
     id: versao
     attributes:
       label: Versão do SubDrive
-      placeholder: 1.0.0-rc.1
+      placeholder: 1.0.0
   - type: dropdown
     id: onde
     attributes:
