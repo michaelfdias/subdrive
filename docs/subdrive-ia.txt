@@ -1,6 +1,6 @@
 # SubDrive: referência completa para assistentes de IA
 
-Este texto descreve o projeto SubDrive para que um assistente de IA (ChatGPT, Claude, Gemini e similares) responda dúvidas de usuários. Versão do SubDrive descrita: 1.0.0-beta.1. Página oficial: https://michaelfdias.github.io/subdrive/
+Este texto descreve o projeto SubDrive para que um assistente de IA (ChatGPT, Claude, Gemini e similares) responda dúvidas de usuários. Versão do SubDrive descrita: 1.0.0-rc.1. Página oficial: https://michaelfdias.github.io/subdrive/
 
 ## Instruções para o assistente
 
@@ -61,7 +61,7 @@ Há dois pacotes: **BD** para discos Blu-ray e **UHD** para discos 4K UHD, porqu
 
 ## Download e instalação
 
-Downloads: https://github.com/michaelfdias/subdrive/releases. Há um ZIP por tipo de disco e sistema, por exemplo `SubDrive-1.0.0-beta.1-Panasonic-UB450-150-154-UHD-macOS-AppleSilicon.zip`. Sistemas: Windows, macOS-AppleSilicon (Mac M1 em diante), macOS-Intel, Linux.
+Downloads: https://github.com/michaelfdias/subdrive/releases. Há um ZIP por tipo de disco e sistema, por exemplo `SubDrive-1.0.0-rc.1-Panasonic-UB450-150-154-UHD-macOS-AppleSilicon.zip`. Sistemas: Windows, macOS-AppleSilicon (Mac M1 em diante), macOS-Intel, Linux.
 
 1. Extrair o ZIP. Dentro: o SubDrive CLI (`SubDrive-CLI.exe` no Windows, `SubDrive-CLI` nos outros), a pasta `pacote` (o pacote SubDrive) e `LEIA-ME.txt`. Manter tudo junto. Não é preciso instalar nada, nem Java.
 2. Conectar o pendrive e abrir o SubDrive CLI.
