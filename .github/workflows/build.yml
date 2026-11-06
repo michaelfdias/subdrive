@@ -1,0 +1,61 @@
+name: Build
+
+on:
+  push:
+    branches: [main, desenvolvimento]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            name: SubDrive-Windows
+          - os: macos-15
+            name: SubDrive-macOS-AppleSilicon
+          - os: macos-15-intel
+            name: SubDrive-macOS-Intel
+          - os: ubuntu-22.04
+            name: SubDrive-Linux
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: python -m pip install -r requirements.txt -r packaging/requirements-build.txt
+      - name: Tests
+        run: python -m unittest discover -s tests -t .
+      - name: Build
+        run: pyinstaller --noconfirm --clean --distpath dist packaging/subdrive.spec
+      - name: Try the program
+        run: |
+          set -e
+          exe=dist/SubDrive; [ -f dist/SubDrive.exe ] && exe=dist/SubDrive.exe
+          mkdir -p try && cd try
+          printf '1\n00:00:01,000 --> 00:00:03,000\nOlá — tudo bem? ♪\n\n2\n00:00:04,000 --> 00:00:06,000\n<i>Sim, é isso.</i>\n' > Filme.srt
+          ../$exe --version
+          ../$exe --no-emoji rules
+          ../$exe --no-emoji check Filme.srt || true
+          ../$exe --no-emoji fix Filme.srt --show
+          ../$exe --no-emoji check Filme_2.srt
+          ../$exe --no-emoji pgs Filme_2.srt --font inter --bold --color amarelo-escuro
+          ../$exe --no-emoji check Filme.dark-yellow.sup
+          ../$exe --no-emoji drives || true
+          printf '0\n' | ../$exe | tail -3
+      - name: Pack
+        run: |
+          mkdir -p out
+          if [ -f dist/SubDrive.exe ]; then cp dist/SubDrive.exe out/${{ matrix.name }}.exe
+          else chmod +x dist/SubDrive && tar -czf out/${{ matrix.name }}.tar.gz -C dist SubDrive; fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.name }}
+          path: out/*

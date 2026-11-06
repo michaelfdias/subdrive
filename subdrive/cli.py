@@ -379,7 +379,15 @@ def main(argv=None):
     # No command (double click), or a file dragged onto the program: the Portuguese menu.
     if not argv or (len(argv) == 1 and not argv[0].startswith("-") and Path(argv[0]).is_file()):
         from . import menu
-        return menu.run(Path(argv[0]) if argv else None)
+        try:
+            return menu.run(Path(argv[0]) if argv else None)
+        except Exception as e:  # a double-clicked window must not vanish without a word
+            print("\nAlgo deu errado (%s). Se repetir, avise o projeto com esta mensagem." % type(e).__name__)
+            try:
+                input("Enter para sair.")
+            except EOFError:
+                pass
+            return 1
     args = _parser().parse_args(argv)
     out = ui.Out("pt", emoji=False if args.no_emoji else None, color=False if args.no_color else None, cli=True)
     if args.command is None:
