@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Firmware do player: verificar e atualizar · SubDrive</title>
+<meta name="description" content="Como ver a região e a versão do firmware do Panasonic DP-UB450, DP-UB150 e DP-UB154, e como atualizar para a 1.13 pela rede ou por pendrive.">
+<meta property="og:title" content="Firmware do player: verificar e atualizar · SubDrive">
+<meta property="og:image" content="https://michaelfdias.github.io/subdrive/img/compartilhar.png">
+<link rel="icon" href="img/icone.svg" type="image/svg+xml">
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+<header class="topo">
+<nav class="menu">
+  <a class="marca" href="./">SubDrive</a>
+  <a href="./#baixar">Baixar</a>
+  <a href="firmware.html">Firmware</a>
+  <a href="sincronia.html">Sincronia</a>
+  <a href="cli.html">SubDrive CLI</a>
+</nav>
+</header>
+<main>
+<h1>Firmware do player</h1>
+<p>O SubDrive funciona com o firmware 1.13 dos modelos vendidos nos EUA. Esta página mostra como conferir o seu aparelho e, se precisar, como chegar à 1.13.</p>
+
+<h2 id="regiao">1. Confira a região do aparelho</h2>
+<p>Veja a etiqueta na parte de trás ou de baixo do player. O nome completo do modelo aparece ali.</p>
+<ul>
+  <li>Termina em <code>P</code> antes da cor, como <code>DP-UB450P-K</code> ou <code>DP-UB150P-K</code>: é o modelo dos EUA. Siga em frente.</li>
+  <li>Termina em outra coisa, como <code>EB</code>, <code>EG</code> ou <code>GN</code>: é de outra região. O firmware é outro, e esta versão do SubDrive não funciona nele.</li>
+</ul>
+
+<h2 id="versao">2. Veja a versão do firmware</h2>
+<ol>
+  <li>Ligue o player sem disco.</li>
+  <li>Aperte <kbd>HOME</kbd> e entre em <em>Setup</em> (Configurações).</li>
+  <li>Vá em <em>Player Settings</em> › <em>System</em> › <em>System Information</em> (Informações do sistema).</li>
+  <li>Em <em>Firmware Version</em> aparece a versão instalada.</li>
+</ol>
+<p>Se for 1.13, está tudo certo e você pode <a href="./#baixar">baixar o SubDrive</a>. Se for menor, atualize por um dos caminhos abaixo. Os nomes dos menus podem variar um pouco de uma versão para outra.</p>
+<p class="nota">Se a versão for maior que a 1.13, o SubDrive ainda não funciona no seu aparelho. A Panasonic não oferece um jeito oficial de voltar para uma versão anterior.</p>
+
+<h2 id="automatica">Desligue a atualização automática</h2>
+<p>Com o player na internet, ele pode instalar sozinho uma versão nova assim que a Panasonic publicar. Uma versão depois da 1.13 pode deixar o SubDrive sem funcionar até sair uma versão compatível. Para evitar surpresa, entre em <em>Setup</em> › <em>Player Settings</em> › <em>System</em> › <em>Firmware Update</em> e deixe <em>Automatic Update</em> desligado (<em>Off</em>).</p>
+
+<h2 id="rede">3a. Atualizar pela rede</h2>
+<p>É o caminho mais simples, se o player estiver ligado à internet por cabo ou Wi-Fi.</p>
+<ol>
+  <li>Entre em <em>Setup</em> › <em>Player Settings</em> › <em>System</em> › <em>Firmware Update</em> › <em>Update Now</em>.</li>
+  <li>O player procura a versão mais recente da Panasonic e pergunta se você quer instalar.</li>
+  <li>Durante a atualização, não desligue o aparelho nem aperte nenhuma tecla. Quando terminar, ele reinicia.</li>
+  <li>Confira a versão de novo, como no passo 2.</li>
+</ol>
+<p>A atualização pela rede instala a versão mais nova que existir. Hoje ela é a 1.13. Se a Panasonic publicar outra depois, use o pendrive para instalar exatamente a 1.13.</p>
+
+<h2 id="pendrive">3b. Atualizar por pendrive</h2>
+<p>Foi assim que preparamos o aparelho de testes. Serve também para quem não tem o player na internet.</p>
+<ol>
+  <li>Baixe o arquivo oficial da Panasonic: <a href="https://fdl.jpn.support.panasonic.com/pc/en/bd/ub450/UPDATE_UB450P_UB150P_V113.zip"><code>UPDATE_UB450P_UB150P_V113.zip</code></a> (91 MB). É o mesmo arquivo que o SubDrive CLI usa.</li>
+  <li>Use um pendrive vazio, formatado em FAT32. Não use o pendrive do SubDrive para isto.</li>
+  <li>Extraia o ZIP e copie os dois arquivos de dentro, <code>PANA_DVD.FRM</code> e <code>PANA_DVD_ID.bin</code>, direto na raiz do pendrive, fora de qualquer pasta.</li>
+  <li>Ejete o pendrive pelo computador.</li>
+  <li>Ligue o player sem disco e coloque o pendrive. A atualização começa e o painel do aparelho mostra o andamento. Siga as mensagens na tela.</li>
+  <li>Não desligue o aparelho nem aperte nenhuma tecla até terminar. Pode levar alguns minutos.</li>
+  <li>Quando terminar, tire o pendrive, aperte <kbd>OK</kbd> no controle e desligue pelo botão do próprio aparelho.</li>
+  <li>Ligue de novo e confira a versão, como no passo 2.</li>
+</ol>
+<div class="aviso">
+<p>Depois de atualizar, apague o <code>PANA_DVD.FRM</code> e o <code>PANA_DVD_ID.bin</code> do pendrive. Nunca deixe esses arquivos junto com o SubDrive: com eles no pendrive, o player tenta atualizar de novo toda vez que você o conectar.</p>
+<p>A atualização de firmware é um procedimento da Panasonic. Faltar energia no meio dela pode danificar o aparelho. Deixe o aparelho numa tomada confiável durante todo o processo.</p>
+</div>
+<p>As instruções oficiais estão no <a href="https://av.jpn.support.panasonic.com/support/global/cs/bd/download/ub450/us/index.html">site de suporte da Panasonic</a>.</p>
+
+<p><a href="./">Voltar para a página do SubDrive</a></p>
+</main>
+<footer>
+<p>SubDrive · <a href="./">Início</a> · <a href="sincronia.html">Sincronia</a> · <a href="cli.html">SubDrive CLI</a> · <a href="https://github.com/michaelfdias/subdrive">GitHub</a></p>
+</footer>
+</body>
+</html>

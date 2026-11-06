@@ -1,0 +1,39 @@
+name: Pages
+
+on:
+  push:
+    branches: [main]
+    paths: ["docs/**", ".github/workflows/pages.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Pix key
+        env:
+          PIX: ${{ secrets.SUBDRIVE_PIX_KEY }}
+        run: |
+          # Without the secret the page keeps the placeholder and hides the section.
+          if [ -n "$PIX" ]; then
+            python3 -c 'import os,pathlib; p=pathlib.Path("docs/index.html"); p.write_text(p.read_text().replace("__PIX_KEY__", os.environ["PIX"]))'
+          fi
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+      - id: deployment
+        uses: actions/deploy-pages@v4

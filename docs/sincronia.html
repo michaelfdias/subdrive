@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Como funciona a sincronia · SubDrive</title>
+<meta name="description" content="Adiante ou atrase a legenda durante o filme, em vários pontos, pelo controle remoto. Resolve atraso fixo, legenda que vai se perdendo e cenas a mais.">
+<meta property="og:title" content="Como funciona a sincronia · SubDrive">
+<meta property="og:image" content="https://michaelfdias.github.io/subdrive/img/compartilhar.png">
+<link rel="icon" href="img/icone.svg" type="image/svg+xml">
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+<header class="topo">
+<nav class="menu">
+  <a class="marca" href="./">SubDrive</a>
+  <a href="./#baixar">Baixar</a>
+  <a href="firmware.html">Firmware</a>
+  <a href="sincronia.html">Sincronia</a>
+  <a href="cli.html">SubDrive CLI</a>
+</nav>
+</header>
+<main>
+<h1>Como funciona a sincronia</h1>
+<p>Uma legenda baixada da internet nem sempre bate com o seu disco. Às vezes ela está atrasada do começo ao fim. Às vezes começa certa e vai se perdendo, porque foi feita para outra versão do filme. O SubDrive deixa você acertar isso durante o filme, pelo controle remoto, sem mexer no arquivo.</p>
+<figure class="foto" data-foto="sincronia">Foto em breve: a tela de sincronia do SubDrive sobre o filme</figure>
+
+<h2 id="tela">A tela de sincronia</h2>
+<p>Abra o painel com a tecla <kbd>VERMELHA</kbd> e escolha "Sincronia". A tela tem estas linhas:</p>
+<table>
+  <thead><tr><th>Linha</th><th>O que mostra e o que faz</th></tr></thead>
+  <tbody>
+    <tr><td>Legenda</td><td>O nome da legenda que você está ajustando.</td></tr>
+    <tr><td>Agora</td><td>A correção que vale neste momento do filme. As setas para os lados mudam essa correção.</td></tr>
+    <tr><td>Cada toque</td><td>Quanto cada toque nas setas muda: 0,1 s, 0,5 s, 1 s ou 5 s.</td></tr>
+    <tr><td>Pontos</td><td>Um por linha: o momento do filme e a correção que você deu ali. Para apagar um, escolha a linha e aperte <kbd>OK</kbd> duas vezes.</td></tr>
+    <tr><td>Voltar</td><td>Volta para o painel.</td></tr>
+  </tbody>
+</table>
+<p>O rodapé lembra qual seta usar. Se a legenda aparece depois da fala, ela está atrasada: aperte <kbd>◀</kbd>. Se aparece antes da fala, está adiantada: aperte <kbd>▶</kbd>.</p>
+
+<h2 id="pontos">O que é um ponto</h2>
+<p>Cada vez que você mexe na correção, o SubDrive guarda um ponto com o momento do filme e a correção daquele momento. Se já houver um ponto a menos de um minuto dali, ele ajusta esse ponto em vez de criar outro.</p>
+<p>Com um ponto só, a correção vale para o filme inteiro. Com dois ou mais, ela muda aos poucos de um ponto para o outro. Antes do primeiro ponto vale a correção dele, e depois do último também.</p>
+<p>Cada legenda tem os seus próprios pontos, até 32 por arquivo, com correção de até 10 minutos para mais ou para menos.</p>
+
+<h2 id="casos">Três situações comuns</h2>
+
+<h3>A legenda está atrasada (ou adiantada) o filme todo</h3>
+<p>Em qualquer momento do filme, ajuste "Agora" até a legenda bater com a fala. Pronto: esse ponto vale do começo ao fim.</p>
+
+<h3>A legenda começa certa e vai se perdendo</h3>
+<p>É o caso mais comum quando a legenda foi feita para outra versão do filme, com outra velocidade de quadros.</p>
+<ol>
+  <li>No começo do filme, com a legenda ainda certa, aperte <kbd>◀</kbd> e depois <kbd>▶</kbd>. Isso cria um ponto com correção zero.</li>
+  <li>Perto do fim do filme, ajuste "Agora" até a legenda bater de novo.</li>
+</ol>
+<p>Entre os dois pontos, a correção cresce aos poucos e acompanha o atraso ao longo do filme.</p>
+
+<h3>No meio do filme, a legenda pula de uma vez</h3>
+<p>Isso acontece quando o disco tem uma cena que a legenda não tinha, ou o contrário. Antes da cena, deixe um ponto com a correção que já estava certa. Uns minutos depois, crie outro ponto com a correção nova. A mudança acontece no trecho entre os dois.</p>
+
+<h2 id="gravacao">Onde fica guardado</h2>
+<p>Os pontos são gravados no pendrive, na pasta <code>sincronia</code>, num arquivo com o nome da legenda. A gravação acontece logo depois de cada toque. Se faltar energia, você perde no máximo o último ajuste. O arquivo da legenda nunca é alterado. Na próxima vez que você escolher a mesma legenda, os pontos voltam junto com ela.</p>
+<p>Se o título da tela mudar, ele avisa de um problema:</p>
+<table>
+  <thead><tr><th>Título</th><th>O que fazer</th></tr></thead>
+  <tbody>
+    <tr><td>SINCRONIA: SEM PASTA</td><td>O pendrive não tem a pasta <code>sincronia</code>. Prepare o pendrive de novo pelo SubDrive CLI, que cria a pasta.</td></tr>
+    <tr><td>SINCRONIA: FALHA AO SALVAR</td><td>O pendrive não aceitou a gravação. O SubDrive tenta de novo sozinho. Se continuar, confira se o pendrive tem espaço livre e não está protegido contra gravação.</td></tr>
+    <tr><td>SINCRONIA: ARQUIVO INVÁLIDO</td><td>O arquivo de pontos dessa legenda está danificado. O SubDrive não mexe nele. Apague-o da pasta <code>sincronia</code> no computador para começar de novo.</td></tr>
+    <tr><td>SINCRONIA: LIMITE DE PONTOS</td><td>A legenda já tem 32 pontos. Apague algum para criar outro.</td></tr>
+  </tbody>
+</table>
+
+<h2 id="aplicar">Levar o ajuste para o arquivo</h2>
+<p>Quando a sincronia estiver boa, o SubDrive CLI cria uma legenda nova, com os tempos já acertados. Ela serve para guardar, compartilhar com outras pessoas ou transformar em PGS.</p>
+<ol>
+  <li>Conecte o pendrive no computador e abra o SubDrive CLI.</li>
+  <li>Escolha "Aplicar a sincronia feita no player" e depois a legenda.</li>
+  <li>O SubDrive CLI grava a legenda nova ao lado da original, com outro nome, como <code>Filme_2.srt</code>. Funciona com SRT e com PGS.</li>
+</ol>
+<p>No terminal, o mesmo comando é <code>subdrive sync "legendas/Filme.srt"</code>. A <a href="cli.html#sync">página do SubDrive CLI</a> tem os detalhes.</p>
+
+<p><a href="./">Voltar para a página do SubDrive</a></p>
+</main>
+<footer>
+<p>SubDrive · <a href="./">Início</a> · <a href="firmware.html">Firmware</a> · <a href="cli.html">SubDrive CLI</a> · <a href="https://github.com/michaelfdias/subdrive">GitHub</a></p>
+</footer>
+</body>
+</html>

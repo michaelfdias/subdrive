@@ -32,7 +32,7 @@ OPEN = {
 README = """SubDrive {version} - Panasonic DP-UB450 / UB150 / UB154 ({platform}) - {system}
 {beta}
 Para aparelhos vendidos nos EUA, com firmware 1.13
-(no player: Configurações > Sistema > Informações do Firmware).
+(no player: HOME > Setup > Player Settings > System > System Information).
 
 1. Extraia este ZIP (se ainda não extraiu) e deixe o programa ao lado da pasta "pacote".
 2. {open}
