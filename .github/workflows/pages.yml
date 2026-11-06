@@ -31,23 +31,6 @@ jobs:
           if [ -n "$PIX" ]; then
             python3 -c 'import os,pathlib; p=pathlib.Path("docs/index.html"); p.write_text(p.read_text().replace("__PIX_KEY__", os.environ["PIX"]))'
           fi
-      - name: Visit counter
-        env:
-          CF_TOKEN: ${{ vars.SUBDRIVE_CF_TOKEN }}
-        run: |
-          # Cloudflare Web Analytics token (public, it goes in the page). Without it, the counter is left out.
-          python3 - <<'PY'
-          import os, pathlib, re
-          token = os.environ.get("CF_TOKEN", "").strip()
-          for p in pathlib.Path("docs").glob("*.html"):
-              s = p.read_text()
-              if token:
-                  s = s.replace("__CF_TOKEN__", token)
-              else:
-                  s = re.sub(r'<script defer src="https://static.cloudflareinsights.com/beacon.min.js"[^\n]*\n', "", s)
-                  s = s.replace("  <li>Esta página conta as visitas de forma anônima, pelo Cloudflare Web Analytics, sem cookies.</li>\n", "")
-              p.write_text(s)
-          PY
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
