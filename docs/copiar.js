@@ -14,15 +14,6 @@ document.addEventListener("click", async function (e) {
 document.querySelectorAll("[data-pix]").forEach(function (el) {
   if (el.textContent.indexOf("__PIX") !== -1) el.closest("[data-secao-pix]").hidden = true;
 });
-// Contact: the e-mail address is put together here so simple spam robots do not read it from the page.
-(function () {
-  var email = ["michaelfdias", "gmail.com"].join("@");
-  document.querySelectorAll("a[data-email]").forEach(function (a) { a.href = "mailto:" + email + "?subject=SubDrive"; });
-  document.querySelectorAll("[data-email-texto]").forEach(function (el) {
-    var a = document.createElement("a"); a.href = "mailto:" + email + "?subject=SubDrive"; a.textContent = email; el.replaceWith(a);
-  });
-  document.querySelectorAll("a[data-form]").forEach(function (a) { if (a.getAttribute("href").indexOf("__FORMS") === 0) a.hidden = true; });
-})();
 // Sections that open and close (<details>) slide instead of jumping.
 (function () {
   var calmo = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;

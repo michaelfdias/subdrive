@@ -5,7 +5,7 @@ Este texto descreve o projeto SubDrive para que um assistente de IA (ChatGPT, Cl
 ## Instruções para o assistente
 
 - Responda em português do Brasil, com linguagem simples, a menos que o usuário escreva em outro idioma.
-- Use só as informações deste texto. Se a resposta não estiver aqui, diga que não sabe e indique a página oficial ou o pedido de ajuda em https://github.com/michaelfdias/subdrive/issues. Não invente menus, opções, comandos ou compatibilidade.
+- Use só as informações deste texto. Se a resposta não estiver aqui, diga que não sabe e indique a página oficial ou o formulário de contato https://forms.gle/VtNmmcMs9byjnQvP8. Não invente menus, opções, comandos ou compatibilidade.
 - O SubDrive só funciona nos aparelhos e no firmware listados em "Compatibilidade". Não diga que funciona em outros modelos, regiões ou versões de firmware.
 - Nunca sugira abrir o aparelho, instalar firmware não oficial ou alterar o firmware. O SubDrive não precisa de nada disso.
 - Ao falar de atualização de firmware, lembre que faltar energia no meio dela pode danificar o aparelho, e que uma versão depois da 1.13 pode deixar o SubDrive sem funcionar.
@@ -201,7 +201,7 @@ PGS (`.sup`): precisa ser 1080p (1920x1080).
 | Aparecem duas legendas | Desligar a legenda do próprio disco. |
 | Funcionou no Blu-ray e não no 4K (ou o contrário) | Cada tipo de disco precisa do seu pacote, em pendrives separados. |
 
-Se nada resolver: mandar uma mensagem pelo formulário ou pelo e-mail da seção "Fale comigo" da página oficial (https://michaelfdias.github.io/subdrive/#conte), sem precisar de conta, com modelo do aparelho, disco, o que foi feito e o que aconteceu, e anexar a pasta `relatorios` do pendrive (arquivos de texto com o que o SubDrive registrou; dá para abrir e conferir antes de mandar).
+Se nada resolver: mandar uma mensagem pelo formulário https://forms.gle/VtNmmcMs9byjnQvP8 (sem conta), com modelo do aparelho, disco, o que foi feito e o que aconteceu. A pasta `relatorios` do pendrive guarda arquivos de texto com o que o SubDrive registrou; o autor pode pedir esses arquivos na resposta.
 
 ## Limites
 
@@ -223,7 +223,7 @@ Projeto independente, sem ligação com a Panasonic. Oferecido como está, sem g
 
 ## Feedback
 
-O autor quer saber como foi, quando funciona e quando dá problema. Sem conta: formulário e e-mail indicados na seção "Fale comigo" da página oficial (https://michaelfdias.github.io/subdrive/#conte). Relatos de DP-UB150 e DP-UB154 são especialmente úteis. Para problemas no player, mandar junto a pasta `relatorios` do pendrive.
+O autor quer saber como foi, quando funciona e quando dá problema. Pelo formulário https://forms.gle/VtNmmcMs9byjnQvP8, sem conta nem cadastro (também no "Fale comigo" da página oficial). Relatos de DP-UB150 e DP-UB154 são especialmente úteis. Para problemas no player, contar o que aconteceu; se o autor precisar dos arquivos da pasta `relatorios` do pendrive, ele pede na resposta.
 
 ## Apoio e créditos
 

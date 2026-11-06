@@ -8,7 +8,7 @@ Compatível com os modelos vendidos nos EUA, com firmware 1.13.
 
 - Página do projeto, com tudo explicado: https://michaelfdias.github.io/subdrive/
 - Downloads: https://github.com/michaelfdias/subdrive/releases
-- Ajuda: https://github.com/michaelfdias/subdrive/issues
+- Fale comigo: https://forms.gle/VtNmmcMs9byjnQvP8
 
 Use por sua conta e risco. Leia a [isenção de responsabilidade](https://michaelfdias.github.io/subdrive/#isencao). O SubDrive é um projeto independente e não tem ligação com a Panasonic.
 
