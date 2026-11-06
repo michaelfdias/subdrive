@@ -8,7 +8,8 @@ from . import texts
 from .texts import t
 
 ICONS = {"ok": ("✅", "[OK]"), "fail": ("❌", "[X]"), "warn": ("⚠️ ", "[!]"), "fix": ("🔧", "[*]"),
-         "file": ("📄", "-"), "folder": ("📁", "-"), "info": ("ℹ️ ", "[i]"), "title": ("🎬", "")}
+         "file": ("📄", "-"), "folder": ("📁", "-"), "info": ("ℹ️ ", "[i]"), "title": ("🎬", ""),
+         "pgs": ("🖼️ ", "[>]"), "time": ("⏱️ ", "[>]"), "wait": ("⏳", "[..]")}
 
 
 def _windows_vt() -> bool:
@@ -55,6 +56,16 @@ class Out:
     def line(self, text="", icon=None, indent=0):
         prefix = " " * indent + (self.icon(icon) + " " if icon and self.icon(icon) else "")
         print(prefix + text, file=self.stream)
+
+    def progress(self, done, total, label):
+        """One line redrawn in place on a terminal; only the final state elsewhere."""
+        tty = hasattr(self.stream, "isatty") and self.stream.isatty()
+        if not tty and done < total:
+            return
+        width = 24; filled = width * done // max(1, total)
+        bar = ("█" * filled + "░" * (width - filled)) if self.emoji else ("#" * filled + "." * (width - filled))
+        text = "   %s %s  [%s] %3d%%" % (self.icon("wait"), label, bar, 100 * done // max(1, total))
+        print(("\r" if tty else "") + text, end="\n" if done >= total else "", file=self.stream, flush=True)
 
     def tr(self, table, key, **values):
         return t(table, key, self.lang, **values)

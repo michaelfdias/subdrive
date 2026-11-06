@@ -350,17 +350,34 @@ def fix_srt(path: Path, data: bytes | None = None, remove_credits: bool = False)
     return fix
 
 
-def next_name(path: Path, wanted: str | None = None) -> Path:
-    """`Filme.srt` -> `Filme_2.srt`, `Filme_3.srt`... (never an existing file).
+def _split(name: str):
+    """'Filme.soft-white.sup' -> ('Filme', '.soft-white.sup'); 'Filme.srt' -> ('Filme', '.srt')."""
+    from .pgs import color
+    stem, ext = name.rsplit(".", 1) if "." in name else (name, "")
+    tail = "." + ext if ext else ""
+    if ext.lower() == "sup" and "." in stem and color(stem.rsplit(".", 1)[1]):
+        stem, suffix = stem.rsplit(".", 1)
+        tail = "." + suffix + tail
+    return stem, tail
 
-    A wanted name is used as given (with .srt added when missing)."""
+
+def next_name(path: Path, wanted: str | None = None, tail: str | None = None) -> Path:
+    """New file next to `path`: `Filme_2.srt`, `Filme_3.srt`... (never an existing file).
+
+    `tail` replaces the extension part (e.g. '.soft-white.sup' for a PGS made from Filme.srt).
+    A wanted name is used as given, with the extension added when missing."""
+    stem, own = _split(path.name)
+    tail = tail or own
     if wanted:
-        name = wanted if wanted.lower().endswith(".srt") else wanted + ".srt"
-        return path.with_name(name)
-    stem = re.sub(r"_(\d+)$", "", path.stem)
+        return path.with_name(wanted if wanted.lower().endswith((".srt", ".sup")) else wanted + tail)
+    base = re.sub(r"_(\d+)$", "", stem)
+    if tail != own:  # a different kind of file: the plain name first
+        candidate = path.with_name(base + tail)
+        if not candidate.exists():
+            return candidate
     n = 2
     while True:
-        candidate = path.with_name("%s_%d%s" % (stem, n, path.suffix))
+        candidate = path.with_name("%s_%d%s" % (base, n, tail))
         if not candidate.exists():
             return candidate
         n += 1
