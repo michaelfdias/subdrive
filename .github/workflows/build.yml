@@ -3,6 +3,7 @@ name: Build
 on:
   push:
     branches: [main, desenvolvimento]
+    tags: ["v*"]
   pull_request:
   workflow_dispatch:
 
@@ -13,13 +14,13 @@ jobs:
       matrix:
         include:
           - os: windows-latest
-            name: SubDrive-Windows
+            name: Windows
           - os: macos-15
-            name: SubDrive-macOS-AppleSilicon
+            name: macOS-AppleSilicon
           - os: macos-15-intel
-            name: SubDrive-macOS-Intel
+            name: macOS-Intel
           - os: ubuntu-22.04
-            name: SubDrive-Linux
+            name: Linux
     runs-on: ${{ matrix.os }}
     defaults:
       run:
@@ -53,12 +54,54 @@ jobs:
       - name: Pack
         run: |
           mkdir -p out
-          if [ -f dist/SubDrive.exe ]; then cp dist/SubDrive.exe out/${{ matrix.name }}.exe
+          if [ -f dist/SubDrive.exe ]; then cp dist/SubDrive.exe out/SubDrive-${{ matrix.name }}.exe
           elif [ "$RUNNER_OS" = "macOS" ]; then
             # ditto keeps the "can be opened" permission and opens with a double click in Finder
-            chmod +x dist/SubDrive && ditto -c -k --keepParent dist/SubDrive out/${{ matrix.name }}.zip
-          else chmod +x dist/SubDrive && tar -czf out/${{ matrix.name }}.tar.gz -C dist SubDrive; fi
+            chmod +x dist/SubDrive && ditto -c -k --keepParent dist/SubDrive out/SubDrive-${{ matrix.name }}.zip
+          else chmod +x dist/SubDrive && tar -czf out/SubDrive-${{ matrix.name }}.tar.gz -C dist SubDrive; fi
       - uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.name }}
+          name: SubDrive-${{ matrix.name }}
           path: out/*
+      - name: Downloads (program + player package)
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          set -e
+          test "${GITHUB_REF_NAME#v}" = "$(python -c 'import subdrive; print(subdrive.VERSION)')"
+          git fetch --depth 1 origin pacotes
+          exe=dist/SubDrive; [ -f dist/SubDrive.exe ] && exe=dist/SubDrive.exe
+          for variant in bd uhd; do
+            git show FETCH_HEAD:panasonic-ub450-150-154-$variant.zip > pacote-$variant.zip
+            python tools/make_download.py --program $exe --package pacote-$variant.zip \
+              --system "${{ matrix.name }}" --output downloads
+          done
+      - if: startsWith(github.ref, 'refs/tags/v')
+        uses: actions/upload-artifact@v4
+        with:
+          name: downloads-${{ matrix.name }}
+          path: downloads/*.zip
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: downloads-*
+          merge-multiple: true
+          path: downloads
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -e
+          ls -l downloads
+          test "$(ls downloads/*.zip | wc -l)" = 8
+          version="${GITHUB_REF_NAME#v}"
+          extra=""; case "$version" in *-*) extra="--prerelease";; esac
+          gh release create "$GITHUB_REF_NAME" downloads/*.zip $extra --title "SubDrive $version" \
+            --notes-file packaging/release-notes.md
