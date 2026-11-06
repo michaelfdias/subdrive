@@ -15,6 +15,8 @@ EPILOG = """examples:
   subdrive pgs "Movie.srt"              create a PGS (soft-white, size 48, outline 2)
   subdrive pgs "Movie.srt" --color dark-yellow --font inter --bold
   subdrive sync "legendas/Movie.srt"     apply the timing adjusted on the player
+  subdrive drives                       is the USB drive ready for the player?
+  subdrive prepare --eject              install the package on the USB drive
   subdrive rules                        what is checked and why
 """
 
@@ -48,6 +50,13 @@ def _parser():
     y.add_argument("path", type=Path, metavar="file")
     y.add_argument("--points", type=Path, metavar="file", help="timing file (default: sincronia/<file name>.txt)")
     y.add_argument("--output", metavar="name", help="name of the new file (default: Movie_2.srt...)")
+    sub.add_parser("drives", help="USB drives connected and whether the player can read them")
+    q = sub.add_parser("prepare", help="install the player package on a USB drive")
+    q.add_argument("--drive", type=Path, metavar="path", help="the drive (e.g. E:\\ or /Volumes/NAME); needed when there are several")
+    q.add_argument("--package", type=Path, metavar="folder", help="the package folder (default: next to the program)")
+    q.add_argument("--replace-subtitles", action="store_true", help="replace subtitles on the drive that have the same name as one in the package")
+    q.add_argument("--yes", action="store_true", help="do not ask for confirmation")
+    q.add_argument("--eject", action="store_true", help="eject the drive at the end")
     sub.add_parser("rules", help="what is checked and why")
     return p
 
@@ -200,6 +209,100 @@ def cmd_sync(args, out):
     return 0
 
 
+def cmd_drives(args, out):
+    from . import drives, package
+    found = drives.find()
+    if not found:
+        out.line(out.ui("drives_none"), "warn"); out.line(out.ui("drives_none_hint"), indent=3)
+        return 1
+    for i, d in enumerate(found):
+        if i:
+            out.line()
+        ui.render_drive(out, d, package.installed(d.path))
+        if not d.ok and "readonly" not in d.problems:
+            ui.format_help(out, d)
+    return 0 if any(d.ok for d in found) else 1
+
+
+def _program_dir():
+    return Path(sys.executable).resolve().parent if getattr(sys, "frozen", False) else Path.cwd()
+
+
+def cmd_prepare(args, out):
+    from . import drives, package
+    folder = args.package or package.find_package(_program_dir()) or package.find_package(Path.cwd())
+    if folder is None:
+        out.line(out.ui("package_missing"), "fail"); out.line(out.ui("package_missing_hint"), indent=3); return 2
+    try:
+        pkg = package.load(folder)
+    except package.PackageError as e:
+        out.line(out.ui("package_unknown") if e.code == "unknown" else out.ui("package_damaged", name=e.name or "manifest.json"), "fail")
+        return 2
+    found = drives.find()
+    if args.drive:
+        want = str(args.drive).rstrip("\\/").lower()
+        match = [d for d in found if str(d.path).rstrip("\\/").lower() == want]
+        if not match:
+            out.line(out.ui("drive_missing", name=str(args.drive)), "fail"); return 2
+        drive = match[0]
+    else:
+        usable = [d for d in found if d.ok]
+        if not found:
+            out.line(out.ui("drives_none"), "fail"); out.line(out.ui("drives_none_hint"), indent=3); return 1
+        if len(found) > 1:
+            out.line(out.ui("choose_drive"), "warn")
+            for d in found:
+                out.line("--drive \"%s\"  (%s)" % (d.path, d.label), indent=3)
+            return 2
+        drive = found[0]
+    ui.render_drive(out, drive, package.installed(drive.path))
+    if not drive.ok:
+        if "readonly" not in drive.problems:
+            ui.format_help(out, drive)
+        return 1
+    try:
+        plan = package.plan(drive.path, pkg, args.replace_subtitles)
+    except package.PackageError as e:
+        out.line(out.ui("write_failed", name=e.name or str(drive.path)), "fail"); return 1
+    out.line()
+    out.line(out.paint(out.ui("prepare_title", label=drive.label or str(drive.path), version=pkg.version, platform=pkg.platform), "bold"), "title")
+    if not plan.changes:
+        out.line(out.ui("plan_nothing"), "ok", 3)
+    else:
+        if plan.write:
+            out.line(out.ui("plan_copy", n=len(plan.write), size=ui._size(plan.needed)), indent=3)
+        if plan.same:
+            out.line(out.ui("plan_same", n=len(plan.same)), indent=3)
+        if plan.kept:
+            out.line(out.ui("plan_kept", n=len(plan.kept)), indent=3)
+        if plan.stale:
+            out.line(out.ui("plan_stale", n=len(plan.stale)), indent=3)
+        if plan.create:
+            out.line(out.ui("plan_create", names=", ".join(n + "/" for n in plan.create)), indent=3)
+        out.line(out.ui("plan_keep_user"), "info", 3)
+        if drive.free and plan.needed > drive.free:
+            out.line(out.ui("no_space", need=ui._size(plan.needed), free=ui._size(drive.free)), "fail", 3); return 1
+        if not args.yes:
+            if not sys.stdin.isatty():
+                out.line(out.ui("cancelled"), "info", 3); return 1
+            answer = input("   " + out.ui("confirm")).strip().lower()
+            if answer not in ("s", "sim", "y", "yes"):
+                out.line(out.ui("cancelled"), "info", 3); return 1
+        try:
+            package.apply(drive.path, pkg, args.replace_subtitles, progress=lambda d, t: out.progress(d, t, out.ui("copying")))
+        except package.PackageError as e:
+            out.line(out.ui("verify_failed" if e.code == "verify" else "write_failed", name=e.name), "fail", 3); return 1
+        except OSError:
+            out.line(out.ui("write_failed", name=str(drive.path)), "fail", 3); return 1
+        out.line(out.ui("prepared"), "ok", 3)
+    if args.eject:
+        gone = drives.eject(drive)
+        out.line(out.ui("ejected" if gone else "eject_failed"), "ok" if gone else "warn", 3)
+    else:
+        out.line(out.ui("eject_hint"), indent=3)
+    return 0
+
+
 def sup_reader_error():
     from .sup_reader import SupError
     return SupError
@@ -214,7 +317,8 @@ def main(argv=None):
     if args.command == "rules":
         ui.render_rules(out)
         return 0
-    return {"check": cmd_check, "fix": cmd_fix, "pgs": cmd_pgs, "sync": cmd_sync}[args.command](args, out)
+    return {"check": cmd_check, "fix": cmd_fix, "pgs": cmd_pgs, "sync": cmd_sync, "drives": cmd_drives,
+            "prepare": cmd_prepare}[args.command](args, out)
 
 
 if __name__ == "__main__":

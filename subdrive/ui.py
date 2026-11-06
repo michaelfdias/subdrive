@@ -164,3 +164,40 @@ def render_rules(out):
         title, why = (pt_title, pt_why) if out.lang == "pt" else (en_title, en_why)
         out.line("• " + out.paint(title, "bold"), indent=1)
         out.line(why, indent=3)
+
+
+def size_text(n):
+    for unit, k in (("GB", 1e9), ("MB", 1e6), ("KB", 1e3)):
+        if n >= k:
+            v = n / k
+            return ("%.0f %s" if v >= 10 else "%.1f %s") % (v, unit)
+    return "%d B" % n
+
+
+def _size(n):
+    return size_text(n).replace(".", ",")
+
+
+def format_help(out, drive=None):
+    import os, sys
+    out.line(out.ui("format_title"), "info", 3)
+    key = "format_nt" if os.name == "nt" else "format_mac" if sys.platform == "darwin" else "format_linux"
+    out.line(out.ui(key), indent=6)
+    if os.name == "nt" and drive is not None and drive.size > 32 * 1024 ** 3:
+        out.line(out.ui("format_nt_big"), indent=6)
+    out.line(out.paint(out.ui("format_never"), "dim"), indent=6)
+
+
+def render_drive(out, drive, installed=None):
+    label = drive.label or str(drive.path)
+    out.line(out.paint(out.ui("drive_line", label=label, path=str(drive.path).rstrip("\\/") or str(drive.path), size=_size(drive.size)), "bold"), "folder")
+    if drive.ok:
+        out.line(out.ui("drive_ok" if not drive.unknown else "drive_ok_unknown"), "ok", 3)
+    else:
+        for p in drive.problems:
+            text = {"filesystem": out.ui("drive_filesystem", fs=drive.filesystem or "?"),
+                    "scheme": out.ui("drive_scheme"), "partitions": out.ui("drive_partitions", n=drive.partitions),
+                    "readonly": out.ui("drive_readonly")}[p]
+            out.line(text, "fail", 3)
+    if installed:
+        out.line(out.ui("drive_installed", version=installed[0], platform=installed[1]), "info", 3)
