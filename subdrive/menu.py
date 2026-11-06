@@ -245,6 +245,21 @@ class Menu:
         self.out.line()
         cli.cmd_drives(Namespace(), self.out)
 
+    def updates(self):
+        from . import update
+        o = self.out
+        beta = update.wants_beta(program_dir())
+        k = self.choose("Atualização", ["Procurar atualização",
+                                        "Versões de teste: %s" % ("ligadas (desligar)" if beta else "desligadas (ligar, para quem quer testar novidades e enviar relatórios)")], default=0)
+        if k is None:
+            return
+        if k == 1:
+            o.line()
+            cli.cmd_update(Namespace(check=True, beta="off" if beta else "on", yes=False), o, ask=self.ask_raw)
+            return
+        o.line()
+        cli.cmd_update(Namespace(check=False, beta=None, yes=False), o, ask=self.ask_raw)
+
     def rules(self):
         self.out.line(); ui.render_rules(self.out)
 
@@ -265,7 +280,7 @@ class Menu:
                 actions = [("Verificar legendas", self.check), ("Corrigir uma legenda", self.fix),
                            ("Criar PGS a partir de um SRT", self.make_pgs), ("Aplicar a sincronia feita no player", self.sync),
                            ("Preparar pendrive", self.prepare), ("Ver pendrives e o formato", self.drives_info),
-                           ("O que é verificado e por quê", self.rules)]
+                           ("Procurar atualização", self.updates), ("O que é verificado e por quê", self.rules)]
                 for k, (label, _) in enumerate(actions, 1):
                     o.line("%d  %s" % (k, label), indent=3)
                 o.line("0  Sair", indent=3)

@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from pathlib import Path
 
@@ -17,6 +18,7 @@ EPILOG = """examples:
   subdrive sync "legendas/Movie.srt"     apply the timing adjusted on the player
   subdrive drives                       is the USB drive ready for the player?
   subdrive prepare --eject              install the package on the USB drive
+  subdrive update                       look for a newer version
   subdrive rules                        what is checked and why
 """
 
@@ -57,6 +59,10 @@ def _parser():
     q.add_argument("--replace-subtitles", action="store_true", help="replace subtitles on the drive that have the same name as one in the package")
     q.add_argument("--yes", action="store_true", help="do not ask for confirmation")
     q.add_argument("--eject", action="store_true", help="eject the drive at the end")
+    u = sub.add_parser("update", help="look for a newer SubDrive and install it")
+    u.add_argument("--check", action="store_true", help="only tell whether there is a newer version")
+    u.add_argument("--beta", choices=("on", "off"), help="receive test versions (saved next to the program)")
+    u.add_argument("--yes", action="store_true", help="do not ask for confirmation")
     sub.add_parser("rules", help="what is checked and why")
     return p
 
@@ -303,6 +309,66 @@ def cmd_prepare(args, out):
     return 0
 
 
+def cmd_update(args, out, ask=input):
+    from . import drives, package, update
+    here = _program_dir()
+    if args.beta:
+        update.set_beta(here, args.beta == "on")
+        out.line(out.ui("beta_on" if args.beta == "on" else "beta_off"), "info")
+        if args.beta == "off":
+            out.line(out.ui("beta_off_note"), indent=3)
+    beta = update.wants_beta(here)
+    if not update.PUBLIC_KEY:
+        out.line(out.ui("update_off"), "info"); return 1
+    out.line(out.ui("update_searching"), "wait")
+    try:
+        found = update.releases()
+    except update.UpdateError as e:
+        out.line(out.ui("update_signature" if e.code == "signature" else "update_offline"), "fail", 3); return 1
+    rel = update.best(found, VERSION, beta)
+    if rel is None:
+        out.line(out.ui("update_none", version=VERSION), "ok", 3); return 0
+    tag = " · " + out.ui("update_beta_tag") if rel.channel == "beta" else ""
+    out.line(out.paint(out.ui("update_found", new=rel.version, current=VERSION), "bold") + tag, "info", 3)
+    for note in rel.notes[:12]:
+        out.line("• " + note, indent=6)
+    if args.check:
+        return 0
+    if not args.yes:
+        if not sys.stdin.isatty() and ask is input:
+            out.line(out.ui("cancelled"), "info", 3); return 1
+        if ask("   " + out.ui("update_ask")).strip().lower() not in ("s", "sim", "y", "yes"):
+            out.line(out.ui("cancelled"), "info", 3); return 1
+    folder = package.find_package(here)
+    manifest = json.loads((folder / "manifest.json").read_text(encoding="utf-8")) if folder else None
+    try:
+        # Everything is downloaded and checked first; only then anything is replaced.
+        prog = None
+        if getattr(sys, "frozen", False):
+            prog = update.download(rel, update.program_key(), progress=lambda d, t: out.progress(d, t, out.ui("update_downloading")))
+        pack = update.download(rel, update.package_key(manifest), progress=lambda d, t: out.progress(d, t, out.ui("update_downloading"))) if manifest else None
+        out.line(out.ui("update_checked"), "ok", 3)
+        if pack is not None:
+            update.replace_package(folder, pack)
+            out.line(out.ui("update_package_done", name=str(folder)), "ok", 3)
+        else:
+            out.line(out.ui("update_no_package"), "info", 3)
+        if prog is not None:
+            update.replace_program(Path(sys.executable), prog)
+            out.line(out.ui("update_program_done"), "ok", 3)
+        else:
+            out.line(out.ui("update_program_source"), "info", 3)
+    except update.UpdateError as e:
+        out.line(out.ui("update_offline") if e.code == "offline" else out.ui("update_damaged", name=e.detail), "fail", 3); return 1
+    except OSError:
+        out.line(out.ui("write_failed", name=str(here)), "fail", 3); return 1
+    for d in drives.find():
+        inst = package.installed(d.path)
+        if inst and update.newer(rel.version, inst[0] or "0.0.0"):
+            out.line(out.ui("update_drive_hint", label=d.label or d.path, version=inst[0]), "info", 3)
+    return 0
+
+
 def sup_reader_error():
     from .sup_reader import SupError
     return SupError
@@ -322,8 +388,11 @@ def main(argv=None):
     if args.command == "rules":
         ui.render_rules(out)
         return 0
+    if getattr(sys, "frozen", False):
+        from . import update
+        update.cleanup_old_program(Path(sys.executable))
     return {"check": cmd_check, "fix": cmd_fix, "pgs": cmd_pgs, "sync": cmd_sync, "drives": cmd_drives,
-            "prepare": cmd_prepare}[args.command](args, out)
+            "prepare": cmd_prepare, "update": cmd_update}[args.command](args, out)
 
 
 if __name__ == "__main__":
