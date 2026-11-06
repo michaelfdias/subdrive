@@ -15,7 +15,7 @@ from pathlib import Path
 
 FOLDERS = ("legendas", "relatorios", "sincronia", "fontes")
 NAME = re.compile(r"^[^/\\:.][^/\\:]{0,123}\.(srt|sup)$")
-FONT_NAME = re.compile(r"^[a-z0-9-]{1,40}\.ub450f$|^LICENCAS\.txt$")
+FONT_NAME = re.compile(r"^[a-z0-9-]{1,40}\.letras$|^LICENCAS\.txt$")
 
 
 class PackageError(ValueError):
@@ -109,7 +109,7 @@ def _stale(target: Path, pkg: Package):
     folder = target / "fontes"
     if not folder.is_dir() or folder.is_symlink() or not any(n.startswith("fontes/") for n in pkg.files):
         return []
-    return [p for p in sorted(folder.iterdir()) if p.is_file() and not p.is_symlink() and p.suffix == ".ub450f"
+    return [p for p in sorted(folder.iterdir()) if p.is_file() and not p.is_symlink() and p.suffix == ".letras"
             and ("fontes/" + p.name) not in pkg.files]
 
 

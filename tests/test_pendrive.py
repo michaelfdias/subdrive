@@ -17,7 +17,7 @@ def make_package(folder: Path, files, version="1.0.0", platform="UHD"):
 
 
 FILES = {"BDJ.jar": b"jar-1", "BDJ_DEBUG": b"", "legendas/Filme.srt": b"1\n00:00:01,000 --> 00:00:02,000\nA\n",
-         "fontes/inter.ub450f": b"letras", "fontes/LICENCAS.txt": b"OFL"}
+         "fontes/inter.letras": b"letras", "fontes/LICENCAS.txt": b"OFL"}
 
 
 class DriveTests(unittest.TestCase):
@@ -83,12 +83,12 @@ class PrepareTests(unittest.TestCase):
         (self.usb / "sincronia").mkdir(); (self.usb / "sincronia/Meu.srt.txt").write_bytes(b"versao=1\n")
         (self.usb / "relatorios").mkdir(); (self.usb / "relatorios/relatorio-01.txt").write_bytes(b"KEEP")
         (self.usb / "preferencias.json").write_bytes(b"{}")
-        (self.usb / "fontes").mkdir(); (self.usb / "fontes/antiga.ub450f").write_bytes(b"x"); (self.usb / "fontes/minha.txt").write_bytes(b"y")
+        (self.usb / "fontes").mkdir(); (self.usb / "fontes/antiga.letras").write_bytes(b"x"); (self.usb / "fontes/minha.txt").write_bytes(b"y")
         self.assertEqual(self.run_cli(), 0)
         for name, data in (("legendas/Meu.srt", b"MINE"), ("legendas/Filme.srt", b"EDITED"), ("sincronia/Meu.srt.txt", b"versao=1\n"),
                            ("relatorios/relatorio-01.txt", b"KEEP"), ("preferencias.json", b"{}"), ("fontes/minha.txt", b"y")):
             self.assertEqual((self.usb / name).read_bytes(), data, name)
-        self.assertFalse((self.usb / "fontes/antiga.ub450f").exists())
+        self.assertFalse((self.usb / "fontes/antiga.letras").exists())
         self.assertEqual(self.run_cli("--replace-subtitles"), 0)
         self.assertEqual((self.usb / "legendas/Filme.srt").read_bytes(), FILES["legendas/Filme.srt"])
 

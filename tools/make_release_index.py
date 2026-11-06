@@ -2,7 +2,7 @@
 
     SUBDRIVE_SIGNING_KEY=<64 hex digits> python tools/make_release_index.py \
         --version 1.0.0 --channel stable --notes notes.txt --out dist/ \
-        program-windows-x86_64=dist/SubDrive-Windows.exe package-panasonic-ub450-uhd=dist/....zip ...
+        program-windows-x86_64=dist/SubDrive-Windows.exe package-panasonic-ub450-150-154-uhd=dist/....zip ...
 
 The key is read from the environment only, never from a file in the repository.
 """

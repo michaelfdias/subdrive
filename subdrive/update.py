@@ -178,8 +178,8 @@ def program_key():
 
 
 def package_key(manifest: dict):
-    """The player package of the local package folder (e.g. package-panasonic-ub450-uhd)."""
-    pid = manifest.get("package") or "panasonic-ub450-" + str(manifest.get("platform", "")).lower()
+    """The player package of the local package folder (e.g. package-panasonic-ub450-150-154-uhd)."""
+    pid = manifest.get("package") or "panasonic-ub450-150-154-" + str(manifest.get("platform", "")).lower()
     return "package-" + pid
 
 

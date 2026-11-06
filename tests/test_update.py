@@ -32,7 +32,7 @@ class Server:
 
     def add(self, version, channel, seed=SEED, tamper=None):
         pack = package_zip(version); prog = b"program " + version.encode()
-        files = {"package-panasonic-ub450-uhd": {"name": "pkg-%s.zip" % version, "sha256": sha(pack), "bytes": len(pack)},
+        files = {"package-panasonic-ub450-150-154-uhd": {"name": "pkg-%s.zip" % version, "sha256": sha(pack), "bytes": len(pack)},
                  update.program_key(): {"name": "prog-%s" % version, "sha256": sha(prog), "bytes": len(prog)}}
         index = json.dumps({"schema": 1, "version": version, "channel": channel, "notes": ["Novidade %s" % version], "files": files}).encode()
         sig = ed25519.sign(seed, index)
