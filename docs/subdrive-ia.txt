@@ -30,7 +30,7 @@ O SubDrive coloca legendas externas (SRT e PGS) na tela dos players Panasonic DP
 
 ### Como ver a região e a versão
 
-- Região: na etiqueta de trás ou de baixo do aparelho. DP-UB450-K, DP-UB150-K e DP-UB154 (DP-UB450P-K e DP-UB150P-K no site da Panasonic dos EUA) são dos EUA. Nomes com outras letras, como EB, EG ou GN (DP-UB450EB-K, por exemplo), são de outras regiões.
+- Região: na etiqueta do aparelho (costuma ficar atrás ou embaixo) ou na caixa. DP-UB450-K, DP-UB150-K e DP-UB154 (DP-UB450P-K e DP-UB150P-K no site da Panasonic dos EUA) são dos EUA. Nomes com outras letras, como EB, EG ou GN (DP-UB450EB-K, por exemplo), são de outras regiões.
 - Versão: player sem disco, HOME, Setup, Player Settings, System, System Information, Firmware Version Information.
 
 ### Como atualizar para a 1.13
@@ -49,7 +49,7 @@ Duas partes:
 1. **Pacote SubDrive (no pendrive).** O player carrega um programa Java do pendrive quando o disco começa. Esse programa desenha a legenda sobre o filme e mostra um painel de ajustes, aberto pela tecla VERMELHA. O programa é montado no computador do usuário pelo SubDrive CLI, a partir da biblioteca Java do firmware oficial da Panasonic (baixado do site da Panasonic), com duas mudanças pequenas: uma faz o player iniciar o SubDrive e a outra entrega as teclas do controle a ele. O SubDrive não distribui código da Panasonic. O firmware instalado no aparelho não muda, e o SubDrive só grava no pendrive.
 2. **SubDrive CLI (no computador).** Programa para Windows 10/11, macOS (Apple Silicon e Intel) e Linux, sem instalação. Prepara o pendrive, verifica e corrige legendas, cria PGS a partir de SRT, aplica a sincronia feita no player e procura atualizações. Abre com dois cliques num menu em português (setas, Enter, Esc) e também aceita comandos de terminal.
 
-Há dois pacotes: **BD** para discos Blu-ray e **UHD** para discos 4K UHD, porque o player usa uma biblioteca diferente para cada tipo de disco. Cada um vai num pendrive próprio. Quem assiste os dois tipos precisa de dois pendrives.
+Há dois pacotes: **BD** para discos Blu-ray e **UHD** para discos 4K UHD, porque o player usa uma biblioteca diferente para cada tipo de disco. O pacote BD só funciona com discos Blu-ray, e o UHD só com discos 4K UHD. Cada um vai num pendrive próprio: quem assiste os dois tipos prepara dois pendrives e coloca no player o que combina com o disco antes de começar o filme.
 
 ## Requisitos
 
@@ -201,7 +201,7 @@ PGS (`.sup`): precisa ser 1080p (1920x1080).
 | Aparecem duas legendas | Desligar a legenda do próprio disco. |
 | Funcionou no Blu-ray e não no 4K (ou o contrário) | Cada tipo de disco precisa do seu pacote, em pendrives separados. |
 
-Se nada resolver: usar o formulário "Relatar um problema" em https://github.com/michaelfdias/subdrive/issues/new/choose (precisa de conta gratuita no GitHub), com modelo do aparelho, disco, o que foi feito e o que aconteceu, e anexar a pasta `relatorios` do pendrive (arquivos de texto com o que o SubDrive registrou; dá para abrir e conferir antes de mandar).
+Se nada resolver: mandar uma mensagem pelo formulário ou pelo e-mail da seção "Fale comigo" da página oficial (https://michaelfdias.github.io/subdrive/#conte), sem precisar de conta, com modelo do aparelho, disco, o que foi feito e o que aconteceu, e anexar a pasta `relatorios` do pendrive (arquivos de texto com o que o SubDrive registrou; dá para abrir e conferir antes de mandar).
 
 ## Limites
 
@@ -215,7 +215,7 @@ Se nada resolver: usar o formulário "Relatar um problema" em https://github.com
 
 - O pacote SubDrive no player não usa a internet e só grava no pendrive.
 - O SubDrive CLI só se conecta para baixar o firmware oficial do site da Panasonic (uma vez, com permissão) e para procurar atualizações no GitHub (quando o usuário pede). Nenhum dado é enviado.
-- Para remover o SubDrive, basta tirar o pendrive. O player volta a funcionar exatamente como antes.
+- Para remover o SubDrive: desligar o player e só então tirar o pendrive. O player volta a funcionar exatamente como antes. Tirar o pendrive sempre com o aparelho desligado.
 
 ## Isenção de responsabilidade
 
@@ -223,7 +223,7 @@ Projeto independente, sem ligação com a Panasonic. Oferecido como está, sem g
 
 ## Feedback
 
-O autor quer saber como foi, quando funciona e quando dá problema. Sem conta: formulário e e-mail indicados na seção "Fale comigo" da página oficial (https://michaelfdias.github.io/subdrive/#conte). Com conta no GitHub: formulários "Contar como foi", "Relatar um problema" e "Dar uma ideia" em https://github.com/michaelfdias/subdrive/issues/new/choose. Relatos de DP-UB150 e DP-UB154 são especialmente úteis. Para problemas no player, mandar junto a pasta `relatorios` do pendrive.
+O autor quer saber como foi, quando funciona e quando dá problema. Sem conta: formulário e e-mail indicados na seção "Fale comigo" da página oficial (https://michaelfdias.github.io/subdrive/#conte). Relatos de DP-UB150 e DP-UB154 são especialmente úteis. Para problemas no player, mandar junto a pasta `relatorios` do pendrive.
 
 ## Apoio e créditos
 

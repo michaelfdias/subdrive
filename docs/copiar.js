@@ -23,3 +23,21 @@ document.querySelectorAll("[data-pix]").forEach(function (el) {
   });
   document.querySelectorAll("a[data-form]").forEach(function (a) { if (a.getAttribute("href").indexOf("__FORMS") === 0) a.hidden = true; });
 })();
+// Sections that open and close (<details>) slide instead of jumping.
+(function () {
+  var calmo = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (calmo || !Element.prototype.animate) return;
+  document.querySelectorAll("details > summary").forEach(function (summary) {
+    var det = summary.parentElement, anim = null;
+    summary.addEventListener("click", function (e) {
+      e.preventDefault();
+      if (anim) anim.cancel();
+      var inicio = det.offsetHeight + "px", abrindo = !det.open;
+      if (abrindo) det.open = true;
+      var fim = abrindo ? det.scrollHeight + "px" : summary.offsetHeight + parseFloat(getComputedStyle(det).paddingTop) + parseFloat(getComputedStyle(det).paddingBottom) + 2 + "px";
+      anim = det.animate({ height: [inicio, fim] }, { duration: 260, easing: "ease-out" });
+      anim.onfinish = function () { anim = null; if (!abrindo) det.open = false; };
+      anim.oncancel = function () { anim = null; };
+    });
+  });
+})();
