@@ -9,20 +9,23 @@
 <meta property="og:image" content="https://michaelfdias.github.io/subdrive/img/compartilhar.png">
 <link rel="icon" href="img/icone.svg" type="image/svg+xml">
 <link rel="stylesheet" href="estilo.css">
+<script src="tema.js"></script>
 </head>
 <body>
 <header class="topo">
 <nav class="menu">
-  <a class="marca" href="./">SubDrive</a>
+  <a class="marca" href="./"><img src="img/icone.svg" alt="">SubDrive</a>
   <a href="./#baixar">Baixar</a>
   <a href="firmware.html">Firmware</a>
   <a href="sincronia.html">Sincronia</a>
   <a href="cli.html">SubDrive CLI</a>
+  <button type="button" class="tema">🌙 Escuro</button>
 </nav>
 </header>
 <main>
 <h1>Firmware do player</h1>
 <p>O SubDrive funciona com o firmware 1.13 dos modelos vendidos nos EUA. Esta página mostra como conferir o seu aparelho e, se precisar, como chegar à 1.13.</p>
+<p class="nota">A atualização de firmware é um procedimento oficial da Panasonic, feito com os arquivos e as instruções dela. Ela não faz parte do SubDrive e não muda nada nele: o SubDrive só precisa que o aparelho esteja na versão 1.13.</p>
 
 <h2 id="regiao">1. Confira a região do aparelho</h2>
 <p>Veja a etiqueta na parte de trás ou de baixo do player, onde aparece o nome completo do modelo.</p>
@@ -34,11 +37,10 @@
 <h2 id="versao">2. Veja a versão do firmware</h2>
 <ol>
   <li>Ligue o player sem disco.</li>
-  <li>Aperte <kbd>HOME</kbd> e entre em <em>Setup</em> (Configurações).</li>
-  <li>Vá em <em>Player Settings</em> › <em>System</em> › <em>System Information</em> (Informações do sistema).</li>
-  <li>Em <em>Firmware Version</em> aparece a versão instalada.</li>
+  <li>Aperte <kbd>HOME</kbd> e vá em <em>Setup</em> › <em>Player Settings</em> › <em>System</em> › <em>System Information</em> › <em>Firmware Version Information</em>.</li>
+  <li>A versão instalada aparece nessa tela.</li>
 </ol>
-<p>Se for 1.13, está tudo certo e você pode <a href="./#baixar">baixar o SubDrive</a>. Se for menor, atualize por um dos caminhos abaixo. Os nomes dos menus podem variar um pouco de uma versão para outra.</p>
+<p>Se for 1.13, está tudo certo e você pode <a href="./#baixar">baixar o SubDrive</a>. Se for menor, atualize por um dos caminhos abaixo.</p>
 <p class="nota">Se a versão for maior que a 1.13, o SubDrive ainda não funciona no seu aparelho. A Panasonic não oferece um jeito oficial de voltar para uma versão anterior.</p>
 
 <h2 id="automatica">Desligue a atualização automática</h2>

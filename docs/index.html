@@ -15,22 +15,24 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="img/icone.svg" type="image/svg+xml">
 <link rel="stylesheet" href="estilo.css">
+<script src="tema.js"></script>
 </head>
 <body>
 <header class="topo">
 <nav class="menu">
-  <a class="marca" href="./">SubDrive</a>
+  <a class="marca" href="./"><img src="img/icone.svg" alt="">SubDrive</a>
   <a href="#compativeis">Aparelhos</a>
   <a href="#como-usar">Como usar</a>
   <a href="#perguntas">Dúvidas</a>
   <a href="#conte">Fale comigo</a>
+  <button type="button" class="tema">🌙 Escuro</button>
 </nav>
 </header>
 <main>
 
 <section class="abertura">
 <h1>Legendas em português no seu Blu-ray e 4K UHD</h1>
-<p class="lead">O SubDrive coloca a legenda que você quiser na tela do Panasonic DP-UB450, enquanto o disco toca. Basta um pendrive. É grátis.</p>
+<p class="lead">O SubDrive coloca a legenda que você quiser na tela de players Panasonic 4K compatíveis, enquanto o disco toca. Basta um pendrive. É grátis.</p>
 <div class="botoes">
   <a class="botao principal" href="#como-usar">Quero usar</a>
   <a class="botao" href="#compativeis">Meu aparelho é compatível?</a>
@@ -39,9 +41,17 @@
 </section>
 
 <h2 id="presente">Um presente para quem gosta de mídia física</h2>
-<p>Quem coleciona Blu-ray e 4K UHD no Brasil conhece o problema: muitos discos vêm de fora sem legenda em português, e o player não abre um arquivo de legenda junto com o disco. A saída costumava ser desistir do disco.</p>
-<p>Encontrei um jeito de fazer o DP-UB450 mostrar legendas externas, sem abrir o aparelho e sem trocar o firmware, e transformei isso no SubDrive. Ele é de graça, sem anúncios e sem pegadinha. O código está aberto no GitHub. Se ele ajudar você a ver aquele filme que estava parado na estante, já valeu.</p>
-<p class="assinatura">Michael Dias</p>
+<figure class="autor">
+  <div class="avatar" aria-hidden="true">MD</div>
+  <div>
+    <blockquote>
+      <p>Quem coleciona Blu-ray e 4K UHD no Brasil conhece o problema: muitos discos vêm de fora sem legenda em português, e o player não abre um arquivo de legenda junto com o disco. Por muito tempo, a saída foi deixar o disco na estante.</p>
+      <p>Encontrei um jeito de fazer o meu Panasonic DP-UB450-K mostrar legendas externas, sem abrir o aparelho e sem trocar o firmware, e transformei isso no SubDrive. Não estou vendendo nada: ele é de graça, sem anúncios, com o código aberto. É a minha forma de retribuir a uma comunidade que me ensinou muito.</p>
+      <p>Se ele ajudar você a ver aquele filme parado na estante, já valeu.</p>
+    </blockquote>
+    <figcaption class="quem"><strong>Michael Dias</strong>, criador do SubDrive e colecionador de mídia física</figcaption>
+  </div>
+</figure>
 
 <h2 id="recursos">O que ele faz</h2>
 <div class="grade">
@@ -142,13 +152,26 @@ BDJ.jar e outros arquivos do SubDrive</code></pre>
 <figure class="foto" data-foto="cli">Imagem em breve: o menu do SubDrive CLI</figure>
 
 <h3>5. Assista</h3>
+<p>Na primeira vez:</p>
 <ol>
   <li>Ejete o pendrive do computador.</li>
-  <li>Ligue o player sem disco, coloque o pendrive e espere uns 15 segundos.</li>
+  <li>Ligue o player sem disco e espere a tela inicial carregar por completo.</li>
+  <li>Coloque o pendrive. O player abre uma janela perguntando o que fazer com ele: feche essa janela sem escolher nada.</li>
+  <li>Espere de 10 a 15 segundos.</li>
   <li>Coloque o disco e comece o filme.</li>
   <li>Aperte a tecla <kbd>VERMELHA</kbd>. No painel, em "Arquivo", escolha a legenda. As setas para cima e para baixo trocam de linha; para os lados, mudam o valor.</li>
 </ol>
-<p>Se o disco tiver legenda própria ligada, desligue-a para não aparecerem duas. Ao abrir o menu do disco, a legenda some; se ela não voltar sozinha, aperte <kbd>VERMELHA</kbd>.</p>
+<p>Nas próximas vezes, pode deixar o pendrive no aparelho. Só espere alguns segundos na tela inicial antes de começar o filme.</p>
+<p class="nota">Se o seu player começa o disco sozinho assim que você o coloca, recomendo desligar essa opção nas configurações do aparelho. O SubDrive pode funcionar mesmo assim, mas às vezes o filme começa antes de o pendrive estar pronto.</p>
+<p>Se o disco tiver legenda própria ligada, desligue-a para não aparecerem duas.</p>
+
+<h3>Menus do disco</h3>
+<p>O SubDrive esconde a legenda quando um menu do disco aparece, para não ficar por cima dele.</p>
+<ul>
+  <li>Menu que abre por cima do filme (tecla <kbd>POP-UP MENU</kbd>): a legenda some e, ao fechar o menu, deve voltar sozinha.</li>
+  <li>Menu principal do disco: depois de voltar para o filme, a legenda pode não voltar sozinha.</li>
+</ul>
+<p>Nos dois casos, se a legenda não voltar, aperte <kbd>VERMELHA</kbd> de novo. Outro jeito é apertar <kbd>PAUSE</kbd>, esperar uns 3 segundos e apertar <kbd>PLAY</kbd>.</p>
 
 <h2 id="limites">Bom saber</h2>
 <ul>
@@ -172,6 +195,20 @@ BDJ.jar e outros arquivos do SubDrive</code></pre>
 <p>Se a Panasonic lançar uma versão depois da 1.13, espere o SubDrive confirmar que ela funciona. A página do <a href="firmware.html">firmware</a> explica como desligar a atualização automática.</p>
 </details>
 <details>
+<summary>Qual a diferença entre SRT e PGS?</summary>
+<p>O SRT (<code>.srt</code>) é uma legenda de texto: um arquivo pequeno com as falas e os horários. É o formato mais fácil de achar na internet. Como é texto, o SubDrive desenha as letras na hora, e você escolhe fonte, tamanho, cor, negrito, sombra e fundo.</p>
+<p>O PGS (<code>.sup</code>) é a legenda em imagem, o mesmo formato dos discos Blu-ray. Cada fala já vem desenhada, então ela aparece exatamente como foi feita, mas dá para mudar só a posição. O SubDrive CLI cria um PGS a partir de um SRT, com o visual que você escolher.</p>
+<p>Na dúvida, use SRT.</p>
+</details>
+<details>
+<summary>A legenda sumiu depois do menu do disco.</summary>
+<p>Aperte <kbd>VERMELHA</kbd>, ou aperte <kbd>PAUSE</kbd>, espere uns 3 segundos e aperte <kbd>PLAY</kbd>. Veja <a href="#como-usar">Menus do disco</a>.</p>
+</details>
+<details>
+<summary>A tecla VERMELHA não abre nada.</summary>
+<p>Confira se o aparelho e o firmware são compatíveis e se o pendrive é do tipo do disco (BD para Blu-ray, UHD para 4K UHD). Depois tire o disco, volte à tela inicial, espere alguns segundos com o pendrive conectado e comece o filme de novo.</p>
+</details>
+<details>
 <summary>A legenda aparece com letras estranhas no lugar dos acentos.</summary>
 <p>Use "Corrigir uma legenda" no SubDrive CLI. Ele cria uma cópia corrigida ao lado da original.</p>
 </details>
@@ -191,12 +228,15 @@ BDJ.jar e outros arquivos do SubDrive</code></pre>
 
 <h2 id="conte">Fale comigo</h2>
 <p>Quero saber como foi com você, tanto quando funcionou quanto quando deu problema. É assim que o SubDrive melhora e que mais aparelhos entram na lista.</p>
-<div class="grade">
-  <a class="cartao link" href="https://github.com/michaelfdias/subdrive/issues/new?template=relato.yml"><h3>Contar como foi</h3><p>Qual aparelho, qual disco, se funcionou.</p></a>
-  <a class="cartao link" href="https://github.com/michaelfdias/subdrive/issues/new?template=problema.yml"><h3>Relatar um problema</h3><p>Algo não funcionou como deveria.</p></a>
-  <a class="cartao link" href="https://github.com/michaelfdias/subdrive/issues/new?template=ideia.yml"><h3>Dar uma ideia</h3><p>Uma sugestão para o SubDrive.</p></a>
+<div class="contato">
+  <a class="botao principal" data-form href="__FORMS_URL__">Mandar uma mensagem</a>
+  <a class="botao" data-email href="#conte">Mandar um e-mail</a>
 </div>
-<p>Os formulários ficam no GitHub, que pede uma conta gratuita. Se for relatar um problema, anexe a pasta <code>relatorios</code> do pendrive: são arquivos de texto com o que o SubDrive viu, e você pode abrir e conferir antes de mandar.</p>
+<p>O formulário não pede conta nem cadastro. Se preferir, escreva para <span data-email-texto>o meu e-mail</span>. Para um problema no player, mande junto a pasta <code>relatorios</code> do pendrive: são arquivos de texto com o que o SubDrive viu, e você pode abrir e conferir antes de enviar.</p>
+<details>
+<summary>Tem conta no GitHub?</summary>
+<p>Então você também pode usar os formulários de lá, que ficam públicos e ajudam outras pessoas com a mesma dúvida: <a href="https://github.com/michaelfdias/subdrive/issues/new?template=relato.yml">contar como foi</a>, <a href="https://github.com/michaelfdias/subdrive/issues/new?template=problema.yml">relatar um problema</a> ou <a href="https://github.com/michaelfdias/subdrive/issues/new?template=ideia.yml">dar uma ideia</a>.</p>
+</details>
 
 <section data-secao-pix>
 <h2 id="apoie">Quer retribuir?</h2>
@@ -213,7 +253,7 @@ BDJ.jar e outros arquivos do SubDrive</code></pre>
 </div>
 
 <h2 id="creditos">Créditos</h2>
-<p>Criado por Michael Dias. As fontes Roboto, Inter, Arimo, Noto Sans, Open Sans, Source Sans 3, Lato e Atkinson Hyperlegible usam a SIL Open Font License 1.1, e a DejaVu Sans usa a licença Bitstream Vera; os textos completos vão no pacote, na pasta <code>fontes</code>. O código do SubDrive está no <a href="https://github.com/michaelfdias/subdrive">GitHub</a>.</p>
+<p>Criado por Michael Dias. As fontes Roboto, Inter, Arimo, Noto Sans, Open Sans, Source Sans 3, Lato e Atkinson Hyperlegible usam a SIL Open Font License 1.1, e a DejaVu Sans usa a licença Bitstream Vera; os textos completos vão no pacote, na pasta <code>fontes</code>. O código do SubDrive está no <a href="https://github.com/michaelfdias/subdrive">GitHub</a>, sob a licença MIT.</p>
 
 </main>
 <footer>

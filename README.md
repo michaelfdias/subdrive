@@ -18,4 +18,4 @@ SubDrive adds external subtitles (SRT and PGS) to any Blu-ray or 4K UHD disc on 
 
 ## Licença
 
-[LICENÇA A DEFINIR]
+MIT. Veja o arquivo [LICENSE](LICENSE). As fontes mantêm as licenças delas.

@@ -31,9 +31,12 @@ O SubDrive coloca legendas externas (SRT e PGS) na tela dos players Panasonic DP
 ### Como ver a região e a versão
 
 - Região: na etiqueta de trás ou de baixo do aparelho. DP-UB450-K, DP-UB150-K e DP-UB154 (DP-UB450P-K e DP-UB150P-K no site da Panasonic dos EUA) são dos EUA. Nomes com outras letras, como EB, EG ou GN (DP-UB450EB-K, por exemplo), são de outras regiões.
-- Versão: player sem disco, HOME, Setup, Player Settings, System, System Information, Firmware Version. Os nomes podem variar um pouco.
+- Versão: player sem disco, HOME, Setup, Player Settings, System, System Information, Firmware Version Information.
 
 ### Como atualizar para a 1.13
+
+A atualização de firmware é um procedimento oficial da Panasonic, com arquivos e instruções dela. Não faz parte do SubDrive; o SubDrive só precisa que o aparelho esteja na 1.13.
+
 
 - Desligar a atualização automática: Setup, Player Settings, System, Firmware Update, Automatic Update em Off. Evita que o aparelho instale sozinho uma versão futura.
 - Pela rede: Setup, Player Settings, System, Firmware Update, Update Now. Instala a versão mais nova que existir (hoje, a 1.13).
@@ -78,15 +81,29 @@ Arquivos e pastas no pendrive: `BDJ.jar` (programa do player), `BDJ_DEBUG`, `sub
 
 ## Uso no player
 
-1. Ligar o player sem disco e esperar a tela inicial.
-2. Conectar o pendrive e esperar uns 15 segundos.
-3. Colocar o disco e começar o filme.
-4. Apertar VERMELHA para abrir o painel. Setas para cima e para baixo trocam de linha; para os lados mudam o valor.
-5. Em "Arquivo", escolher a legenda. A legenda sempre começa desligada quando o player liga.
+Primeira vez:
 
-- POP-UP abre o menu do disco e a legenda some; fechando com POP-UP, ela volta sozinha.
-- Depois de navegar pelo menu do disco ou ir ao menu principal, a legenda volta com VERMELHA, ou apertando PAUSE, esperando 3 segundos e apertando PLAY.
+1. Ejetar o pendrive do computador.
+2. Ligar o player sem disco e esperar a tela inicial carregar por completo.
+3. Conectar o pendrive. O player abre uma janela perguntando o que fazer com ele: fechar essa janela sem escolher nada.
+4. Esperar de 10 a 15 segundos.
+5. Colocar o disco e começar o filme.
+6. Apertar VERMELHA para abrir o painel. Setas para cima e para baixo trocam de linha; para os lados mudam o valor.
+7. Em "Arquivo", escolher a legenda. A legenda sempre começa desligada quando o player liga.
+
+Próximas vezes: o pendrive pode ficar conectado; esperar alguns segundos na tela inicial antes de começar o filme. Se o player começa o disco sozinho ao colocá-lo, é recomendável desligar essa opção nas configurações do aparelho; pode funcionar mesmo ligada, mas às vezes o filme começa antes de o pendrive estar pronto.
+
+Menus do disco:
+
+- Menu por cima do filme (POP-UP MENU): a legenda some e deve voltar sozinha ao fechar o menu.
+- Menu principal do disco: ao voltar para o filme, a legenda pode não voltar sozinha.
+- Se a legenda não voltar: apertar VERMELHA de novo, ou PAUSE, esperar uns 3 segundos e PLAY.
 - Se o disco tiver legenda própria ligada, desligar para não aparecerem duas.
+
+### SRT e PGS
+
+- SRT (`.srt`): legenda de texto, com falas e horários. Mais fácil de achar. O SubDrive desenha as letras, e o usuário escolhe fonte, tamanho, cor, negrito, sombra e fundo.
+- PGS (`.sup`): legenda em imagem, o formato dos discos Blu-ray. Já vem desenhada; só a posição muda. O SubDrive CLI cria PGS a partir de SRT. Na dúvida, usar SRT.
 
 ### Linhas do painel
 
@@ -172,7 +189,7 @@ PGS (`.sup`): precisa ser 1080p (1920x1080).
 
 | Sintoma | O que fazer |
 |---|---|
-| A tecla VERMELHA não abre nada | Conferir firmware 1.13 e região EUA; conferir se o pacote certo (BD ou UHD) está no pendrive para o tipo de disco; ligar o player sem disco, conectar o pendrive, esperar 15 s e só então colocar o disco; preparar o pendrive de novo pelo SubDrive CLI. |
+| A tecla VERMELHA não abre nada | Conferir firmware 1.13 e região EUA; conferir se o pacote certo (BD ou UHD) está no pendrive para o tipo de disco; tirar o disco, voltar à tela inicial, esperar alguns segundos com o pendrive conectado e começar o filme de novo; na primeira vez, fechar a janela que o player abre ao detectar o pendrive e esperar 10 a 15 s; desligar o início automático do disco; preparar o pendrive de novo pelo SubDrive CLI. |
 | A legenda não aparece na lista | Arquivo precisa estar em `legendas/` e terminar em `.srt` ou `.sup`; passar no "Verificar legendas". |
 | Acentos trocados por símbolos estranhos | Arquivo não está em UTF-8; usar "Corrigir uma legenda". |
 | Algumas letras ou símbolos não aparecem | O player só mostra letras latinas; "Corrigir uma legenda" troca ou remove os símbolos. |
@@ -206,8 +223,8 @@ Projeto independente, sem ligação com a Panasonic. Oferecido como está, sem g
 
 ## Feedback
 
-O autor quer saber como foi: formulários "Contar como foi", "Relatar um problema" e "Dar uma ideia" em https://github.com/michaelfdias/subdrive/issues/new/choose. Relatos de DP-UB150 e DP-UB154 são especialmente úteis.
+O autor quer saber como foi, quando funciona e quando dá problema. Sem conta: formulário e e-mail indicados na seção "Fale comigo" da página oficial (https://michaelfdias.github.io/subdrive/#conte). Com conta no GitHub: formulários "Contar como foi", "Relatar um problema" e "Dar uma ideia" em https://github.com/michaelfdias/subdrive/issues/new/choose. Relatos de DP-UB150 e DP-UB154 são especialmente úteis. Para problemas no player, mandar junto a pasta `relatorios` do pendrive.
 
 ## Apoio e créditos
 
-O SubDrive é gratuito; dá para apoiar com Pix (a chave está na página oficial e, como QR code, em Configurações no painel do player). Criado por Michael Dias. Fontes livres: Roboto, Inter, Arimo, Noto Sans, Open Sans, Source Sans 3, Lato e Atkinson Hyperlegible (SIL Open Font License 1.1) e DejaVu Sans (licença Bitstream Vera). Código: https://github.com/michaelfdias/subdrive
+O SubDrive é gratuito; dá para apoiar com Pix (a chave está na página oficial e, como QR code, em Configurações no painel do player). Criado por Michael Dias. Fontes livres: Roboto, Inter, Arimo, Noto Sans, Open Sans, Source Sans 3, Lato e Atkinson Hyperlegible (SIL Open Font License 1.1) e DejaVu Sans (licença Bitstream Vera). Código: https://github.com/michaelfdias/subdrive (licença MIT).

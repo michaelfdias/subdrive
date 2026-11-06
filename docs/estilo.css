@@ -1,5 +1,6 @@
-:root{--fundo:#fbfaf7;--texto:#1f2328;--suave:#5b636d;--linha:#e3e0d8;--cartao:#ffffff;--destaque:#b45309;--destaque-fundo:#fff4e0;--codigo:#f3f1ec;--aviso:#fdf2f2;--aviso-borda:#e8b4b4}
-@media (prefers-color-scheme:dark){:root{--fundo:#16181c;--texto:#e7e5e1;--suave:#a3a7ad;--linha:#2c3036;--cartao:#1d2025;--destaque:#f0a43a;--destaque-fundo:#2a2216;--codigo:#24272d;--aviso:#2a1d1d;--aviso-borda:#6b3b3b}}
+:root{--fundo:#fbfaf7;--texto:#1f2328;--suave:#5b636d;--linha:#e3e0d8;--cartao:#ffffff;--destaque:#b45309;--destaque-fundo:#fff4e0;--codigo:#f3f1ec;--aviso:#fdf2f2;--aviso-borda:#e8b4b4;--botao-texto:#fff;--ok:#15803d;--ok-borda:#86efac;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-tema="claro"]){--fundo:#16181c;--texto:#e7e5e1;--suave:#a3a7ad;--linha:#2c3036;--cartao:#1d2025;--destaque:#f0a43a;--destaque-fundo:#2a2216;--codigo:#24272d;--aviso:#2a1d1d;--aviso-borda:#6b3b3b;--botao-texto:#16181c;--ok:#4ade80;--ok-borda:#166534;color-scheme:dark}}
+:root[data-tema="escuro"]{--fundo:#16181c;--texto:#e7e5e1;--suave:#a3a7ad;--linha:#2c3036;--cartao:#1d2025;--destaque:#f0a43a;--destaque-fundo:#2a2216;--codigo:#24272d;--aviso:#2a1d1d;--aviso-borda:#6b3b3b;--botao-texto:#16181c;--ok:#4ade80;--ok-borda:#166534;color-scheme:dark}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--fundo);color:var(--texto);font:17px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
@@ -27,8 +28,7 @@ nav.menu .marca{font-weight:700;color:var(--texto);margin-right:auto}
 .abertura p.lead{font-size:1.2rem;color:var(--suave);margin-top:0}
 .botoes{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
 .botao{display:inline-block;padding:10px 18px;border-radius:8px;border:1px solid var(--destaque);text-decoration:none;font-weight:600}
-.botao.principal{background:var(--destaque);color:#fff}
-@media (prefers-color-scheme:dark){.botao.principal{color:#16181c}}
+.botao.principal{background:var(--destaque);color:var(--botao-texto)}
 .grade{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin:1em 0}
 .cartao{background:var(--cartao);border:1px solid var(--linha);border-radius:10px;padding:14px 16px}
 .cartao h3{margin:0 0 .3em;font-size:1rem}
@@ -52,11 +52,9 @@ a.cartao.link h3{color:var(--destaque)}
 ol.passos li{margin:.5em 0}
 .cartao p a{white-space:nowrap}
 @media (max-width:480px){body{font-size:16px}h1{font-size:1.75rem}h2{font-size:1.3rem}.botao{flex:1 1 auto;text-align:center}}
-.cartao .selo{margin-top:.6em;font-weight:600;color:#15803d}
+.cartao .selo{margin-top:.6em;font-weight:600;color:var(--ok)}
 .cartao .selo.neutro{color:var(--suave);font-weight:500}
-@media (prefers-color-scheme:dark){.cartao .selo{color:#4ade80}}
-.cartao.ok{border-color:#86efac}
-@media (prefers-color-scheme:dark){.cartao.ok{border-color:#166534}}
+.cartao.ok{border-color:var(--ok-borda)}
 .cartao p+p{margin-top:.4em}
 dl.itens dt{margin-top:.8em;font-weight:600}
 dl.itens dd{margin:.2em 0 0 0;color:var(--suave)}
@@ -68,3 +66,15 @@ dl.itens dd{margin:.2em 0 0 0;color:var(--suave)}
   table.pilha td:first-child{font-weight:600}
   table.pilha td[data-rotulo]::before{content:attr(data-rotulo) ": ";color:var(--suave)}
 }
+.tema{border:1px solid var(--linha);background:var(--cartao);color:var(--texto);border-radius:999px;padding:4px 10px;font-size:.85rem;line-height:1.2}
+nav.menu{align-items:center}
+.marca{display:inline-flex;align-items:center;gap:8px}
+.marca img{width:26px;height:26px}
+.autor{display:flex;gap:16px;align-items:flex-start;background:var(--cartao);border:1px solid var(--linha);border-radius:12px;padding:18px 20px;margin:1em 0}
+.autor .avatar{flex:0 0 52px;height:52px;border-radius:50%;background:var(--destaque);color:var(--botao-texto);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.1rem}
+.autor blockquote{margin:0}
+.autor blockquote p{margin:0 0 .7em}
+.autor .quem{margin:.2em 0 0;font-size:.95rem;color:var(--suave)}
+.autor .quem strong{color:var(--texto)}
+@media (max-width:480px){.autor{flex-direction:column;gap:10px}}
+.contato{display:flex;gap:10px;flex-wrap:wrap;margin:.6em 0 1em}

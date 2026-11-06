@@ -52,8 +52,12 @@ Não precisa instalar nada, nem Java.
    Suas legendas, sincronia, preferências e relatórios são mantidos.
 5. Coloque suas legendas (.srt ou .sup) na pasta "legendas" do pendrive.
    Antes, use "Verificar legendas" no menu para saber se vão funcionar.
-6. Ejete o pendrive. No player: ligue sem disco, coloque o pendrive,
-   espere 15 segundos, coloque o disco e, durante o filme, aperte a tecla VERMELHA.
+6. Ejete o pendrive. No player, na primeira vez: ligue sem disco e espere a
+   tela inicial carregar; coloque o pendrive e feche a janela que o player abre;
+   espere de 10 a 15 segundos, coloque o disco e, durante o filme, aperte a
+   tecla VERMELHA. Nas próximas vezes o pendrive pode ficar no aparelho.
+7. Se a legenda sumir depois de um menu do disco, aperte VERMELHA de novo
+   (ou PAUSE, espere 3 segundos e PLAY).
 
 Guia completo: https://michaelfdias.github.io/subdrive/
 """
