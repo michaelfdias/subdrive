@@ -384,7 +384,8 @@ def _fsync_pasta(pasta: str) -> None:
 
 
 def _escrever_exclusivo(caminho: str, dados: bytes) -> None:
-    flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLLOW", 0)
+    # O_BINARY: on Windows a plain os.open() would turn every "\n" into "\r\n".
+    flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_BINARY", 0)
     fd = os.open(caminho, flags, 0o644)
     try:
         vista = memoryview(dados)

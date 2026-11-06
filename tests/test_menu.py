@@ -41,7 +41,7 @@ class MenuTests(unittest.TestCase):
         self.assertTrue((self.d / "legendas/Filme.dark-yellow.sup").is_file(), text)
 
     def test_sync_flow(self):
-        (self.d / "sincronia/Filme.srt.txt").write_text("versao=1\nponto=0,-500\n")
+        (self.d / "sincronia/Filme.srt.txt").write_text("versao=1\nponto=0,-500\n", encoding="utf-8")
         code, text = self.run_menu(["4", "1", "", "0"])
         self.assertTrue((self.d / "legendas/Filme_2.srt").is_file(), text)
         self.assertIn("0,5 s mais cedo", text)

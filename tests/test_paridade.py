@@ -9,7 +9,7 @@ from pathlib import Path
 from subdrive import core
 from subdrive.regras.contrato import validar_bytes
 
-PLAYER = json.loads((Path(__file__).parent / "paridade/player.json").read_text())
+PLAYER = json.loads((Path(__file__).parent / "paridade/player.json").read_text(encoding="utf-8"))
 
 
 class ParidadeTests(unittest.TestCase):

@@ -108,7 +108,9 @@ class TestCaminhos(unittest.TestCase):
         self.assertEqual(colisao_na_pasta(self.d, "filme.preparada.srt"), "Filme.Preparada.srt")
         with self.assertRaises(ErroAcesso) as ctx:
             verificar_destino(os.path.join(self.d, "filme.preparada.srt"))
-        self.assertEqual(ctx.exception.codigo, "DESTINO_COLISAO")
+        # On Windows and macOS names ignore case: the file simply "already exists". Refused either way.
+        sem_caixa = os.path.exists(os.path.join(self.d, "filme.preparada.srt"))
+        self.assertEqual(ctx.exception.codigo, "DESTINO_EXISTE" if sem_caixa else "DESTINO_COLISAO")
         with self.assertRaises(ErroAcesso) as ctx:
             verificar_destino(os.path.join(self.d, unicodedata.normalize("NFD", "Ação.srt")))
         self.assertIn(ctx.exception.codigo, ("DESTINO_COLISAO", "DESTINO_EXISTE"))

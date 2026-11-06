@@ -91,18 +91,18 @@ class SyncTests(unittest.TestCase):
         self.assertEqual(sync.parse("sincronia=1\nponto=1000,-200\n"), [(1000, -200)])
 
     def test_cli_finds_the_player_file_and_writes_a_new_subtitle(self):
-        (self.d / "sincronia/Filme.srt.txt").write_text("versao=1\nponto=60000,-500\n")
+        (self.d / "sincronia/Filme.srt.txt").write_text("versao=1\nponto=60000,-500\n", encoding="utf-8")
         self.assertEqual(cli.main(["--no-emoji", "sync", str(self.srt)]), 0)
-        new = (self.d / "legendas/Filme_2.srt").read_text()
+        new = (self.d / "legendas/Filme_2.srt").read_text(encoding="utf-8")
         self.assertIn("00:00:00,500 --> 00:00:02,500", new)
         self.assertIn("00:01:09,500 --> 00:01:12,000", new)
-        self.assertEqual(self.srt.read_text(), SRT)
+        self.assertEqual(self.srt.read_text(encoding="utf-8"), SRT)
         self.assertTrue(core.check_path(self.d / "legendas/Filme_2.srt").ok)
 
     def test_cli_sync_of_a_pgs(self):
         sup = self.d / "legendas/Filme.soft-white.sup"
         sup.write_bytes(pgs.convert(pgs.cues_from_srt(self.srt.read_bytes()), pgs.Style(), workers=1))
-        (self.d / "sincronia/Filme.soft-white.sup.txt").write_text("versao=1\nponto=0,2000\n")
+        (self.d / "sincronia/Filme.soft-white.sup.txt").write_text("versao=1\nponto=0,2000\n", encoding="utf-8")
         self.assertEqual(cli.main(["--no-emoji", "sync", str(sup)]), 0)
         cues = sup_reader.parse((self.d / "legendas/Filme_2.soft-white.sup").read_bytes())
         self.assertEqual(cues[0]["start"], 3000)

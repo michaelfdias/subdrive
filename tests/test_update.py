@@ -80,7 +80,7 @@ class UpdateTests(unittest.TestCase):
         self.assertEqual(e.exception.code, "signature")
         self.server.add("1.1.0", "stable", seed=bytes(32))
         self.assertEqual(self.run_update("--yes"), 1)
-        self.assertEqual(json.loads((self.pkg / "manifest.json").read_text())["version"], "1.0.0")
+        self.assertEqual(json.loads((self.pkg / "manifest.json").read_text(encoding="utf-8"))["version"], "1.0.0")
 
     def test_channels_and_no_downgrade(self):
         self.server.add("1.1.0-beta.1", "beta"); self.server.add("1.0.1", "stable")
@@ -93,26 +93,26 @@ class UpdateTests(unittest.TestCase):
     def test_updates_the_package_folder(self):
         self.server.add("1.0.1", "stable")
         self.assertEqual(self.run_update("--yes"), 0)
-        self.assertEqual(json.loads((self.pkg / "manifest.json").read_text())["version"], "1.0.1")
+        self.assertEqual(json.loads((self.pkg / "manifest.json").read_text(encoding="utf-8"))["version"], "1.0.1")
         self.assertEqual((self.pkg / "USB/BDJ.jar").read_bytes(), b"jar-1.0.1")
         self.assertEqual(sorted(p.name for p in self.d.iterdir()), ["pacote"])  # nothing left behind
 
     def test_altered_download_changes_nothing(self):
         self.server.add("1.0.1", "stable", tamper=b"not the package")
         self.assertEqual(self.run_update("--yes"), 1)
-        self.assertEqual(json.loads((self.pkg / "manifest.json").read_text())["version"], "1.0.0")
+        self.assertEqual(json.loads((self.pkg / "manifest.json").read_text(encoding="utf-8"))["version"], "1.0.0")
 
     def test_already_newest_and_check_only(self):
         self.server.add("1.0.0", "stable")
         self.assertEqual(self.run_update("--yes"), 0)
         self.server.add("1.0.2", "stable")
         self.assertEqual(self.run_update("--check"), 0)
-        self.assertEqual(json.loads((self.pkg / "manifest.json").read_text())["version"], "1.0.0")
+        self.assertEqual(json.loads((self.pkg / "manifest.json").read_text(encoding="utf-8"))["version"], "1.0.0")
 
     def test_answer_no(self):
         self.server.add("1.0.1", "stable")
         self.assertEqual(self.run_update(answer="n"), 1)
-        self.assertEqual(json.loads((self.pkg / "manifest.json").read_text())["version"], "1.0.0")
+        self.assertEqual(json.loads((self.pkg / "manifest.json").read_text(encoding="utf-8"))["version"], "1.0.0")
 
     def test_beta_setting_is_saved(self):
         self.server.add("1.1.0-beta.1", "beta")

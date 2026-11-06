@@ -43,19 +43,19 @@ class SubdriveTests(unittest.TestCase):
     def test_incremental_names(self):
         p = self.file("Filme.srt", GOOD)
         self.assertEqual(core.next_name(p).name, "Filme_2.srt")
-        (self.d / "Filme_2.srt").write_text("x")
+        (self.d / "Filme_2.srt").write_text("x", encoding="utf-8")
         self.assertEqual(core.next_name(p).name, "Filme_3.srt")
         self.assertEqual(core.next_name(self.d / "Filme_2.srt").name, "Filme_3.srt")
         self.assertEqual(core.next_name(p, "Meu nome").name, "Meu nome.srt")
 
     def test_cli_fix_never_overwrites(self):
         p = self.file("Filme.srt", GOOD.replace("Sim.", "Sim…"))
-        (self.d / "Novo.srt").write_text("mine")
+        (self.d / "Novo.srt").write_text("mine", encoding="utf-8")
         self.assertEqual(cli.main(["--no-emoji", "fix", str(p), "--output", "Novo"]), 2)
-        self.assertEqual((self.d / "Novo.srt").read_text(), "mine")
+        self.assertEqual((self.d / "Novo.srt").read_text(encoding="utf-8"), "mine")
         self.assertEqual(cli.main(["--no-emoji", "fix", str(p)]), 0)
         self.assertTrue(core.check_path(self.d / "Filme_2.srt").ok)
-        self.assertEqual(p.read_text(), GOOD.replace("Sim.", "Sim…"))
+        self.assertEqual(p.read_text(encoding="utf-8"), GOOD.replace("Sim.", "Sim…"))
 
     def test_pgs_check(self):
         bad = self.d / "Ruim.sup"; bad.write_bytes(b"PGxxxx")
