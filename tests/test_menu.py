@@ -108,7 +108,7 @@ class FullScreenTests(unittest.TestCase):
         self.assertEqual(code, 0)
         self.assertTrue((self.d / "legendas/Ruim_2.srt").is_file(), text)
         self.assertIn("\033[?1049h", text)
-        self.assertTrue(text.rstrip().endswith("\033[?1049lSubDrive fechado. Pode fechar esta janela."), text[-80:])
+        self.assertTrue(text.rstrip().endswith("\033[?1049lSubDrive CLI fechado. Pode fechar esta janela."), text[-80:])
         self.assertIn("\033[H\033[2J", text)  # each screen replaces the previous one
 
     def test_digits_esc_and_ctrl_c(self):

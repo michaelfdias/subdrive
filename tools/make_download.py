@@ -1,6 +1,6 @@
-"""Make one download ZIP: the SubDrive program for one system + the player package + LEIA-ME.txt.
+"""Make one download ZIP: the SubDrive CLI program for one system + the player package + LEIA-ME.txt.
 
-    python tools/make_download.py --program dist/SubDrive --package pacotes/panasonic-ub450-150-154-uhd.zip \
+    python tools/make_download.py --program dist/SubDrive-CLI --package pacotes/panasonic-ub450-150-154-uhd.zip \
         --system macOS-AppleSilicon --output out
 
 The ZIP holds a single folder, e.g. SubDrive-1.0.0-Panasonic-UB450-150-154-UHD-Windows/, with the program,
@@ -19,28 +19,43 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from subdrive import VERSION  # noqa: E402
 
 OPEN = {
-    "Windows": ("Abra o SubDrive.exe com dois cliques.\n"
+    "Windows": ("Abra o SubDrive-CLI.exe com dois cliques.\n"
                 "   Se o Windows mostrar \"O Windows protegeu o computador\", clique em\n"
                 "   \"Mais informações\" e depois em \"Executar assim mesmo\" (só na primeira vez)."),
-    "macOS": ("Abra o SubDrive com dois cliques (ele abre no Terminal).\n"
+    "macOS": ("Abra o SubDrive-CLI com dois cliques (ele abre no Terminal).\n"
               "   Se o macOS disser que não pode abrir porque o desenvolvedor não pode ser verificado,\n"
               "   abra Ajustes do Sistema > Privacidade e Segurança e clique em \"Abrir Mesmo Assim\"\n"
               "   (só na primeira vez)."),
-    "Linux": "Abra um terminal nesta pasta e rode: ./SubDrive",
+    "Linux": "Abra um terminal nesta pasta e rode: ./SubDrive-CLI",
 }
 
 README = """SubDrive {version} - Panasonic DP-UB450 / UB150 / UB154 ({platform}) - {system}
 {beta}
-Para aparelhos vendidos nos EUA, com firmware 1.13
+Para aparelhos vendidos nos EUA (como o DP-UB450-K), com firmware 1.13
 (no player: HOME > Setup > Player Settings > System > System Information).
+Este ZIP serve para discos {disc}.
 
-1. Extraia este ZIP (se ainda não extraiu) e deixe o programa ao lado da pasta "pacote".
-2. {open}
-3. No menu, escolha "Preparar pendrive".
+O que tem aqui:
+  {program}o SubDrive CLI, programa que prepara o pendrive e cuida das legendas
+  {pacote}o pacote SubDrive, que o SubDrive CLI grava no pendrive
+  {leiame}este arquivo
+
+Não precisa instalar nada, nem Java.
+
+1. Extraia este ZIP (se ainda não extraiu) e deixe tudo junto na mesma pasta.
+2. Conecte um pendrive formatado em FAT32.
+3. {open}
+4. No menu, escolha "Preparar pendrive".
    Na primeira vez, ele baixa o firmware oficial da Panasonic (91 MB),
-   monta o programa do player e grava tudo no pendrive.
+   monta o programa do player e grava tudo no pendrive, já com as pastas
+   legendas, sincronia e relatorios criadas.
    Suas legendas, sincronia, preferências e relatórios são mantidos.
-4. Ejete o pendrive, coloque no player e aperte a tecla VERMELHA durante o filme.
+5. Coloque suas legendas (.srt ou .sup) na pasta "legendas" do pendrive.
+   Antes, use "Verificar legendas" no menu para saber se vão funcionar.
+6. Ejete o pendrive. No player: ligue sem disco, coloque o pendrive,
+   espere 15 segundos, coloque o disco e, durante o filme, aperte a tecla VERMELHA.
+
+Guia completo: https://michaelfdias.github.io/subdrive/
 """
 
 
@@ -70,9 +85,11 @@ def main():
     folder = "SubDrive-%s-Panasonic-UB450-150-154-%s-%s" % (VERSION, platform, a.system)
     family = a.system.split("-")[0]
     readme = README.format(version=VERSION, platform=platform, system=a.system.replace("-AppleSilicon", " Apple Silicon").replace("-", " "),
-                           beta="Versão de teste.\n" if "-" in VERSION else "", open=OPEN[family])
+                           beta="Versão de teste.\n" if "-" in VERSION else "", open=OPEN[family],
+                           disc="Blu-ray (BD)" if platform == "BD" else "4K UHD", program=("SubDrive-CLI.exe" if family == "Windows" else "SubDrive-CLI").ljust(19),
+                           pacote="pacote/".ljust(19), leiame="LEIA-ME.txt".ljust(19))
     program = a.program.read_bytes()
-    program_name = "SubDrive.exe" if family == "Windows" else "SubDrive"
+    program_name = "SubDrive-CLI.exe" if family == "Windows" else "SubDrive-CLI"
 
     a.output.mkdir(parents=True, exist_ok=True)
     target = a.output / (folder + ".zip")

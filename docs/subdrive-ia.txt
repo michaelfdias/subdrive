@@ -17,20 +17,20 @@ O SubDrive coloca legendas externas (SRT e PGS) na tela dos players Panasonic DP
 
 ## Compatibilidade
 
-| Aparelho | Região | Firmware |
-|---|---|---|
-| Panasonic DP-UB450 | EUA (DP-UB450P) | 1.13 |
-| Panasonic DP-UB150 | EUA (DP-UB150P) | 1.13 |
-| Panasonic DP-UB154 | EUA | 1.13 |
+| Aparelho | Nome na etiqueta | Firmware | Situação |
+|---|---|---|---|
+| DP-UB450, modelo dos EUA | DP-UB450-K (no site da Panasonic, DP-UB450P-K) | 1.13 | testado e funcionando |
+| DP-UB150, modelo dos EUA | DP-UB150-K (DP-UB150P-K) | 1.13 | mesmo firmware, não testado |
+| DP-UB154, modelo dos EUA | DP-UB154 | 1.13 | mesmo firmware, não testado |
 
-- Os testes foram feitos num DP-UB450. O DP-UB150 e o DP-UB154 usam o mesmo firmware, mas ainda não foram testados.
+- Os testes foram feitos num DP-UB450-K. O DP-UB150 e o DP-UB154 usam o mesmo firmware, mas ainda não foram testados. Não recomende usar em nenhum outro modelo.
 - Modelos de outras regiões (Europa, Ásia e outras) usam outro firmware e não funcionam nesta versão. O firmware europeu está hoje na versão 1.25.
 - Firmware diferente de 1.13 não funciona. A Panasonic não oferece um jeito oficial de voltar a uma versão anterior.
 - Só funciona com discos (Blu-ray e 4K UHD). Não funciona com streaming nem com vídeos tocados do pendrive.
 
 ### Como ver a região e a versão
 
-- Região: na etiqueta de trás ou de baixo do aparelho. Modelo terminado em P antes da cor (DP-UB450P-K, DP-UB150P-K) é dos EUA. Terminações como EB, EG ou GN são de outras regiões.
+- Região: na etiqueta de trás ou de baixo do aparelho. DP-UB450-K, DP-UB150-K e DP-UB154 (DP-UB450P-K e DP-UB150P-K no site da Panasonic dos EUA) são dos EUA. Nomes com outras letras, como EB, EG ou GN (DP-UB450EB-K, por exemplo), são de outras regiões.
 - Versão: player sem disco, HOME, Setup, Player Settings, System, System Information, Firmware Version. Os nomes podem variar um pouco.
 
 ### Como atualizar para a 1.13
@@ -60,9 +60,9 @@ Há dois pacotes: **BD** para discos Blu-ray e **UHD** para discos 4K UHD, porqu
 
 Downloads: https://github.com/michaelfdias/subdrive/releases. Há um ZIP por tipo de disco e sistema, por exemplo `SubDrive-1.0.0-beta.1-Panasonic-UB450-150-154-UHD-macOS-AppleSilicon.zip`. Sistemas: Windows, macOS-AppleSilicon (Mac M1 em diante), macOS-Intel, Linux.
 
-1. Extrair o ZIP. Dentro: o SubDrive CLI (`SubDrive.exe` no Windows, `SubDrive` nos outros), a pasta `pacote` e `LEIA-ME.txt`. Manter tudo junto.
+1. Extrair o ZIP. Dentro: o SubDrive CLI (`SubDrive-CLI.exe` no Windows, `SubDrive-CLI` nos outros), a pasta `pacote` (o pacote SubDrive) e `LEIA-ME.txt`. Manter tudo junto. Não é preciso instalar nada, nem Java.
 2. Conectar o pendrive e abrir o SubDrive CLI.
-3. Menu "Preparar pendrive". Na primeira vez pede para baixar o firmware, monta o programa do player, mostra o plano e pede confirmação.
+3. Menu "Preparar pendrive". Na primeira vez pede para baixar o firmware, monta o programa do player, mostra o plano e pede confirmação. Cria no pendrive as pastas `legendas`, `sincronia`, `relatorios` e `fontes` (o player não consegue criar pastas).
 4. Colocar as legendas na pasta `legendas` do pendrive (verificar antes com "Verificar legendas").
 5. Ejetar o pendrive pelo sistema.
 
@@ -71,7 +71,7 @@ Avisos comuns na primeira abertura:
 - Windows "O Windows protegeu o computador": clicar em "Mais informações" e "Executar assim mesmo".
 - macOS "não pode abrir": Ajustes do Sistema, Privacidade e Segurança, "Abrir Mesmo Assim". Depois abre com dois cliques, numa janela do Terminal.
 - Chrome bloqueou o download: lista de downloads (Ctrl+J ou Cmd+Shift+J), "Manter". Ou usar outro navegador.
-- Linux: abrir um terminal na pasta e rodar `./SubDrive`.
+- Linux: abrir um terminal na pasta e rodar `./SubDrive-CLI`.
 - Windows abrindo o programa de dentro do ZIP: o SubDrive CLI avisa. É preciso extrair o ZIP primeiro.
 
 Arquivos e pastas no pendrive: `BDJ.jar` (programa do player), `BDJ_DEBUG`, `subdrive.json` (versão instalada), `legendas/`, `fontes/` (letras já desenhadas, cerca de 68 MB), `sincronia/`, `relatorios/` e `preferencias.json`. Ao atualizar, o SubDrive CLI nunca apaga as legendas, a sincronia, as preferências e os relatórios do usuário.
@@ -129,28 +129,28 @@ Tela "Sincronia" do painel:
 - Salto no meio (cena a mais ou a menos): um ponto antes da cena com a correção antiga e outro uns minutos depois com a nova.
 - Gravação no pendrive, em `sincronia/<nome da legenda>.txt`, cerca de 0,2 s depois de cada toque. O arquivo da legenda nunca muda. Os pontos voltam quando a mesma legenda é escolhida de novo.
 - Avisos no título: "SINCRONIA: SEM PASTA" (falta a pasta `sincronia`; preparar o pendrive de novo), "FALHA AO SALVAR" (pendrive cheio ou protegido; o SubDrive tenta de novo sozinho), "ARQUIVO INVÁLIDO" (arquivo de pontos danificado; apagar no computador), "LIMITE DE PONTOS" (32 pontos; apagar algum).
-- Para gravar a correção numa legenda nova: SubDrive CLI, "Aplicar a sincronia feita no player" (ou `subdrive sync`). Gera `Filme_2.srt` (ou `.sup`) ao lado da original.
+- Para gravar a correção numa legenda nova: SubDrive CLI, "Aplicar a sincronia feita no player" (ou `SubDrive-CLI sincronizar`). Gera `Filme_2.srt` (ou `.sup`) ao lado da original.
 
 ## SubDrive CLI
 
 Menu: Verificar legendas; Corrigir uma legenda; Criar PGS a partir de um SRT; Aplicar a sincronia feita no player; Preparar pendrive; Ver pendrives e o formato; Procurar atualização; O que é verificado e por quê. Arrastar um arquivo para o programa ou para a janela verifica o arquivo e oferece as ações possíveis. O menu procura legendas no pendrive, na pasta do pacote e na pasta do programa.
 
-Terminal: `.\SubDrive.exe comando` no Windows, `./SubDrive comando` no macOS e Linux. Comandos e opções em inglês, mensagens em português. Sem comando, abre o menu. Opções gerais: `--help`, `--version`, `--no-emoji`, `--no-color`. Códigos de saída: 0 tudo certo, 1 algo precisa de atenção, 2 uso errado.
+Terminal: `.\SubDrive-CLI.exe comando` no Windows, `./SubDrive-CLI comando` no macOS e Linux. Cada comando e opção tem nome em português e em inglês, e os dois funcionam; a ajuda e as mensagens são em português. Sem comando, abre o menu. Opções gerais: `--ajuda` (`--help`), `--versao` (`--version`), `--sem-emoji` (`--no-emoji`), `--sem-cor` (`--no-color`). Códigos de saída: 0 tudo certo, 1 algo precisa de atenção, 2 uso errado.
 
 | Comando | O que faz | Opções |
 |---|---|---|
-| `check arquivos-ou-pastas` | diz se cada `.srt`/`.sup` vai funcionar e por quê | `--show` lista cada fala com problema |
-| `fix arquivo.srt` | cria cópia corrigida (`Filme_2.srt`, `Filme_3.srt`...) | `--output nome`, `--show` (antes e depois), `--remove-credits` (tira créditos e propagandas) |
-| `pgs arquivo.srt` | cria PGS 1080p (`Filme.<cor>.sup`) | `--color` (padrão branco-suave; nome em português ou inglês), `--font` (padrão roboto; roboto, inter, arimo, notosans, opensans, sourcesans3, lato, atkinson, dejavusans), `--bold`, `--size` (padrão 48, de 30 a 72 px), `--outline` (padrão 2, de 0 a 6 px), `--output` |
-| `sync legenda` | aplica os pontos de sincronia numa legenda nova | `--points arquivo` (padrão `sincronia/<nome>.txt`), `--output` |
-| `drives` | lista os pendrives e se o player lê cada um | |
-| `prepare` | instala ou atualiza o pacote SubDrive no pendrive | `--drive` (quando há mais de um), `--package`, `--firmware zip` (usar firmware já baixado), `--replace-subtitles`, `--yes`, `--eject` |
-| `update` | procura e instala versão nova do SubDrive CLI e do pacote | `--check` (só avisa), `--beta on/off` (versões de teste), `--yes` |
-| `rules` | lista as regras das legendas | |
+| `verificar` (`check`) arquivos-ou-pastas | diz se cada `.srt`/`.sup` vai funcionar e por quê | `--mostrar` (`--show`) lista cada fala com problema |
+| `corrigir` (`fix`) arquivo.srt | cria cópia corrigida (`Filme_2.srt`, `Filme_3.srt`...) | `--saida` (`--output`) nome, `--mostrar` (`--show`, antes e depois), `--remover-creditos` (`--remove-credits`, tira créditos e propagandas) |
+| `pgs` arquivo.srt | cria PGS 1080p (`Filme.<cor>.sup`) | `--cor` (`--color`; padrão branco-suave; nome em português ou inglês), `--fonte` (`--font`; padrão roboto; roboto, inter, arimo, notosans, opensans, sourcesans3, lato, atkinson, dejavusans), `--negrito` (`--bold`), `--tamanho` (`--size`; padrão 48, de 30 a 72 px), `--contorno` (`--outline`; padrão 2, de 0 a 6 px), `--saida` (`--output`) |
+| `sincronizar` (`sync`) legenda | aplica os pontos de sincronia numa legenda nova | `--pontos` (`--points`; padrão `sincronia/<nome>.txt`), `--saida` (`--output`) |
+| `pendrives` (`drives`) | lista os pendrives e se o player lê cada um | |
+| `preparar` (`prepare`) | instala ou atualiza o pacote SubDrive no pendrive | `--pendrive` (`--drive`; quando há mais de um), `--pacote` (`--package`), `--firmware zip` (usar firmware já baixado), `--substituir-legendas` (`--replace-subtitles`), `--sim` (`--yes`), `--ejetar` (`--eject`) |
+| `atualizar` (`update`) | procura e instala versão nova do SubDrive CLI e do pacote | `--verificar` (`--check`; só avisa), `--beta sim/nao` (ou on/off; versões de teste), `--sim` (`--yes`) |
+| `regras` (`rules`) | lista as regras das legendas | |
 
-O que o `fix` corrige: codificação para UTF-8; acentos quebrados (como `Ã©`); aspas curvas, travessão e outros símbolos trocados pelo equivalente simples; emoji e ♪ removidos; marcações de cor e posição removidas (itálico mantido); linhas redivididas para caber em 2 de até 64 letras; numeração, tempos e falas sobrepostas. O que não der para corrigir sozinho é apontado com a fala e o horário.
+O que o `corrigir` faz: codificação para UTF-8; acentos quebrados (como `Ã©`); aspas curvas, travessão e outros símbolos trocados pelo equivalente simples; emoji e ♪ removidos; marcações de cor e posição removidas (itálico mantido); linhas redivididas para caber em 2 de até 64 letras; numeração, tempos e falas sobrepostas. O que não der para corrigir sozinho é apontado com a fala e o horário.
 
-Para `pgs`, o SRT precisa passar na verificação (usar `fix` antes). Uma fala muito longa num tamanho grande pode não caber nos limites de imagem do player; um tamanho menor resolve.
+Para `pgs`, o SRT precisa passar na verificação (usar `corrigir` antes). Uma fala muito longa num tamanho grande pode não caber nos limites de imagem do player; um tamanho menor resolve.
 
 Atualizações: só quando o usuário pede, com assinatura digital conferida. Não há volta para versões anteriores. Depois de atualizar, preparar o pendrive de novo.
 
@@ -184,7 +184,7 @@ PGS (`.sup`): precisa ser 1080p (1920x1080).
 | Aparecem duas legendas | Desligar a legenda do próprio disco. |
 | Funcionou no Blu-ray e não no 4K (ou o contrário) | Cada tipo de disco precisa do seu pacote, em pendrives separados. |
 
-Se nada resolver: abrir um pedido em https://github.com/michaelfdias/subdrive/issues com modelo do aparelho, disco, o que foi feito e o que aconteceu, e anexar a pasta `relatorios` do pendrive (arquivos de texto com o que o SubDrive registrou; dá para abrir e conferir antes de mandar).
+Se nada resolver: usar o formulário "Relatar um problema" em https://github.com/michaelfdias/subdrive/issues/new/choose (precisa de conta gratuita no GitHub), com modelo do aparelho, disco, o que foi feito e o que aconteceu, e anexar a pasta `relatorios` do pendrive (arquivos de texto com o que o SubDrive registrou; dá para abrir e conferir antes de mandar).
 
 ## Limites
 
@@ -202,7 +202,11 @@ Se nada resolver: abrir um pedido em https://github.com/michaelfdias/subdrive/is
 
 ## Isenção de responsabilidade
 
-Projeto independente, sem ligação com a Panasonic. Oferecido como está, sem garantia. Testado num DP-UB450 e num número limitado de discos. Uso por conta e risco do usuário; o autor não se responsabiliza por defeitos, perda de dados ou falhas do aparelho. O firmware do aparelho não é alterado. Usar com discos e legendas que o usuário tem o direito de usar.
+Projeto independente, sem ligação com a Panasonic. Oferecido como está, sem garantia. Testado num DP-UB450-K e num número limitado de discos. Uso por conta e risco do usuário; o autor não se responsabiliza por defeitos, perda de dados ou falhas do aparelho. O firmware do aparelho não é alterado. Usar com discos e legendas que o usuário tem o direito de usar.
+
+## Feedback
+
+O autor quer saber como foi: formulários "Contar como foi", "Relatar um problema" e "Dar uma ideia" em https://github.com/michaelfdias/subdrive/issues/new/choose. Relatos de DP-UB150 e DP-UB154 são especialmente úteis.
 
 ## Apoio e créditos
 

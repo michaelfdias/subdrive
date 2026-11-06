@@ -1,0 +1,42 @@
+name: Contar como foi
+description: Conte se o SubDrive funcionou no seu aparelho e com quais discos.
+title: "[Relato] "
+labels: ["relato"]
+body:
+  - type: markdown
+    attributes:
+      value: Obrigado por contar! Cada relato ajuda outras pessoas a saber o que funciona.
+  - type: dropdown
+    id: funcionou
+    attributes:
+      label: Funcionou?
+      options: ["Sim, tudo certo", "Em parte", "Não"]
+    validations:
+      required: true
+  - type: input
+    id: modelo
+    attributes:
+      label: Modelo do aparelho, como está na etiqueta
+      placeholder: DP-UB450-K
+    validations:
+      required: true
+  - type: input
+    id: firmware
+    attributes:
+      label: Versão do firmware
+      placeholder: "1.13"
+  - type: dropdown
+    id: pacote
+    attributes:
+      label: Pacote usado
+      options: ["BD (Blu-ray)", "UHD (4K UHD)", "Os dois"]
+  - type: textarea
+    id: discos
+    attributes:
+      label: Discos que você testou
+      placeholder: Nome do filme, e se era Blu-ray ou 4K UHD
+  - type: textarea
+    id: comentarios
+    attributes:
+      label: Comentários
+      placeholder: O que achou, o que poderia melhorar

@@ -79,7 +79,7 @@ class Menu:
         """A new screen (full mode) with its title."""
         if self.full:
             self.screen.clear()
-            self.out.line(self.out.paint("SubDrive", "bold") + self.out.paint("  ›  " + title, "dim"), "title")
+            self.out.line(self.out.paint("SubDrive CLI", "bold") + self.out.paint("  ›  " + title, "dim"), "title")
             self.out.line()
 
     def _selector(self, labels, default=0, back=True, hint=None):
@@ -199,7 +199,7 @@ class Menu:
             self.screen.clear()
         else:
             o.line()
-        o.line(o.paint("SubDrive", "bold") + "   versão " + VERSION, "title")
+        o.line(o.paint("SubDrive CLI", "bold") + "   versão " + VERSION, "title")
         pkg = package.find_package(program_dir())
         if pkg:
             o.line("Pacote: " + str(pkg), "folder", 3)
@@ -348,8 +348,8 @@ class Menu:
     def run(self, first_file=None):
         o = self.out
         if inside_zip(program_dir()):
-            o.line("O SubDrive está sendo aberto de dentro do arquivo ZIP.", "warn")
-            o.line("Extraia o ZIP primeiro (botão direito → Extrair tudo) e abra o SubDrive da pasta extraída.", indent=3)
+            o.line("O SubDrive CLI está sendo aberto de dentro do arquivo ZIP.", "warn")
+            o.line("Extraia o ZIP primeiro (botão direito → Extrair tudo) e abra o SubDrive CLI da pasta extraída.", indent=3)
             o.line("Senão, nada do que ele gravar fica salvo.", indent=3)
             self.ask("Enter para sair.")
             return 1
@@ -359,7 +359,7 @@ class Menu:
             with self.screen:
                 code = self._loop(first_file)
             # Back on the normal screen (where the terminal says the process ended).
-            self.screen.write("SubDrive fechado. Pode fechar esta janela.\n")
+            self.screen.write("SubDrive CLI fechado. Pode fechar esta janela.\n")
             return code
         return self._loop(first_file)
 

@@ -43,7 +43,7 @@ jobs:
       - name: Try the program
         run: |
           set -e
-          exe=dist/SubDrive; [ -f dist/SubDrive.exe ] && exe=dist/SubDrive.exe
+          exe=dist/SubDrive-CLI; [ -f dist/SubDrive-CLI.exe ] && exe=dist/SubDrive-CLI.exe
           mkdir -p try && cd try
           printf '1\n00:00:01,000 --> 00:00:03,000\nOlá — tudo bem? ♪\n\n2\n00:00:04,000 --> 00:00:06,000\n<i>Sim, é isso.</i>\n' > Filme.srt
           ../$exe --version
@@ -58,21 +58,21 @@ jobs:
       - name: Pack
         run: |
           mkdir -p out
-          if [ -f dist/SubDrive.exe ]; then cp dist/SubDrive.exe out/SubDrive-${{ matrix.name }}.exe
+          if [ -f dist/SubDrive-CLI.exe ]; then cp dist/SubDrive-CLI.exe out/SubDrive-CLI-${{ matrix.name }}.exe
           elif [ "$RUNNER_OS" = "macOS" ]; then
             # ditto keeps the "can be opened" permission and opens with a double click in Finder
-            chmod +x dist/SubDrive && ditto -c -k --keepParent dist/SubDrive out/SubDrive-${{ matrix.name }}.zip
-          else chmod +x dist/SubDrive && tar -czf out/SubDrive-${{ matrix.name }}.tar.gz -C dist SubDrive; fi
+            chmod +x dist/SubDrive-CLI && ditto -c -k --keepParent dist/SubDrive-CLI out/SubDrive-CLI-${{ matrix.name }}.zip
+          else chmod +x dist/SubDrive-CLI && tar -czf out/SubDrive-CLI-${{ matrix.name }}.tar.gz -C dist SubDrive-CLI; fi
       - uses: actions/upload-artifact@v4
         with:
-          name: SubDrive-${{ matrix.name }}
+          name: SubDrive-CLI-${{ matrix.name }}
           path: out/*
       - name: Downloads (program + player package)
         if: github.event_name == 'workflow_dispatch' && inputs.release
         run: |
           set -e
           git fetch --depth 1 origin pacotes
-          exe=dist/SubDrive; [ -f dist/SubDrive.exe ] && exe=dist/SubDrive.exe
+          exe=dist/SubDrive-CLI; [ -f dist/SubDrive-CLI.exe ] && exe=dist/SubDrive-CLI.exe
           for variant in bd uhd; do
             git show FETCH_HEAD:panasonic-ub450-150-154-$variant.zip > pacote-$variant.zip
             python tools/make_download.py --program $exe --package pacote-$variant.zip \

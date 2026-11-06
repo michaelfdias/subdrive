@@ -1,0 +1,46 @@
+name: Relatar um problema
+description: Algo no SubDrive ou no SubDrive CLI não funcionou como deveria.
+title: "[Problema] "
+labels: ["problema"]
+body:
+  - type: input
+    id: modelo
+    attributes:
+      label: Modelo do aparelho, como está na etiqueta
+      placeholder: DP-UB450-K
+    validations:
+      required: true
+  - type: input
+    id: firmware
+    attributes:
+      label: Versão do firmware
+      placeholder: "1.13"
+  - type: input
+    id: versao
+    attributes:
+      label: Versão do SubDrive
+      placeholder: 1.0.0-beta.1
+  - type: dropdown
+    id: onde
+    attributes:
+      label: Onde aconteceu
+      options: ["No player", "No SubDrive CLI (Windows)", "No SubDrive CLI (Mac)", "No SubDrive CLI (Linux)"]
+    validations:
+      required: true
+  - type: input
+    id: disco
+    attributes:
+      label: Disco (se foi no player)
+      placeholder: Nome do filme, Blu-ray ou 4K UHD
+  - type: textarea
+    id: oque
+    attributes:
+      label: O que você fez e o que aconteceu
+      placeholder: Passo a passo, e a mensagem que apareceu, se apareceu alguma
+    validations:
+      required: true
+  - type: textarea
+    id: relatorios
+    attributes:
+      label: Relatórios
+      description: Se foi no player, arraste para cá os arquivos da pasta relatorios do pendrive (pode compactar num ZIP).

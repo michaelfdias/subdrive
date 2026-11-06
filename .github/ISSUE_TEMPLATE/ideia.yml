@@ -1,0 +1,15 @@
+name: Dar uma ideia
+description: Uma sugestão para o SubDrive.
+title: "[Ideia] "
+labels: ["ideia"]
+body:
+  - type: textarea
+    id: ideia
+    attributes:
+      label: Qual é a ideia?
+    validations:
+      required: true
+  - type: textarea
+    id: porque
+    attributes:
+      label: Em que ela ajudaria você?

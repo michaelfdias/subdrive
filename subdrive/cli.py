@@ -1,4 +1,4 @@
-"""SubDrive command line: commands and options in English, messages in Portuguese."""
+"""SubDrive CLI: commands and options in English or Portuguese (both accepted), messages in Portuguese."""
 from __future__ import annotations
 
 import argparse
@@ -8,63 +8,103 @@ from pathlib import Path
 
 from . import VERSION, core, texts, ui
 
-EPILOG = """examples:
-  subdrive check "Movie.srt"            is it ready for the player?
-  subdrive check subtitles/             every .srt and .sup in a folder
-  subdrive fix "Movie.srt" --show       fix it and show what changed
-  subdrive fix "Movie.srt" --output "Movie fixed"
-  subdrive pgs "Movie.srt"              create a PGS (soft-white, size 48, outline 2)
-  subdrive pgs "Movie.srt" --color dark-yellow --font inter --bold
-  subdrive sync "legendas/Movie.srt"     apply the timing adjusted on the player
-  subdrive drives                       is the USB drive ready for the player?
-  subdrive prepare --eject              install the package on the USB drive
-  subdrive update                       look for a newer version
-  subdrive rules                        what is checked and why
+PROG = "SubDrive-CLI"
+
+# argparse's own sentences, in Portuguese.
+_ARGPARSE_PT = {
+    "usage: ": "uso: ", "positional arguments": "argumentos", "options": "opções", "optional arguments": "opções",
+    "show this help message and exit": "mostra esta ajuda", "show program's version number and exit": "mostra a versão",
+    "the following arguments are required: %s": "faltou informar: %s", "unrecognized arguments: %s": "não reconheci: %s",
+    "%(prog)s: error: %(message)s\n": "%(prog)s: erro: %(message)s\n", "expected one argument": "faltou o valor",
+    "invalid choice: %(value)r (choose from %(choices)s)": "opção inválida: %(value)r (use uma destas: %(choices)s)",
+    "invalid %(type)s value: %(value)r": "valor inválido: %(value)r",
+    "ambiguous option: %(option)s could match %(matches)s": "opção ambígua: %(option)s pode ser %(matches)s",
+    "argument %(argument_name)s: %(message)s": "%(argument_name)s: %(message)s",
+}
+argparse._ = lambda text: _ARGPARSE_PT.get(text, text)
+
+EPILOG = """exemplos (os nomes em inglês também valem: check, fix, sync, drives, prepare, update, rules):
+  SubDrive-CLI verificar "Filme.srt"                 a legenda está pronta para o player?
+  SubDrive-CLI verificar legendas/                   todos os .srt e .sup de uma pasta
+  SubDrive-CLI corrigir "Filme.srt" --mostrar        corrige e mostra o que mudou
+  SubDrive-CLI corrigir "Filme.srt" --saida "Filme corrigido"
+  SubDrive-CLI pgs "Filme.srt"                       cria um PGS (branco suave, tamanho 48, contorno 2)
+  SubDrive-CLI pgs "Filme.srt" --cor amarelo-escuro --fonte inter --negrito
+  SubDrive-CLI sincronizar "legendas/Filme.srt"      aplica a sincronia feita no player
+  SubDrive-CLI pendrives                             o pendrive está pronto para o player?
+  SubDrive-CLI preparar --ejetar                     instala o pacote SubDrive no pendrive
+  SubDrive-CLI atualizar                             procura uma versão nova
+  SubDrive-CLI regras                                o que é verificado e por quê
+
+No Windows, escreva .\\SubDrive-CLI.exe; no macOS e no Linux, ./SubDrive-CLI.
+Sem nenhum comando, abre o menu.
 """
+
+ON_OFF = {"on": True, "off": False, "sim": True, "nao": False, "não": False, "ligar": True, "desligar": False}
+
+
+def _on_off(text):
+    key = text.strip().lower()
+    if key not in ON_OFF:
+        raise argparse.ArgumentTypeError("use on/off ou sim/nao")
+    return "on" if ON_OFF[key] else "off"
+
+
+def _help(parser):
+    parser.add_argument("-h", "--help", "--ajuda", action="help", help="mostra esta ajuda")
 
 
 def _parser():
-    p = argparse.ArgumentParser(prog="subdrive", description="Prepare subtitles for the SubDrive player package.",
-                                epilog=EPILOG, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--version", action="version", version="SubDrive " + VERSION)
-    p.add_argument("--no-emoji", action="store_true", help="plain text instead of emoji")
-    p.add_argument("--no-color", action="store_true", help="no colours")
-    sub = p.add_subparsers(dest="command", metavar="command")
-    c = sub.add_parser("check", help="check subtitle files (.srt or .sup) or a folder")
-    c.add_argument("paths", nargs="+", type=Path, metavar="file-or-folder")
-    c.add_argument("--show", action="store_true", help="list every subtitle with a problem")
-    f = sub.add_parser("fix", help="fix a .srt so the player accepts it (saved as a new file)")
-    f.add_argument("path", type=Path, metavar="file")
-    f.add_argument("--output", metavar="name", help="name of the new file (default: Movie_2.srt, Movie_3.srt...)")
-    f.add_argument("--show", action="store_true", help="show every change, before and after")
-    f.add_argument("--remove-credits", action="store_true", help="also remove subtitles that are credits or ads")
+    p = argparse.ArgumentParser(prog=PROG, add_help=False, epilog=EPILOG, formatter_class=argparse.RawDescriptionHelpFormatter,
+                                description="Prepara o pendrive e as legendas para o pacote SubDrive.")
+    _help(p)
+    p.add_argument("--version", "--versao", action="version", version="SubDrive CLI " + VERSION, help="mostra a versão")
+    p.add_argument("--no-emoji", "--sem-emoji", action="store_true", help="texto simples no lugar dos emojis")
+    p.add_argument("--no-color", "--sem-cor", action="store_true", help="sem cores")
+    sub = p.add_subparsers(dest="command", metavar="comando", title="comandos")
+
+    def command(name, alias, text, **kw):
+        c = sub.add_parser(name, aliases=[alias] if alias else [], help=text, description=text, add_help=False, **kw)
+        c.set_defaults(command=name)  # the English name, whichever was typed
+        _help(c)
+        return c
+    c = command("check", "verificar", "verifica legendas (.srt ou .sup) ou uma pasta")
+    c.add_argument("paths", nargs="+", type=Path, metavar="arquivo-ou-pasta")
+    c.add_argument("--show", "--mostrar", action="store_true", help="lista cada fala com problema")
+    f = command("fix", "corrigir", "corrige um .srt para o player aceitar (grava um arquivo novo)")
+    f.add_argument("path", type=Path, metavar="arquivo")
+    f.add_argument("--output", "--saida", metavar="nome", help="nome do arquivo novo (padrão: Filme_2.srt, Filme_3.srt...)")
+    f.add_argument("--show", "--mostrar", action="store_true", help="mostra cada mudança, antes e depois")
+    f.add_argument("--remove-credits", "--remover-creditos", action="store_true", help="também tira as falas que são créditos ou propaganda")
     from . import pgs as _pgs
-    g = sub.add_parser("pgs", help="create a PGS (.sup) from a .srt", formatter_class=argparse.RawDescriptionHelpFormatter,
-                       epilog="colours: " + ", ".join(c[0] for c in _pgs.COLORS) + "\nfonts: " + ", ".join(f[1] for f in _pgs.FONTS))
-    g.add_argument("path", type=Path, metavar="file")
-    g.add_argument("--color", default="soft-white", help="colour name (default: soft-white); also sets the file suffix")
-    g.add_argument("--size", type=int, default=48, help="letter size in pixels at 1080p (default: 48)")
-    g.add_argument("--outline", type=float, default=2, help="outline in pixels (default: 2)")
-    g.add_argument("--font", default="roboto", help="font (default: roboto)")
-    g.add_argument("--bold", action="store_true", help="bold letters")
-    g.add_argument("--output", metavar="name", help="name of the new file (default: Movie.<colour>.sup)")
-    y = sub.add_parser("sync", help="apply the timing adjusted on the player to a .srt or .sup (saved as a new file)")
-    y.add_argument("path", type=Path, metavar="file")
-    y.add_argument("--points", type=Path, metavar="file", help="timing file (default: sincronia/<file name>.txt)")
-    y.add_argument("--output", metavar="name", help="name of the new file (default: Movie_2.srt...)")
-    sub.add_parser("drives", help="USB drives connected and whether the player can read them")
-    q = sub.add_parser("prepare", help="install the player package on a USB drive")
-    q.add_argument("--drive", type=Path, metavar="path", help="the drive (e.g. E:\\ or /Volumes/NAME); needed when there are several")
-    q.add_argument("--package", type=Path, metavar="folder", help="the package folder (default: next to the program)")
-    q.add_argument("--replace-subtitles", action="store_true", help="replace subtitles on the drive that have the same name as one in the package")
-    q.add_argument("--yes", action="store_true", help="do not ask for confirmation")
-    q.add_argument("--eject", action="store_true", help="eject the drive at the end")
-    q.add_argument("--firmware", type=Path, metavar="file", help="the official firmware ZIP, if already downloaded")
-    u = sub.add_parser("update", help="look for a newer SubDrive and install it")
-    u.add_argument("--check", action="store_true", help="only tell whether there is a newer version")
-    u.add_argument("--beta", choices=("on", "off"), help="receive test versions (saved next to the program)")
-    u.add_argument("--yes", action="store_true", help="do not ask for confirmation")
-    sub.add_parser("rules", help="what is checked and why")
+    g = command("pgs", None, "cria um PGS (.sup) a partir de um .srt", formatter_class=argparse.RawDescriptionHelpFormatter,
+                epilog="cores: " + ", ".join(c[1] for c in _pgs.COLORS) + "\n(também em inglês: " + ", ".join(c[0] for c in _pgs.COLORS)
+                + ")\nfontes: " + ", ".join(f[1] for f in _pgs.FONTS))
+    g.add_argument("path", type=Path, metavar="arquivo")
+    g.add_argument("--color", "--cor", default="soft-white", metavar="cor", help="cor da letra (padrão: branco-suave); vai também no nome do arquivo")
+    g.add_argument("--size", "--tamanho", type=int, default=48, metavar="px", help="tamanho da letra em pixels, em 1080p (padrão: 48; de 30 a 72)")
+    g.add_argument("--outline", "--contorno", type=float, default=2, metavar="px", help="contorno em pixels (padrão: 2; de 0 a 6)")
+    g.add_argument("--font", "--fonte", default="roboto", metavar="fonte", help="fonte (padrão: roboto)")
+    g.add_argument("--bold", "--negrito", action="store_true", help="letras em negrito")
+    g.add_argument("--output", "--saida", metavar="nome", help="nome do arquivo novo (padrão: Filme.<cor>.sup)")
+    y = command("sync", "sincronizar", "aplica a sincronia feita no player a um .srt ou .sup (grava um arquivo novo)")
+    y.add_argument("path", type=Path, metavar="arquivo")
+    y.add_argument("--points", "--pontos", type=Path, metavar="arquivo", help="arquivo de pontos (padrão: sincronia/<nome da legenda>.txt)")
+    y.add_argument("--output", "--saida", metavar="nome", help="nome do arquivo novo (padrão: Filme_2.srt...)")
+    command("drives", "pendrives", "mostra os pendrives conectados e se o player consegue ler cada um")
+    q = command("prepare", "preparar", "instala ou atualiza o pacote SubDrive no pendrive")
+    q.add_argument("--drive", "--pendrive", type=Path, metavar="caminho", help="o pendrive (ex.: E:\\ ou /Volumes/NOME); só quando há mais de um")
+    q.add_argument("--package", "--pacote", type=Path, metavar="pasta", help="a pasta do pacote (padrão: ao lado do programa)")
+    q.add_argument("--replace-subtitles", "--substituir-legendas", action="store_true",
+                   help="troca as legendas do pendrive que tenham o mesmo nome de uma do pacote")
+    q.add_argument("--yes", "--sim", action="store_true", help="não pede confirmação")
+    q.add_argument("--eject", "--ejetar", action="store_true", help="ejeta o pendrive no fim")
+    q.add_argument("--firmware", type=Path, metavar="arquivo", help="o ZIP do firmware oficial, se você já baixou")
+    u = command("update", "atualizar", "procura uma versão nova do SubDrive e instala")
+    u.add_argument("--check", "--verificar", action="store_true", help="só diz se há versão nova")
+    u.add_argument("--beta", type=_on_off, metavar="on/off", help="receber versões de teste: on ou off (ou sim/nao); fica guardado ao lado do programa")
+    u.add_argument("--yes", "--sim", action="store_true", help="não pede confirmação")
+    command("rules", "regras", "o que é verificado e por quê")
     return p
 
 

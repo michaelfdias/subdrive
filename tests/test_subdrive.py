@@ -70,3 +70,30 @@ class SubdriveTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class PortugueseArgumentsTests(unittest.TestCase):
+    """Every command and option has a Portuguese name; both are accepted."""
+    def test_aliases_match_english(self):
+        from subdrive import cli
+        p = cli._parser()
+        pairs = [(["check", "a.srt", "--show"], ["verificar", "a.srt", "--mostrar"]),
+                 (["fix", "a.srt", "--output", "x", "--remove-credits"], ["corrigir", "a.srt", "--saida", "x", "--remover-creditos"]),
+                 (["pgs", "a.srt", "--color", "amber", "--size", "40", "--outline", "3", "--font", "lato", "--bold"],
+                  ["pgs", "a.srt", "--cor", "amber", "--tamanho", "40", "--contorno", "3", "--fonte", "lato", "--negrito"]),
+                 (["sync", "a.srt", "--points", "p.txt"], ["sincronizar", "a.srt", "--pontos", "p.txt"]),
+                 (["drives"], ["pendrives"]),
+                 (["prepare", "--drive", "E:", "--package", "p", "--replace-subtitles", "--yes", "--eject"],
+                  ["preparar", "--pendrive", "E:", "--pacote", "p", "--substituir-legendas", "--sim", "--ejetar"]),
+                 (["update", "--check", "--beta", "on", "--yes"], ["atualizar", "--verificar", "--beta", "sim", "--sim"]),
+                 (["rules"], ["regras"]), (["--no-emoji", "--no-color", "rules"], ["--sem-emoji", "--sem-cor", "regras"])]
+        for en, pt in pairs:
+            self.assertEqual(vars(p.parse_args(en)), vars(p.parse_args(pt)), pt)
+
+    def test_help_is_portuguese(self):
+        import contextlib, io
+        from subdrive import cli
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf), self.assertRaises(SystemExit):
+            cli._parser().parse_args(["--ajuda"])
+        self.assertIn("uso: SubDrive-CLI", buf.getvalue()); self.assertIn("mostra esta ajuda", buf.getvalue())
