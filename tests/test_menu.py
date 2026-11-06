@@ -78,3 +78,45 @@ class MenuTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class FullScreenTests(unittest.TestCase):
+    """The same menu with arrow keys, as on a real terminal."""
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory(); self.d = Path(self.tmp.name)
+        (self.d / "legendas").mkdir()
+        (self.d / "legendas/Filme.srt").write_text(SRT, encoding="utf-8")
+        (self.d / "legendas/Ruim.srt").write_text(SRT.replace("Sim.", "Sim ♪…"), encoding="utf-8")
+        self.cwd = os.getcwd(); os.chdir(self.d)
+        self.patch = mock.patch.object(drives, "find", return_value=[]); self.patch.start()
+
+    def tearDown(self):
+        self.patch.stop(); os.chdir(self.cwd); self.tmp.cleanup()
+
+    def run_menu(self, keys, answers=()):
+        from subdrive import screen
+        keys, answers = iter(keys), iter(answers); text = io.StringIO()
+        m = menu.Menu(out=ui.Out("pt", emoji=False, color=False, stream=text), ask=lambda q: next(answers),
+                      keys=lambda: next(keys), full=True)
+        return m.run(), text.getvalue()
+
+    def test_arrows_choose_and_screen_is_restored(self):
+        S = __import__("subdrive.screen", fromlist=["x"])
+        # main: down to "Corrigir" → Enter; file list: down to Ruim.srt → Enter; name: default; details: n; any key; Sair
+        keys = [S.DOWN, S.ENTER, S.DOWN, S.ENTER, "n", "x", S.UP, S.ENTER]
+        code, text = self.run_menu(keys, answers=[""])
+        self.assertEqual(code, 0)
+        self.assertTrue((self.d / "legendas/Ruim_2.srt").is_file(), text)
+        self.assertIn("\033[?1049h", text); self.assertTrue(text.rstrip().endswith("\033[?1049l"))
+        self.assertIn("\033[H\033[2J", text)  # each screen replaces the previous one
+
+    def test_digits_esc_and_ctrl_c(self):
+        S = __import__("subdrive.screen", fromlist=["x"])
+        keys = ["1", S.ESC, "x"]  # Verificar, then Esc goes back, any key
+        def boom(): raise KeyboardInterrupt
+        it = iter(keys)
+        text = io.StringIO()
+        m = menu.Menu(out=ui.Out("pt", emoji=False, color=False, stream=text), ask=lambda q: "", keys=lambda: next(it) if True else None, full=True)
+        with mock.patch.object(m, "keys", side_effect=list(keys) + [KeyboardInterrupt()]):
+            self.assertEqual(m.run(), 0)
+        self.assertTrue(text.getvalue().rstrip().endswith("\033[?1049l"))

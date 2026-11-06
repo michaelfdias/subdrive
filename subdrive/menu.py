@@ -8,7 +8,7 @@ import tempfile
 from argparse import Namespace
 from pathlib import Path
 
-from . import VERSION, cli, core, drives, package, pgs, sync, ui
+from . import VERSION, cli, core, drives, package, pgs, screen, sync, ui
 
 
 def clean_path(text: str) -> str:
@@ -35,9 +35,13 @@ def inside_zip(folder: Path) -> bool:
 
 
 class Menu:
-    def __init__(self, out=None, ask=input):
+    def __init__(self, out=None, ask=None, keys=None, full=None):
         self.out = out or ui.Out("pt")
-        self.ask_raw = ask
+        self.ask_raw = ask or input
+        # Full screen with arrow keys on a real terminal; plain lines otherwise (tests, pipes).
+        self.full = (ask is None and screen.available(self.out.stream)) if full is None else full
+        self.keys = keys or screen.read_key
+        self.screen = screen.Screen(self.out.stream)
 
     # ------------------------------------------------------------ input helpers
     def ask(self, question, default=""):
@@ -48,15 +52,58 @@ class Menu:
         return answer or default
 
     def yes(self, question, default=False):
+        if self.full:
+            self.out.stream.write("   " + question + (" (S/n) " if default else " (s/N) ")); self.out.stream.flush()
+            answer = screen.yes_no(self.keys, default)
+            self.out.stream.write(("Sim" if answer else "Não") + "\n"); self.out.stream.flush()
+            return answer
         answer = self.ask(question + (" (S/n)" if default else " (s/N)")).lower()
         return default if not answer else answer in ("s", "sim", "y", "yes")
 
     def pause(self):
+        if self.full:
+            self.out.line()
+            self.out.line(self.out.paint("Aperte qualquer tecla para voltar.", "dim"), indent=3)
+            self.keys()
+            return
         self.ask("Enter para voltar ao menu.")
+
+    def page(self, title):
+        """A new screen (full mode) with its title."""
+        if self.full:
+            self.screen.clear()
+            self.out.line(self.out.paint("SubDrive", "bold") + self.out.paint("  ›  " + title, "dim"), "title")
+            self.out.line()
+
+    def _selector(self, labels, default=0, back=True, hint=None):
+        """Arrow-key list drawn below what is on the screen; redraws only itself."""
+        o, drawn = self.out, [0]
+
+        def draw(index):
+            if drawn[0]:
+                o.stream.write("\033[%dF\033[J" % drawn[0])
+            lines = []
+            for k, label in enumerate(labels):
+                mark = ("❯" if o.emoji else ">") if k == index else " "
+                text = "%s %d  %s" % (mark, k + 1, label) if k < 9 else "%s    %s" % (mark, label)
+                lines.append("   " + (("\033[7m" + text + " \033[0m") if k == index else text))
+            lines.append("")
+            lines.append("   " + o.paint(hint or ("↑ ↓ escolher · Enter confirmar" + (" · Esc voltar" if back else "")), "dim"))
+            o.stream.write("\n".join(lines) + "\n"); o.stream.flush()
+            drawn[0] = len(lines)
+        self.screen.cursor(False)
+        try:
+            return screen.select(draw, labels, default, self.keys, back)
+        finally:
+            self.screen.cursor(True)
 
     def choose(self, title, options, default=None):
         """options: list of labels. Returns the index, or None to go back."""
         o = self.out
+        if self.full:
+            o.line(o.paint(title, "bold"), indent=1)
+            k = self._selector(list(options) + ["Voltar"], default or 0)
+            return None if k is None or k == len(options) else k
         o.line(o.paint(title, "bold"), indent=1)
         for k, label in enumerate(options, 1):
             o.line("%2d  %s" % (k, label), indent=3)
@@ -103,6 +150,22 @@ class Menu:
     def pick_file(self, kinds=(".srt", ".sup"), title="Qual legenda?"):
         o = self.out
         found = self.subtitles(kinds)
+        if self.full:
+            o.line(o.paint(title, "bold"), indent=1)
+            labels = ["%s  (%s)" % (p.name, label) for label, p in found]
+            k = self._selector(labels + ["Outro arquivo (arrastar para a janela ou digitar o caminho)", "Voltar"])
+            if k is None or k == len(found) + 1:
+                return None
+            if k < len(found):
+                return found[k][1]
+            while True:
+                answer = self.ask("Arraste o arquivo para esta janela e aperte Enter (Enter vazio volta):")
+                if not answer:
+                    return None
+                p = Path(clean_path(answer))
+                if p.is_file() and p.suffix.lower() in kinds:
+                    return p
+                o.line("Não encontrei esse arquivo de legenda (%s)." % " ou ".join(kinds), "warn", 3)
         if found:
             o.line(o.paint(title, "bold"), indent=1)
             for k, (label, p) in enumerate(found, 1):
@@ -125,7 +188,10 @@ class Menu:
     # ------------------------------------------------------------ header
     def header(self):
         o = self.out
-        o.line()
+        if self.full:
+            self.screen.clear()
+        else:
+            o.line()
         o.line(o.paint("SubDrive", "bold") + "   versão " + VERSION, "title")
         pkg = package.find_package(program_dir())
         if pkg:
@@ -140,6 +206,7 @@ class Menu:
 
     # ------------------------------------------------------------ actions
     def check(self):
+        self.page("Verificar legendas")
         o = self.out
         places = self.places()
         options = ["Uma legenda"] + ["Todas em: %s" % label for label, _ in places]
@@ -160,6 +227,7 @@ class Menu:
         cli.cmd_check(Namespace(paths=files, show=details), o)
 
     def fix(self):
+        self.page("Corrigir uma legenda")
         o = self.out
         path = self.pick_file((".srt",))
         if path is None:
@@ -179,6 +247,7 @@ class Menu:
         cli.cmd_fix(Namespace(path=path, output=name or None, show=show, remove_credits=remove), o)
 
     def make_pgs(self):
+        self.page("Criar PGS")
         o = self.out
         path = self.pick_file((".srt",), "De qual SRT?")
         if path is None:
@@ -211,6 +280,7 @@ class Menu:
             self.out.line("Use um número de %d a %d." % (low, high), "warn", 3)
 
     def sync(self):
+        self.page("Aplicar a sincronia")
         o = self.out
         with_points = [(label, p) for label, p in self.subtitles() if sync.sync_file_for(p)]
         if not with_points:
@@ -224,6 +294,7 @@ class Menu:
         cli.cmd_sync(Namespace(path=with_points[k][1], points=None, output=None), o)
 
     def prepare(self):
+        self.page("Preparar pendrive")
         o = self.out
         found = drives.find()
         if not found:
@@ -242,10 +313,12 @@ class Menu:
             o.line(o.ui("ejected" if gone else "eject_failed"), "ok" if gone else "warn", 3)
 
     def drives_info(self):
+        self.page("Pendrives")
         self.out.line()
         cli.cmd_drives(Namespace(), self.out)
 
     def updates(self):
+        self.page("Atualização")
         from . import update
         o = self.out
         beta = update.wants_beta(program_dir())
@@ -261,6 +334,7 @@ class Menu:
         cli.cmd_update(Namespace(check=False, beta=None, yes=False), o, ask=self.ask_raw)
 
     def rules(self):
+        self.page("O que é verificado")
         self.out.line(); ui.render_rules(self.out)
 
     # ------------------------------------------------------------ main loop
@@ -272,6 +346,15 @@ class Menu:
             o.line("Senão, nada do que ele gravar fica salvo.", indent=3)
             self.ask("Enter para sair.")
             return 1
+        if self.full:
+            if os.name == "nt":
+                ui._windows_vt()
+            with self.screen:
+                return self._loop(first_file)
+        return self._loop(first_file)
+
+    def _loop(self, first_file):
+        o = self.out
         try:
             if first_file is not None:
                 self.opened_with(first_file)
@@ -281,6 +364,14 @@ class Menu:
                            ("Criar PGS a partir de um SRT", self.make_pgs), ("Aplicar a sincronia feita no player", self.sync),
                            ("Preparar pendrive", self.prepare), ("Ver pendrives e o formato", self.drives_info),
                            ("Procurar atualização", self.updates), ("O que é verificado e por quê", self.rules)]
+                if self.full:
+                    k = self._selector([label for label, _ in actions] + ["Sair"], back=False,
+                                       hint="↑ ↓ escolher · Enter confirmar · Ctrl+C sai")
+                    if k == len(actions):
+                        return 0
+                    actions[k][1]()
+                    self.pause()
+                    continue
                 for k, (label, _) in enumerate(actions, 1):
                     o.line("%d  %s" % (k, label), indent=3)
                 o.line("0  Sair", indent=3)
@@ -298,12 +389,14 @@ class Menu:
                     else:
                         o.line("Digite um dos números do menu.", "warn", 3)
         except KeyboardInterrupt:
-            o.line(); o.line("Até logo.", indent=1)
+            if not self.full:
+                o.line(); o.line("Até logo.", indent=1)
             return 0
 
     def opened_with(self, path: Path):
         """A file dragged onto the program or into the menu: check it, then offer what makes sense."""
         o = self.out
+        self.page(path.name)
         o.line()
         if path.suffix.lower() not in (".srt", ".sup"):
             o.line(o.ui("not_subtitle", name=path.name), "fail"); self.pause(); return

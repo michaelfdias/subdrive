@@ -54,6 +54,9 @@ jobs:
         run: |
           mkdir -p out
           if [ -f dist/SubDrive.exe ]; then cp dist/SubDrive.exe out/${{ matrix.name }}.exe
+          elif [ "$RUNNER_OS" = "macOS" ]; then
+            # ditto keeps the "can be opened" permission and opens with a double click in Finder
+            chmod +x dist/SubDrive && ditto -c -k --keepParent dist/SubDrive out/${{ matrix.name }}.zip
           else chmod +x dist/SubDrive && tar -czf out/${{ matrix.name }}.tar.gz -C dist SubDrive; fi
       - uses: actions/upload-artifact@v4
         with:
