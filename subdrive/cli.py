@@ -309,6 +309,11 @@ def sup_reader_error():
 
 
 def main(argv=None):
+    argv = sys.argv[1:] if argv is None else argv
+    # No command (double click), or a file dragged onto the program: the Portuguese menu.
+    if not argv or (len(argv) == 1 and not argv[0].startswith("-") and Path(argv[0]).is_file()):
+        from . import menu
+        return menu.run(Path(argv[0]) if argv else None)
     args = _parser().parse_args(argv)
     out = ui.Out("pt", emoji=False if args.no_emoji else None, color=False if args.no_color else None, cli=True)
     if args.command is None:
