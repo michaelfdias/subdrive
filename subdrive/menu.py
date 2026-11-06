@@ -42,11 +42,17 @@ class Menu:
         self.full = (ask is None and screen.available(self.out.stream)) if full is None else full
         self.keys = keys or screen.read_key
         self.screen = screen.Screen(self.out.stream)
+        if self.full:
+            self.out.stream = screen.Recorder(self.screen)
 
     # ------------------------------------------------------------ input helpers
     def ask(self, question, default=""):
         try:
-            answer = self.ask_raw("   " + question + " ").strip()
+            if self.full:  # the question is kept with the page, so it is there again after a resize
+                self.out.stream.write("   " + question + " "); self.out.stream.flush()
+                answer = self.ask_raw("").strip(); self.screen.record(answer + "\n")
+            else:
+                answer = self.ask_raw("   " + question + " ").strip()
         except EOFError:
             raise KeyboardInterrupt
         return answer or default
@@ -54,7 +60,7 @@ class Menu:
     def yes(self, question, default=False):
         if self.full:
             self.out.stream.write("   " + question + (" (S/n) " if default else " (s/N) ")); self.out.stream.flush()
-            answer = screen.yes_no(self.keys, default)
+            answer = screen.yes_no(self.keys, default, self.screen.repaint)
             self.out.stream.write(("Sim" if answer else "Não") + "\n"); self.out.stream.flush()
             return answer
         answer = self.ask(question + (" (S/n)" if default else " (s/N)")).lower()
@@ -64,7 +70,8 @@ class Menu:
         if self.full:
             self.out.line()
             self.out.line(self.out.paint("Aperte qualquer tecla para voltar.", "dim"), indent=3)
-            self.keys()
+            while self.keys() == screen.RESIZE:
+                self.screen.repaint()
             return
         self.ask("Enter para voltar ao menu.")
 
@@ -76,12 +83,11 @@ class Menu:
             self.out.line()
 
     def _selector(self, labels, default=0, back=True, hint=None):
-        """Arrow-key list drawn below what is on the screen; redraws only itself."""
-        o, drawn = self.out, [0]
+        """Arrow-key list below what is on the screen; the page is drawn again from the top each time,
+        so it stays right when the window changes size."""
+        o, drawn = self.out, [""]
 
         def draw(index):
-            if drawn[0]:
-                o.stream.write("\033[%dF\033[J" % drawn[0])
             lines = []
             for k, label in enumerate(labels):
                 mark = ("❯" if o.emoji else ">") if k == index else " "
@@ -89,12 +95,13 @@ class Menu:
                 lines.append("   " + (("\033[7m" + text + " \033[0m") if k == index else text))
             lines.append("")
             lines.append("   " + o.paint(hint or ("↑ ↓ escolher · Enter confirmar" + (" · Esc voltar" if back else "")), "dim"))
-            o.stream.write("\n".join(lines) + "\n"); o.stream.flush()
-            drawn[0] = len(lines)
+            drawn[0] = "\n".join(lines) + "\n"
+            self.screen.repaint(drawn[0])
         self.screen.cursor(False)
         try:
             return screen.select(draw, labels, default, self.keys, back)
         finally:
+            self.screen.record(drawn[0])  # what follows is written below the list
             self.screen.cursor(True)
 
     def choose(self, title, options, default=None):
@@ -350,7 +357,10 @@ class Menu:
             if os.name == "nt":
                 ui._windows_vt()
             with self.screen:
-                return self._loop(first_file)
+                code = self._loop(first_file)
+            # Back on the normal screen (where the terminal says the process ended).
+            self.screen.write("SubDrive fechado. Pode fechar esta janela.\n")
+            return code
         return self._loop(first_file)
 
     def _loop(self, first_file):

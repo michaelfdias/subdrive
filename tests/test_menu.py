@@ -107,7 +107,8 @@ class FullScreenTests(unittest.TestCase):
         code, text = self.run_menu(keys, answers=[""])
         self.assertEqual(code, 0)
         self.assertTrue((self.d / "legendas/Ruim_2.srt").is_file(), text)
-        self.assertIn("\033[?1049h", text); self.assertTrue(text.rstrip().endswith("\033[?1049l"))
+        self.assertIn("\033[?1049h", text)
+        self.assertTrue(text.rstrip().endswith("\033[?1049lSubDrive fechado. Pode fechar esta janela."), text[-80:])
         self.assertIn("\033[H\033[2J", text)  # each screen replaces the previous one
 
     def test_digits_esc_and_ctrl_c(self):
@@ -119,4 +120,34 @@ class FullScreenTests(unittest.TestCase):
         m = menu.Menu(out=ui.Out("pt", emoji=False, color=False, stream=text), ask=lambda q: "", keys=lambda: next(it) if True else None, full=True)
         with mock.patch.object(m, "keys", side_effect=list(keys) + [KeyboardInterrupt()]):
             self.assertEqual(m.run(), 0)
-        self.assertTrue(text.getvalue().rstrip().endswith("\033[?1049l"))
+        self.assertIn("\033[?1049l", text.getvalue())
+
+
+class ResizeTests(unittest.TestCase):
+    """A window that changes size gets the whole page again, from the top."""
+    def test_list_and_pause_repaint_after_resize(self):
+        from subdrive import screen as S
+        text = io.StringIO()
+        m = menu.Menu(out=ui.Out("pt", emoji=False, color=False, stream=text), ask=lambda q: "", keys=None, full=True)
+        keys = iter([S.RESIZE, S.DOWN, S.ENTER, S.RESIZE, "x"])
+        m.keys = lambda: next(keys)
+        m.page("Teste"); m.out.line("Linha da página")
+        self.assertEqual(m._selector(["A", "B"]), 1)
+        m.pause()
+        out = text.getvalue()
+        self.assertEqual(out.count("\033[HSubDrive"), 4)  # 3 draws of the list + 1 after the resize in pause
+        last = out.rsplit("\033[H", 1)[1]
+        self.assertIn("Linha da página", last); self.assertIn("B", last); self.assertIn("Aperte qualquer tecla", last)
+
+    def test_small_window_is_enlarged(self):
+        from subdrive import screen as S
+        text = io.StringIO()
+        with mock.patch.object(S, "size", return_value=(80, 24)):
+            with S.Screen(text):
+                pass
+        self.assertTrue(text.getvalue().startswith("\033[8;30;100t"))
+        text = io.StringIO()
+        with mock.patch.object(S, "size", return_value=(120, 40)):
+            with S.Screen(text):
+                pass
+        self.assertNotIn("\033[8;", text.getvalue())

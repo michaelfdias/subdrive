@@ -2,8 +2,9 @@
 import multiprocessing
 import sys
 
-from subdrive.cli import main
-
 if __name__ == "__main__":
     multiprocessing.freeze_support()  # the PGS drawing runs in parallel processes
+    if len(sys.argv) == 1 and sys.stdout.isatty():  # double click: say something while it loads
+        print("Abrindo o SubDrive...", flush=True)
+    from subdrive.cli import main
     sys.exit(main())
