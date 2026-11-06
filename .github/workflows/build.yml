@@ -19,7 +19,7 @@ jobs:
         include:
           - os: windows-latest
             name: Windows
-          - os: macos-14
+          - os: macos-latest
             name: macOS-AppleSilicon
           - os: macos-15-intel
             name: macOS-Intel
