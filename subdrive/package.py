@@ -1,7 +1,7 @@
 """Install the player package on a USB drive (or check one that is already prepared).
 
-Package folder: manifest.json + USB/ (what goes to the root of the drive). The user's own
-subtitles, timing adjustments, preferences and reports are never removed or replaced.
+Package folder: manifest.json, player/ (SubDrive's player code) and USB/ (files for the drive).
+BDJ.jar is built on this computer (subdrive.player) before installing. The user's own subtitles, timing adjustments, preferences and reports are never removed or replaced.
 """
 from __future__ import annotations
 
@@ -37,14 +37,30 @@ class Package:
     folder: Path
     version: str
     platform: str           # "BD" or "UHD"
-    files: dict             # path on the drive -> bytes
+    files: dict             # path on the drive -> bytes (BDJ.jar only once built)
+    package_id: str = ""
+    models: list = field(default_factory=list)
+    firmware: dict = field(default_factory=dict)  # official firmware the player program is built from
+    jar: dict = field(default_factory=dict)       # expected BDJ.jar entries (name -> SHA-256)
+    helpers: dict = field(default_factory=dict)   # SubDrive's player classes (JAR path -> bytes)
 
     @property
     def size(self):
         return sum(len(b) for b in self.files.values())
 
+    @property
+    def needs_jar(self):
+        return "BDJ.jar" not in self.files
+
+
+def _drive_name_ok(name):
+    parts = name.split("/")
+    return (name == "BDJ_DEBUG" or (len(parts) == 2 and parts[0] == "legendas" and safe_subtitle_name(parts[1]))
+            or (len(parts) == 2 and parts[0] == "fontes" and FONT_NAME.match(parts[1])))
+
 
 def load(folder: Path) -> Package:
+    """A package folder: manifest.json, player/classes/ (SubDrive's player code) and USB/ (drive files)."""
     m = folder / "manifest.json"
     if not m.is_file():
         raise PackageError("missing")
@@ -52,31 +68,36 @@ def load(folder: Path) -> Package:
         manifest = json.loads(m.read_text(encoding="utf-8"))
     except ValueError:
         raise PackageError("damaged", "manifest.json")
-    if manifest.get("produto") != "legendas" or manifest.get("platform") not in ("BD", "UHD"):
+    if manifest.get("formato") != "subdrive-pacote-1" or manifest.get("platform") not in ("BD", "UHD"):
         raise PackageError("unknown")
-    files = {}
+    fw, jar = manifest.get("firmware") or {}, manifest.get("jar") or {}
+    if not all(k in fw for k in ("url", "sha256", "bytes", "library", "library_sha256")) or not jar.get("entries"):
+        raise PackageError("damaged", "manifest.json")
+    files, helpers = {}, {}
     for name, meta in manifest.get("files", {}).items():
-        parts = name.split("/")
-        ok = (name in ("BDJ.jar", "BDJ_DEBUG") or (len(parts) == 2 and parts[0] == "legendas" and safe_subtitle_name(parts[1]))
-              or (len(parts) == 2 and parts[0] == "fontes" and FONT_NAME.match(parts[1])))
-        if not ok:
+        if name.startswith("USB/") and _drive_name_ok(name[4:]):
+            target = files; key = name[4:]
+        elif name.startswith("player/classes/com/mtk/utils/SubDrivePlayer") and name.endswith(".class") and ".." not in name:
+            target = helpers; key = name[len("player/classes/"):]
+        else:
             raise PackageError("damaged", name)
-        p = folder / "USB" / name
+        p = folder / name
         if p.is_symlink() or not p.is_file():
             raise PackageError("damaged", name)
         b = p.read_bytes()
         if len(b) != meta.get("bytes") or _sha(b) != meta.get("sha256"):
             raise PackageError("damaged", name)
-        files[name] = b
-    if "BDJ.jar" not in files or files.get("BDJ_DEBUG") != b"" or _sha(files["BDJ.jar"]) != manifest.get("jar_sha256"):
-        raise PackageError("damaged", "BDJ.jar")
-    return Package(folder, manifest.get("version", ""), manifest["platform"], files)
+        target[key] = b
+    if files.get("BDJ_DEBUG") != b"" or not helpers or set(helpers) - set(jar["entries"]):
+        raise PackageError("damaged", "player")
+    return Package(folder, manifest.get("version", ""), manifest["platform"], files, manifest.get("package", ""),
+                   manifest.get("models", []), fw, jar, helpers)
 
 
 def find_package(start: Path):
     """The package next to the program (or in the given folder): itself, pacote/ or its parent."""
     for p in (start, start / "pacote", start.parent, start.parent / "pacote"):
-        if (p / "manifest.json").is_file() and (p / "USB").is_dir():
+        if (p / "manifest.json").is_file() and (p / "player").is_dir():
             return p
     return None
 

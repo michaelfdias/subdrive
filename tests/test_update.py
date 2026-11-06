@@ -14,15 +14,16 @@ def sha(b): return hashlib.sha256(b).hexdigest()
 
 
 def package_zip(version):
-    files = {"BDJ.jar": b"jar-" + version.encode(), "BDJ_DEBUG": b""}
-    manifest = {"produto": "legendas", "platform": "UHD", "version": version, "jar_sha256": sha(files["BDJ.jar"]),
-                "files": {n: {"bytes": len(b), "sha256": sha(b)} for n, b in files.items()}}
-    buf = io.BytesIO()
-    with zipfile.ZipFile(buf, "w") as z:
-        z.writestr("manifest.json", json.dumps(manifest))
-        for n, b in files.items():
-            z.writestr("USB/" + n, b)
-    return buf.getvalue()
+    import tempfile as _t
+    from tests.test_pendrive import make_package, FILES
+    with _t.TemporaryDirectory() as d:
+        d = Path(d); make_package(d, dict(FILES, **{"BDJ.jar": b"jar-" + version.encode()}), version=version)
+        buf = io.BytesIO()
+        with zipfile.ZipFile(buf, "w") as z:
+            for p in sorted(d.rglob("*")):
+                if p.is_file() and "firmware" not in p.parts:
+                    z.writestr(str(p.relative_to(d)).replace("\\", "/"), p.read_bytes())
+        return buf.getvalue()
 
 
 class Server:
@@ -94,7 +95,7 @@ class UpdateTests(unittest.TestCase):
         self.server.add("1.0.1", "stable")
         self.assertEqual(self.run_update("--yes"), 0)
         self.assertEqual(json.loads((self.pkg / "manifest.json").read_text(encoding="utf-8"))["version"], "1.0.1")
-        self.assertEqual((self.pkg / "USB/BDJ.jar").read_bytes(), b"jar-1.0.1")
+        self.assertTrue((self.pkg / "player/classes/com/mtk/utils/SubDrivePlayer.class").is_file())
         self.assertEqual(sorted(p.name for p in self.d.iterdir()), ["pacote"])  # nothing left behind
 
     def test_altered_download_changes_nothing(self):

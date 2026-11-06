@@ -59,6 +59,7 @@ def _parser():
     q.add_argument("--replace-subtitles", action="store_true", help="replace subtitles on the drive that have the same name as one in the package")
     q.add_argument("--yes", action="store_true", help="do not ask for confirmation")
     q.add_argument("--eject", action="store_true", help="eject the drive at the end")
+    q.add_argument("--firmware", type=Path, metavar="file", help="the official firmware ZIP, if already downloaded")
     u = sub.add_parser("update", help="look for a newer SubDrive and install it")
     u.add_argument("--check", action="store_true", help="only tell whether there is a newer version")
     u.add_argument("--beta", choices=("on", "off"), help="receive test versions (saved next to the program)")
@@ -234,6 +235,44 @@ def _program_dir():
     return Path(sys.executable).resolve().parent if getattr(sys, "frozen", False) else Path.cwd()
 
 
+def _player_program(args, pkg, out, ask=None):
+    """Build BDJ.jar from the official firmware (downloaded once, kept next to the program)."""
+    ask = ask or input
+    from . import player, update
+    if not pkg.needs_jar:
+        return True
+    fw = pkg.firmware
+    region = out.ui("region_" + fw.get("region", "US")) if "region_" + fw.get("region", "US") in texts.UI else fw.get("region", "")
+    out.line(out.ui("firmware_check", version=fw.get("version", "?"), region=region), "info")
+    cache = player.firmware_path(_program_dir(), fw)
+    blob = player.read_firmware(args.firmware, fw) if getattr(args, "firmware", None) else None
+    if getattr(args, "firmware", None) and blob is None:
+        out.line(out.ui("firmware_wrong", name=fw.get("name", ""), version=fw.get("version", "")), "fail", 3); return False
+    blob = blob or player.read_firmware(cache, fw)
+    if blob is None:
+        out.line(out.ui("firmware_needed", size=ui._size(fw["bytes"])), "info", 3)
+        if not args.yes and (not sys.stdin.isatty() or ask("   " + out.ui("firmware_ask")).strip().lower() not in ("s", "sim", "y", "yes")):
+            out.line(out.ui("firmware_manual", name=fw.get("name", "")), indent=3); return False
+        try:
+            blob = update.fetch(fw["url"], limit=fw["bytes"] + 1, progress=lambda d, t: out.progress(d, t, out.ui("firmware_downloading")))
+        except update.UpdateError:
+            out.line(out.ui("firmware_offline"), "fail", 3); out.line(out.ui("firmware_manual", name=fw.get("name", "")), indent=3); return False
+        if len(blob) != fw["bytes"] or player._sha(blob) != fw["sha256"]:
+            out.line(out.ui("firmware_wrong", name=fw.get("name", ""), version=fw.get("version", "")), "fail", 3); return False
+        try:
+            cache.parent.mkdir(exist_ok=True); cache.write_bytes(blob)
+        except OSError:
+            pass  # keeping a copy is a convenience only
+    out.line(out.ui("building_jar"), "wait", 3)
+    try:
+        pkg.files["BDJ.jar"] = player.make_jar(pkg, blob)
+    except player.PlayerError as e:
+        out.line(out.ui("jar_failed", detail=e.code), "fail", 3); return False
+    out.line(out.ui("jar_ok"), "ok", 3)
+    out.line()
+    return True
+
+
 def cmd_prepare(args, out):
     from . import drives, package
     folder = args.package or package.find_package(_program_dir()) or package.find_package(Path.cwd())
@@ -244,6 +283,8 @@ def cmd_prepare(args, out):
     except package.PackageError as e:
         out.line(out.ui("package_unknown") if e.code == "unknown" else out.ui("package_damaged", name=e.name or "manifest.json"), "fail")
         return 2
+    if not _player_program(args, pkg, out):
+        return 1
     found = drives.find()
     if args.drive:
         want = str(args.drive).rstrip("\\/").lower()

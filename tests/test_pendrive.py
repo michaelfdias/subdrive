@@ -10,10 +10,20 @@ def sha(b): return hashlib.sha256(b).hexdigest()
 
 
 def make_package(folder: Path, files, version="1.0.0", platform="UHD"):
-    for n, b in files.items():
-        p = folder / "USB" / n; p.parent.mkdir(parents=True, exist_ok=True); p.write_bytes(b)
-    (folder / "manifest.json").write_text(json.dumps({"produto": "legendas", "platform": platform, "version": version,
-        "jar_sha256": sha(files["BDJ.jar"]), "files": {n: {"bytes": len(b), "sha256": sha(b)} for n, b in files.items()}}))
+    """A package in the published format; BDJ.jar is built later (mocked in these tests)."""
+    files = dict(files); jar = files.pop("BDJ.jar")
+    listed = {"USB/" + n: b for n, b in files.items()}
+    listed["player/classes/com/mtk/utils/SubDrivePlayer.class"] = b"classe"
+    for n, b in listed.items():
+        p = folder / n; p.parent.mkdir(parents=True, exist_ok=True); p.write_bytes(b)
+    firmware = {"name": "fw.zip", "url": "https://example.invalid/fw.zip", "sha256": sha(b"fw"), "bytes": 2,
+                "library": "lib/BDJ.czf", "library_sha256": "0" * 64, "version": "1.13", "region": "US"}
+    (folder / "manifest.json").write_text(json.dumps({"formato": "subdrive-pacote-1", "platform": platform, "version": version,
+        "package": "panasonic-ub450-150-154-" + platform.lower(), "firmware": firmware,
+        "jar": {"entries": {"com/mtk/utils/SubDrivePlayer.class": sha(b"classe")}},
+        "files": {n: {"bytes": len(b), "sha256": sha(b)} for n, b in listed.items()}}), encoding="utf-8")
+    (folder / "firmware").mkdir(exist_ok=True); (folder / "firmware/fw.zip").write_bytes(b"fw")
+    return jar
 
 
 FILES = {"BDJ.jar": b"jar-1", "BDJ_DEBUG": b"", "legendas/Filme.srt": b"1\n00:00:01,000 --> 00:00:02,000\nA\n",
@@ -68,8 +78,11 @@ class PrepareTests(unittest.TestCase):
         self.tmp.cleanup()
 
     def run_cli(self, *extra):
-        with mock.patch.object(drives, "find", return_value=[self.drive]):
-            return cli.main(["--no-emoji", "prepare", "--package", str(self.pkg), "--yes", *extra])
+        with mock.patch.object(drives, "find", return_value=[self.drive]), self.jar():
+            return cli.main(["--no-emoji", "prepare", "--package", str(self.pkg), "--yes", "--firmware", str(self.pkg / "firmware/fw.zip"), *extra])
+
+    def jar(self):
+        return mock.patch("subdrive.player.make_jar", return_value=FILES["BDJ.jar"])
 
     def test_fresh_install(self):
         self.assertEqual(self.run_cli(), 0)
@@ -96,7 +109,7 @@ class PrepareTests(unittest.TestCase):
         self.drive.filesystem = "exFAT"; self.drive.judge()
         self.assertEqual(self.run_cli(), 1); self.assertFalse((self.usb / "BDJ.jar").exists())
         self.drive.filesystem = "FAT32"; self.drive.judge()
-        (self.pkg / "USB/BDJ.jar").write_bytes(b"other")
+        (self.pkg / "USB/fontes/inter.letras").write_bytes(b"other")
         self.assertEqual(self.run_cli(), 2); self.assertFalse((self.usb / "BDJ.jar").exists())
 
     def test_no_space(self):
@@ -105,16 +118,44 @@ class PrepareTests(unittest.TestCase):
 
     def test_several_drives_need_a_choice(self):
         other = drives.Drive(path=Path("/nao/existe"), filesystem="FAT32", scheme="MBR", partitions=1).judge()
-        with mock.patch.object(drives, "find", return_value=[self.drive, other]):
-            self.assertEqual(cli.main(["--no-emoji", "prepare", "--package", str(self.pkg), "--yes"]), 2)
-            self.assertEqual(cli.main(["--no-emoji", "prepare", "--package", str(self.pkg), "--yes", "--drive", str(self.usb)]), 0)
+        fw = ["--firmware", str(self.pkg / "firmware/fw.zip")]
+        with mock.patch.object(drives, "find", return_value=[self.drive, other]), self.jar():
+            self.assertEqual(cli.main(["--no-emoji", "prepare", "--package", str(self.pkg), "--yes", *fw]), 2)
+            self.assertEqual(cli.main(["--no-emoji", "prepare", "--package", str(self.pkg), "--yes", "--drive", str(self.usb), *fw]), 0)
 
     def test_without_confirmation_nothing_changes(self):
         with mock.patch.object(drives, "find", return_value=[self.drive]), mock.patch("sys.stdin.isatty", return_value=True), \
-             mock.patch("builtins.input", return_value="n"):
-            self.assertEqual(cli.main(["--no-emoji", "prepare", "--package", str(self.pkg)]), 1)
+             mock.patch("builtins.input", return_value="n"), self.jar():
+            self.assertEqual(cli.main(["--no-emoji", "prepare", "--package", str(self.pkg), "--firmware", str(self.pkg / "firmware/fw.zip")]), 1)
         self.assertEqual(list(self.usb.iterdir()), [])
 
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class FirmwareTests(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory(); self.d = Path(self.tmp.name); self.pkg = self.d / "pacote"
+        make_package(self.pkg, FILES)
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def test_wrong_firmware_file_is_refused(self):
+        bad = self.d / "outro.zip"; bad.write_bytes(b"xx")
+        with mock.patch.object(drives, "find", return_value=[]):
+            self.assertEqual(cli.main(["--no-emoji", "prepare", "--package", str(self.pkg), "--yes", "--firmware", str(bad)]), 1)
+
+    def test_download_when_missing_and_keep_a_copy(self):
+        with mock.patch("subdrive.update.fetch", return_value=b"fw") as fetch, mock.patch.object(cli, "_program_dir", return_value=self.d), \
+             mock.patch("subdrive.player.make_jar", return_value=b"jar") as make, mock.patch.object(drives, "find", return_value=[]):
+            cli.main(["--no-emoji", "prepare", "--package", str(self.pkg), "--yes"])
+        fetch.assert_called_once(); make.assert_called_once()
+        self.assertEqual((self.d / "firmware/fw.zip").read_bytes(), b"fw")
+
+    def test_no_download_without_permission(self):
+        with mock.patch("subdrive.update.fetch") as fetch, mock.patch.object(cli, "_program_dir", return_value=self.d), \
+             mock.patch("sys.stdin.isatty", return_value=True), mock.patch("builtins.input", return_value="n"):
+            self.assertEqual(cli.main(["--no-emoji", "prepare", "--package", str(self.pkg)]), 1)
+        fetch.assert_not_called()
