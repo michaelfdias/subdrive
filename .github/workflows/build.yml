@@ -3,9 +3,13 @@ name: Build
 on:
   push:
     branches: [main, desenvolvimento]
-    tags: ["v*"]
   pull_request:
   workflow_dispatch:
+    inputs:
+      release:
+        description: "Publicar esta versão (tag v + a versão do programa) com os downloads"
+        type: boolean
+        default: false
 
 jobs:
   build:
@@ -64,10 +68,9 @@ jobs:
           name: SubDrive-${{ matrix.name }}
           path: out/*
       - name: Downloads (program + player package)
-        if: startsWith(github.ref, 'refs/tags/v')
+        if: github.event_name == 'workflow_dispatch' && inputs.release
         run: |
           set -e
-          test "${GITHUB_REF_NAME#v}" = "$(python -c 'import subdrive; print(subdrive.VERSION)')"
           git fetch --depth 1 origin pacotes
           exe=dist/SubDrive; [ -f dist/SubDrive.exe ] && exe=dist/SubDrive.exe
           for variant in bd uhd; do
@@ -75,14 +78,14 @@ jobs:
             python tools/make_download.py --program $exe --package pacote-$variant.zip \
               --system "${{ matrix.name }}" --output downloads
           done
-      - if: startsWith(github.ref, 'refs/tags/v')
+      - if: github.event_name == 'workflow_dispatch' && inputs.release
         uses: actions/upload-artifact@v4
         with:
           name: downloads-${{ matrix.name }}
           path: downloads/*.zip
 
   release:
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: github.event_name == 'workflow_dispatch' && inputs.release
     needs: build
     runs-on: ubuntu-22.04
     permissions:
@@ -101,7 +104,7 @@ jobs:
           set -e
           ls -l downloads
           test "$(ls downloads/*.zip | wc -l)" = 8
-          version="${GITHUB_REF_NAME#v}"
+          version="$(python3 -c 'import subdrive; print(subdrive.VERSION)')"
           extra=""; case "$version" in *-*) extra="--prerelease";; esac
-          gh release create "$GITHUB_REF_NAME" downloads/*.zip $extra --title "SubDrive $version" \
+          gh release create "v$version" downloads/*.zip $extra --target "$GITHUB_SHA" --title "SubDrive $version" \
             --notes-file packaging/release-notes.md
