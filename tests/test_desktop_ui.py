@@ -4,10 +4,11 @@ import tempfile
 import time
 import unittest
 from pathlib import Path
-try:
+import importlib.util
+if importlib.util.find_spec("PySide6"):
     from PySide6.QtWidgets import QApplication
     from subdrive.desktop import Window
-except ImportError:
+else:
     QApplication = None
 
 
