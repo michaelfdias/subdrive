@@ -1,0 +1,14 @@
+Licenças do SubDrive com janelas
+
+SubDrive ............................ MIT (SubDrive-MIT.txt)
+Qt 6.8 e PySide6 6.8 ................ LGPL-3.0 (LGPL-3.0.txt, que complementa GPL-3.0.txt)
+                                      Código-fonte: https://code.qt.io e https://download.qt.io/official_releases/QtForPython/
+                                      O Qt é usado sem modificações, como biblioteca separada.
+Python 3.12 ......................... PSF License (https://docs.python.org/3/license.html)
+Pillow 11.3 ......................... MIT-CMU (https://github.com/python-pillow/Pillow)
+fontTools 4.59 ...................... MIT (https://github.com/fonttools/fonttools)
+certifi ............................. MPL-2.0 (https://github.com/certifi/python-certifi)
+Fontes (Roboto, Inter, Source Sans 3 e outras) ... SIL Open Font License; os textos vêm junto com as fontes, dentro do programa.
+
+Para trocar o Qt por outra versão compatível (direito garantido pela LGPL), monte o programa a partir do código-fonte
+do SubDrive com o PySide6 desejado; as instruções de montagem acompanham o código.
