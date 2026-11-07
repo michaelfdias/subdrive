@@ -75,8 +75,8 @@ jobs:
               --output downloads --update-asset programa/SubDrive-app-${{ matrix.key }}$ext
           done
       - name: De ponta a ponta com o firmware oficial e as versões publicadas
-        if: runner.os == 'Linux'
-        run: python tools/app_real_check.py downloads/SubDrive-App-*-UHD-Linux.zip
+        run: |
+          for v in UHD BD; do python tools/app_real_check.py downloads/SubDrive-App-*-$v-${{ matrix.name }}.zip; done
       - uses: actions/upload-artifact@v4
         with:
           name: SubDrive-App-${{ matrix.name }}
