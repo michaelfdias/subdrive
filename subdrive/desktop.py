@@ -533,6 +533,8 @@ class DesktopApplication(QApplication):
 
 
 def main():
+    import multiprocessing
+    multiprocessing.set_start_method("spawn", force=True)
     app = DesktopApplication(sys.argv)
     app.setApplicationName("SubDrive Desktop")
     app.setOrganizationName("SubDrive")
@@ -544,7 +546,10 @@ def main():
     window = Window()
     app.opened.connect(lambda path: window.set_paths([path]) if not window.worker else None)
     window.show()
-    if len(sys.argv) > 1 and sys.argv[1] != "--smoke-test":
+    if "--self-test" in sys.argv:
+        from .desktop_selftest import begin
+        begin(app, window, Path(sys.argv[sys.argv.index("--self-test") + 1]))
+    elif len(sys.argv) > 1 and sys.argv[1] != "--smoke-test":
         window.set_paths([Path(p) for p in sys.argv[1:]])
     if "--smoke-test" in sys.argv:
         QTimer.singleShot(500, app.quit)
