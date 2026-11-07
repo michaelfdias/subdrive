@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SubDrive: legendas em português no Panasonic DP-UB450, UB150 e UB154</title>
-<meta name="description" content="Legendas SRT e PGS em qualquer Blu-ray ou 4K UHD no Panasonic DP-UB450, DP-UB150 e DP-UB154, pelo pendrive, sem mexer no aparelho. Grátis, feito pela comunidade para a comunidade.">
+<meta name="description" content="Legendas SRT e PGS em qualquer Blu-ray ou 4K UHD no Panasonic DP-UB450, DP-UB150 e DP-UB154, pelo pendrive, sem mexer no aparelho. Grátis, feito por um colecionador para a comunidade.">
 <meta property="og:title" content="SubDrive: legendas em português no seu Panasonic 4K">
 <meta property="og:description" content="Legendas SRT e PGS em qualquer Blu-ray ou 4K UHD, pelo pendrive, com fonte, cor, tamanho e sincronia no controle remoto. Grátis.">
 <meta property="og:type" content="website">
@@ -13,249 +13,344 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#f7f7f5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111214" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="img/icone.svg" type="image/svg+xml">
+<link rel="preload" href="fontes/sourcesans3.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fontes/archivo.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="estilo.css">
 <script src="tema.js"></script>
 </head>
 <body>
+<a class="sr" href="#conteudo">Pular para o conteúdo</a>
 <header class="topo">
-<nav class="menu">
-  <a class="marca" href="./"><img src="img/icone.svg" alt="">SubDrive</a>
-  <a href="#compativeis">Aparelhos</a>
-  <a href="#como-usar">Como usar</a>
-  <a href="#perguntas">Dúvidas</a>
-  <a href="#conte">Fale comigo</a>
-  <button type="button" class="tema">🌙 Escuro</button>
-</nav>
+<div class="largo">
+  <a class="marca" href="./"><img src="img/icone.svg" alt="" width="28" height="28">SubDrive</a>
+  <nav aria-label="Principal">
+    <ul class="menu" id="menu">
+      <li><a href="#como-funciona">Como funciona</a></li>
+      <li><a href="#compativeis">Aparelhos</a></li>
+      <li><a href="guia.html">Como usar</a></li>
+      <li><a href="#perguntas">Dúvidas</a></li>
+      <li><a href="#conte">Fale comigo</a></li>
+    </ul>
+  </nav>
+  <a class="botao principal" href="#baixar">Baixar</a>
+  <button type="button" class="icone-botao tema" aria-label="Mudar o tema"><svg class="sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></svg><svg class="lua" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg></button>
+  <button type="button" class="icone-botao abrir-menu" aria-label="Abrir o menu" aria-controls="menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</div>
 </header>
-<main>
 
-<section class="abertura">
-<h1>Legendas em português na sua mídia física</h1>
-<p class="lead">O SubDrive coloca a legenda que você quiser na tela de players Panasonic 4K compatíveis, enquanto o disco toca. Basta um pendrive. É grátis.</p>
-<div class="botoes">
-  <a class="botao principal" href="#como-usar">Quero usar</a>
-  <a class="botao" href="#compativeis">Meu aparelho é compatível?</a>
-</div>
-<figure class="imagem"><img src="img/tv-legenda.jpg" width="1440" height="810" alt="TV mostrando O Show de Truman em 4K UHD com a legenda em português do SubDrive: Preciso que feche negócio com um cliente em Wells Park."><figcaption>O Show de Truman em 4K UHD, com legenda SRT pelo SubDrive num DP-UB450-K.</figcaption></figure>
-</section>
+<main id="conteudo">
 
-<h2 id="presente">Um presente para quem gosta de mídia física</h2>
-<figure class="autor">
-  <div class="avatar" aria-hidden="true"><img src="img/autor.jpg" alt="" onerror="this.remove()"><span>MD</span></div>
-  <div>
-    <blockquote>
-      <p>Quem coleciona Blu-ray e 4K UHD no Brasil conhece o problema: muitos discos vêm de fora sem legenda em português, e o player não abre um arquivo de legenda junto com o disco. Por muito tempo, a saída foi deixar o disco na estante.</p>
-      <p>Encontrei um jeito de fazer o meu Panasonic DP-UB450-K mostrar legendas externas, sem abrir o aparelho e sem trocar o firmware, e transformei isso no SubDrive. Não estou vendendo nada: ele é de graça, sem anúncios, com o código aberto. É a minha forma de retribuir a uma comunidade que me ajudou muito.</p>
-      <p>Se ele ajudar você a ver aquele filme parado na estante, já valeu.</p>
-    </blockquote>
-    <figcaption class="quem"><strong>Michael Dias</strong>, criador do SubDrive e colecionador de mídia física</figcaption>
+<section class="abertura" aria-labelledby="titulo">
+  <div class="largo abertura-grade">
+    <div class="abertura-texto">
+    <h1 id="titulo">Legendas em português na sua mídia física</h1>
+    <p class="lead">O SubDrive coloca a legenda que você quiser na tela de players Panasonic 4K compatíveis, enquanto o disco toca. Basta um pendrive.</p>
+    <div class="botoes">
+      <a class="botao principal" href="#baixar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10.5l5 5 5-5M5 20h14"/></svg>Baixar grátis</a>
+      <a class="botao" href="#compativeis">Meu aparelho é compatível?</a>
+    </div>
+    <ul class="selos-abertura">
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Grátis</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Sem anúncios</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Código aberto</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Sem mexer no aparelho</li>
+    </ul>
+    </div>
+    <figure class="tela">
+      <img src="img/tv-legenda.jpg" width="1440" height="810" alt="TV mostrando O Show de Truman em 4K UHD com a legenda em português do SubDrive: Preciso que feche negócio com um cliente em Wells Park.">
+      <figcaption>O Show de Truman em 4K UHD, com legenda SRT pelo SubDrive num DP-UB450-K.</figcaption>
+    </figure>
   </div>
-</figure>
-
-<h2 id="recursos">O que ele faz</h2>
-<div class="grade">
-  <div class="cartao"><h3>SRT e PGS</h3><p>Abre legendas de texto (<code>.srt</code>) e de imagem (<code>.sup</code>).</p></div>
-  <div class="cartao"><h3>Do seu jeito</h3><p>10 fontes, 12 tamanhos, 20 cores, negrito, sombra, fundo e 20 posições na tela.</p></div>
-  <div class="cartao"><h3>Sincronia no controle</h3><p>Adiante ou atrase a legenda durante o filme, em vários pontos. <a href="sincronia.html">Como funciona</a></p></div>
-  <div class="cartao"><h3>Preferências guardadas</h3><p>Fonte, tamanho, cor e o resto do visual da legenda ficam salvos no pendrive. Desligou o aparelho, nada se perde.</p></div>
-  <div class="cartao"><h3>Português ou inglês</h3><p>O painel fala as duas línguas e tem 4 temas de cor.</p></div>
-  <div class="cartao"><h3>Letras caprichadas</h3><p>As letras vão desenhadas do computador, com bordas suaves. Muitas vezes ficam mais legíveis que a legenda do próprio disco.</p></div>
-</div>
-<p class="nota">Fonte, cor, tamanho, negrito, sombra e fundo valem para legendas SRT, que são texto. Uma legenda PGS já vem desenhada como imagem, e nela você ajusta a posição. Quer um PGS com o seu visual? O SubDrive CLI cria um a partir do SRT.</p>
-<figure class="imagem"><img src="img/painel.jpg" width="1440" height="810" loading="lazy" alt="Painel do SubDrive aberto sobre O Show de Truman, com as linhas Arquivo, Fonte, Negrito, Tamanho, Posição, Cor, Sombra, Fundo, Sincronia e Configurações."><figcaption>O painel do SubDrive, aberto pela tecla VERMELHA durante o filme.</figcaption></figure>
-
-<h2 id="como-funciona">Como funciona</h2>
-<ol class="passos">
-  <li>No computador, o SubDrive CLI prepara o pendrive e deixa as legendas do jeito que o player aceita.</li>
-  <li>No pendrive, vai o pacote SubDrive com as suas legendas.</li>
-  <li>No player, o pacote SubDrive desenha a legenda por cima do filme. Você ajusta tudo com a tecla <kbd>VERMELHA</kbd> do controle.</li>
-</ol>
-<p>Sem o pendrive, o aparelho volta a ser exatamente como era, porque nada é gravado nele. Para tirar o pendrive, desligue o player antes.</p>
-<details>
-<summary>Para os curiosos: o que acontece por dentro</summary>
-<p>Players da Panasonic (não sei se todos) conseguem carregar um programa Java de um pendrive. O pacote SubDrive usa essa porta: quando o disco começa, o player carrega o programa, que mostra a legenda e o painel.</p>
-<p>Esse programa é montado no seu computador pelo SubDrive CLI, a partir da biblioteca Java do firmware oficial da Panasonic, que ele baixa do site dela. São só duas mudanças: uma faz o player iniciar o SubDrive e a outra passa as teclas do controle para ele. O firmware instalado no aparelho continua o mesmo, e o SubDrive só grava no pendrive.</p>
-<p>O player usa uma biblioteca para Blu-ray e outra para 4K UHD. Por isso há dois pacotes, BD e UHD, cada um no seu pendrive.</p>
-</details>
-
-<h2 id="compativeis">Aparelhos compatíveis</h2>
-<p>O SubDrive funciona só com os modelos vendidos nos EUA, com firmware 1.13.</p>
-<div class="grade">
-  <div class="cartao ok"><h3>DP-UB450, modelo dos EUA</h3><p>Etiqueta: <code>DP-UB450-K</code> (no site da Panasonic, <code>DP-UB450P-K</code>)</p><p class="selo">Testado e funcionando</p></div>
-  <div class="cartao"><h3>DP-UB150, modelo dos EUA</h3><p>Etiqueta: <code>DP-UB150-K</code> (no site da Panasonic, <code>DP-UB150P-K</code>)</p><p class="selo neutro">Deve funcionar: mesmo firmware, mas ainda sem teste real</p></div>
-  <div class="cartao"><h3>DP-UB154, modelo dos EUA</h3><p>Etiqueta: <code>DP-UB154</code></p><p class="selo neutro">Deve funcionar: mesmo firmware, mas ainda sem teste real</p></div>
-</div>
-<div class="aviso">
-<p>Não use em outro modelo, em aparelhos de outra região (Europa, Ásia e outras) nem com outra versão de firmware. Eles usam outro firmware, e o SubDrive não foi feito para eles.</p>
-<p>Se você tem um DP-UB150 ou DP-UB154 e testou, <a href="#conte">conte como foi</a>. É assim que o projeto cresce.</p>
-</div>
-<p>O nome do modelo está na etiqueta do aparelho, que costuma ficar atrás ou embaixo dele, e também na caixa. Para ver a versão do firmware, e atualizar para a 1.13 se precisar, siga o <a href="firmware.html">passo a passo do firmware</a>.</p>
-
-<h2 id="como-usar">Como usar</h2>
-
-<h3>1. Baixe o ZIP certo</h3>
-<p>Na <a href="https://github.com/michaelfdias/subdrive/releases">página de downloads</a> há um ZIP para cada tipo de disco e cada computador. O nome diz qual é qual:</p>
-<table class="pilha">
-  <thead><tr><th>Seu computador</th><th>Para Blu-ray</th><th>Para 4K UHD</th></tr></thead>
-  <tbody>
-    <tr><td>Windows 10 ou 11</td><td data-rotulo="Blu-ray"><code>…-BD-Windows.zip</code></td><td data-rotulo="4K UHD"><code>…-UHD-Windows.zip</code></td></tr>
-    <tr><td>Mac com chip Apple (M1 em diante)</td><td data-rotulo="Blu-ray"><code>…-BD-macOS-AppleSilicon.zip</code></td><td data-rotulo="4K UHD"><code>…-UHD-macOS-AppleSilicon.zip</code></td></tr>
-    <tr><td>Mac com processador Intel</td><td data-rotulo="Blu-ray"><code>…-BD-macOS-Intel.zip</code></td><td data-rotulo="4K UHD"><code>…-UHD-macOS-Intel.zip</code></td></tr>
-    <tr><td>Linux</td><td data-rotulo="Blu-ray"><code>…-BD-Linux.zip</code></td><td data-rotulo="4K UHD"><code>…-UHD-Linux.zip</code></td></tr>
-  </tbody>
-</table>
-<p>Assiste os dois tipos de disco? Baixe os dois e use um pendrive para cada.</p>
-
-<h3>2. Veja o que vem dentro</h3>
-<dl class="itens">
-  <dt><code>SubDrive-CLI</code> (no Windows, <code>SubDrive-CLI.exe</code>)</dt><dd>O programa que prepara o pendrive e cuida das legendas.</dd>
-  <dt><code>pacote</code></dt><dd>O pacote SubDrive, que o SubDrive CLI grava no pendrive. Não precisa mexer nele.</dd>
-  <dt><code>LEIA-ME.txt</code></dt><dd>Estes mesmos passos, resumidos.</dd>
-</dl>
-<p>Não precisa instalar nada: nem Java, nem outro programa. Extraia o ZIP e deixe os três juntos na mesma pasta.</p>
-
-<h3>3. Prepare o pendrive</h3>
-<ol>
-  <li>Conecte um pendrive formatado em FAT32. Se ele estiver em outro formato, o SubDrive CLI avisa e explica como formatar.</li>
-  <li>Abra o SubDrive CLI com dois cliques. Ele abre um menu; use as setas e o <kbd>Enter</kbd>.</li>
-  <li>Escolha "Preparar pendrive". Na primeira vez, ele pede para baixar o firmware oficial da Panasonic (91 MB) e monta o programa do player. Depois mostra o que vai gravar e pede confirmação.</li>
-</ol>
-<p>No fim, o pendrive fica assim:</p>
-<pre><code>legendas/     onde você coloca as legendas
-sincronia/    os ajustes de sincronia que você fizer no player
-relatorios/   relatórios do que aconteceu, se algo der errado
-fontes/       as letras já desenhadas
-BDJ.jar e outros arquivos do SubDrive</code></pre>
-<p>Se você preparar o mesmo pendrive de novo, por exemplo depois de uma atualização, suas legendas, ajustes e preferências ficam onde estão.</p>
-
-<details>
-<summary>O Windows diz "O Windows protegeu o computador"</summary>
-<p>Aparece com programas novos que não pagam por um certificado digital. Clique em "Mais informações" e depois em "Executar assim mesmo". Só na primeira vez.</p>
-</details>
-<details>
-<summary>O Mac diz que não pode abrir o SubDrive CLI</summary>
-<p>Abra Ajustes do Sistema, vá em Privacidade e Segurança, desça até a mensagem sobre o SubDrive CLI e clique em "Abrir Mesmo Assim". Depois disso ele abre com dois cliques, numa janela do Terminal.</p>
-</details>
-<details>
-<summary>O Chrome bloqueia o download</summary>
-<p>Abra a lista de downloads (<kbd>Ctrl</kbd>+<kbd>J</kbd> no Windows, <kbd>⌘</kbd>+<kbd>Shift</kbd>+<kbd>J</kbd> no Mac), encontre o arquivo e escolha "Manter". Ou baixe por outro navegador.</p>
-</details>
-<details>
-<summary>No Linux, como abro?</summary>
-<p>Num terminal, dentro da pasta extraída, rode <code>./SubDrive-CLI</code>.</p>
-</details>
-
-<h3>4. Coloque as legendas</h3>
-<p>Copie os arquivos <code>.srt</code> ou <code>.sup</code> para a pasta <code>legendas</code> do pendrive. Antes, passe cada um pelo "Verificar legendas" do menu: o player é exigente, e o SubDrive CLI diz se a legenda vai funcionar. Se não for, "Corrigir uma legenda" cria uma cópia consertada.</p>
-<p>O SubDrive CLI também cria um PGS a partir de um SRT e transforma a sincronia feita no player numa legenda nova. <a href="cli.html">Veja tudo o que ele faz</a>.</p>
-<figure class="imagem"><img src="img/cli-menu.png" width="1200" height="351" loading="lazy" alt="Menu do SubDrive CLI no Terminal do Mac, com o pendrive pronto para o player."><figcaption>O menu do SubDrive CLI no Mac.</figcaption></figure>
-
-<h3>5. Assista</h3>
-<p>Na primeira vez:</p>
-<ol>
-  <li>Ejete o pendrive do computador.</li>
-  <li>Ligue o player sem disco e espere a tela inicial carregar por completo.</li>
-  <li>Coloque o pendrive. O player abre uma janela perguntando o que fazer com ele: feche essa janela sem escolher nada.</li>
-  <li>Espere de 10 a 15 segundos.</li>
-  <li>Coloque o disco e comece o filme.</li>
-  <li>Aperte a tecla <kbd>VERMELHA</kbd>. No painel, em "Arquivo", escolha a legenda. As setas para cima e para baixo trocam de linha; para os lados, mudam o valor.</li>
-</ol>
-<p>Nas próximas vezes, pode deixar o pendrive no aparelho. Só espere alguns segundos na tela inicial antes de começar o filme.</p>
-<p class="nota">Se o seu player começa o disco sozinho assim que você o coloca, recomendo desligar essa opção nas configurações do aparelho. O SubDrive pode funcionar mesmo assim, mas às vezes o filme começa antes de o pendrive estar pronto.</p>
-<p>Se o disco tiver legenda própria ligada, desligue-a para não aparecerem duas.</p>
-
-<h3>Menus do disco</h3>
-<p>O SubDrive esconde a legenda quando um menu do disco aparece, para não ficar por cima dele.</p>
-<ul>
-  <li>Menu que abre por cima do filme (tecla <kbd>POP-UP MENU</kbd>): a legenda some e, ao fechar o menu, deve voltar sozinha.</li>
-  <li>Menu principal do disco: depois de voltar para o filme, a legenda pode não voltar sozinha.</li>
-</ul>
-<p>Nos dois casos, se a legenda não voltar, aperte <kbd>VERMELHA</kbd> de novo. Outro jeito é apertar <kbd>PAUSE</kbd>, esperar uns 3 segundos e apertar <kbd>PLAY</kbd>.</p>
-
-<h2 id="limites">Bom saber</h2>
-<ul>
-  <li>Funciona com discos. Streaming e vídeos do pendrive ficam de fora.</li>
-  <li>O pacote BD só funciona com discos Blu-ray, e o pacote UHD só com discos 4K UHD. Se você assiste os dois tipos, prepare dois pendrives, um com cada pacote, e coloque no player o que combina com o disco antes de começar o filme.</li>
-  <li>O player só mostra letras latinas, então emoji e símbolos como ♪ não aparecem. O SubDrive CLI avisa e corrige.</li>
-  <li>O SubDrive não usa a internet no player. O SubDrive CLI só se conecta para baixar o firmware da Panasonic, uma vez, e para procurar atualizações quando você pede. Nenhum dado seu é enviado.</li>
-  <li>Esta página conta as visitas de forma anônima, pelo Cloudflare Web Analytics, sem cookies.</li>
-</ul>
-
-<h2 id="perguntas">Dúvidas</h2>
-<details>
-<summary>Isso pode estragar o meu aparelho?</summary>
-<p>O SubDrive não grava nada no aparelho e não troca o firmware: tudo fica no pendrive. Mesmo assim, é um projeto feito por uma pessoa, testado num aparelho e num número limitado de discos. Leia a <a href="#isencao">isenção de responsabilidade</a>.</p>
-</details>
-<details>
-<summary>Meu aparelho é europeu. Funciona?</summary>
-<p>Não. O firmware europeu é outro, e o SubDrive depende do firmware dos EUA. Não tente.</p>
-</details>
-<details>
-<summary>Posso atualizar o firmware do player para uma versão mais nova?</summary>
-<p>Se a Panasonic lançar uma versão depois da 1.13, espere o SubDrive confirmar que ela funciona. A página do <a href="firmware.html">firmware</a> explica como desligar a atualização automática.</p>
-</details>
-<details>
-<summary>Qual a diferença entre SRT e PGS?</summary>
-<p>O SRT (<code>.srt</code>) é uma legenda de texto: um arquivo pequeno com as falas e os horários. É o formato mais fácil de achar na internet. Como é texto, o SubDrive desenha as letras na hora, e você escolhe fonte, tamanho, cor, negrito, sombra e fundo.</p>
-<p>O PGS (<code>.sup</code>) é a legenda em imagem, o mesmo formato dos discos Blu-ray. Cada fala já vem desenhada, então ela aparece exatamente como foi feita, mas dá para mudar só a posição. O SubDrive CLI cria um PGS a partir de um SRT, com o visual que você escolher.</p>
-<p>Na dúvida, use SRT.</p>
-</details>
-<details>
-<summary>A legenda sumiu depois do menu do disco.</summary>
-<p>Aperte <kbd>VERMELHA</kbd>, ou aperte <kbd>PAUSE</kbd>, espere uns 3 segundos e aperte <kbd>PLAY</kbd>. Veja <a href="#como-usar">Menus do disco</a>.</p>
-</details>
-<details>
-<summary>A tecla VERMELHA não abre nada.</summary>
-<p>Confira se o aparelho e o firmware são compatíveis e se o pendrive é do tipo do disco (BD para Blu-ray, UHD para 4K UHD). Depois tire o disco, volte à tela inicial, espere alguns segundos com o pendrive conectado e comece o filme de novo.</p>
-</details>
-<details>
-<summary>A legenda aparece com letras estranhas no lugar dos acentos.</summary>
-<p>Use "Corrigir uma legenda" no SubDrive CLI. Ele cria uma cópia corrigida ao lado da original.</p>
-</details>
-<details>
-<summary>A legenda começa certa e vai se atrasando.</summary>
-<p>Ela foi feita para outra versão do filme. A sincronia em dois pontos resolve: <a href="sincronia.html">veja como</a>.</p>
-</details>
-<details>
-<summary>Como removo o SubDrive?</summary>
-<p>Desligue o player e só então tire o pendrive. Sem ele, o aparelho funciona exatamente como antes.</p>
-</details>
-<details>
-<summary>Posso tirar dúvidas com o ChatGPT ou outra IA?</summary>
-<p>Pode. Este <a href="subdrive-ia.txt">texto completo sobre o SubDrive</a> foi feito para isso: copie, cole no começo da conversa e faça a sua pergunta.</p>
-<p><button type="button" data-arquivo="subdrive-ia.txt">Copiar o texto para a IA</button></p>
-</details>
-
-<h2 id="conte">Fale comigo</h2>
-<p>Quero saber como foi com você, tanto quando funcionou quanto quando deu problema. É assim que o SubDrive melhora e que mais aparelhos entram na lista.</p>
-<div class="contato">
-  <a class="botao principal" href="https://forms.gle/VtNmmcMs9byjnQvP8">Mandar uma mensagem</a>
-</div>
-<p>O formulário não pede conta nem cadastro. Para um problema no player, conte o que aconteceu e, se eu precisar dos relatórios da pasta <code>relatorios</code> do pendrive, peço na resposta.</p>
-
-<section data-secao-pix>
-<h2 id="apoie">Quer retribuir?</h2>
-<p>Não precisa. Mas se quiser, qualquer valor no Pix ajuda a manter o projeto. A chave também aparece como QR code em Configurações, no painel do player.</p>
-<div class="pix"><code id="chave-pix" data-pix>__PIX_KEY__</code> <button type="button" data-copiar="#chave-pix">Copiar a chave Pix</button></div>
+  <div class="faixa-compat">
+    <div class="largo">
+      <span>Para <strong>DP-UB450</strong>, <strong>DP-UB150</strong> e <strong>DP-UB154</strong></span>
+      <span class="sep" aria-hidden="true"></span>
+      <span>modelos dos EUA, com firmware <strong>1.13</strong></span>
+      <span class="sep" aria-hidden="true"></span>
+      <a href="#compativeis">Ver detalhes</a>
+    </div>
+  </div>
 </section>
 
-<h2 id="isencao">Isenção de responsabilidade</h2>
-<div class="aviso">
-<p>O SubDrive é um projeto independente e não tem nenhuma ligação com a Panasonic. Panasonic, Blu-ray e os nomes dos aparelhos são marcas dos seus donos.</p>
-<p>Ele é oferecido como está, sem garantia de nenhum tipo. Foi testado num DP-UB450-K e num número limitado de discos, e pode não funcionar no seu aparelho ou em algum disco. Você usa por sua conta e risco. O autor não se responsabiliza por defeitos, perda de dados, falhas do aparelho ou qualquer outro problema causado pelo uso.</p>
-<p>O firmware do aparelho não é alterado. O programa que o player carrega do pendrive é montado no seu computador a partir do firmware oficial da Panasonic, baixado do site dela, e não é distribuído pelo SubDrive.</p>
-<p>Use o SubDrive com discos e legendas que você tem o direito de usar.</p>
-</div>
+<section class="secao" id="como-funciona" aria-labelledby="t-como">
+  <div class="largo">
+    <header class="titulo-secao">
+      <h2 id="t-como">Como funciona</h2>
+    </header>
+    <ol class="passos">
+      <li><h3>No computador</h3><p>O SubDrive CLI prepara o pendrive e deixa as legendas do jeito que o player aceita.</p></li>
+      <li><h3>No pendrive</h3><p>Vai o pacote SubDrive com as suas legendas.</p></li>
+      <li><h3>No player</h3><p>O pacote SubDrive desenha a legenda por cima do filme. Você ajusta tudo com a tecla <kbd class="vermelha">VERMELHA</kbd> do controle.</p></li>
+    </ol>
+    <div class="depois-passos">
+      <p>Sem o pendrive, o aparelho volta a ser exatamente como era, porque nada é gravado nele. Para tirar o pendrive, desligue o player antes.</p>
+      <details>
+        <summary>Para os curiosos: o que acontece por dentro</summary>
+        <p>Players da Panasonic (não sei se todos) conseguem carregar um programa Java de um pendrive. O pacote SubDrive usa essa porta: quando o disco começa, o player carrega o programa, que mostra a legenda e o painel.</p>
+        <p>Esse programa é montado no seu computador pelo SubDrive CLI, a partir da biblioteca Java do firmware oficial da Panasonic, que ele baixa do site dela. São só duas mudanças: uma faz o player iniciar o SubDrive e a outra passa as teclas do controle para ele. O firmware instalado no aparelho continua o mesmo, e o SubDrive só grava no pendrive.</p>
+        <p>O player usa uma biblioteca para Blu-ray e outra para 4K UHD. Por isso há dois pacotes, BD e UHD, cada um no seu pendrive.</p>
+      </details>
+    </div>
+  </div>
+</section>
 
-<h2 id="creditos">Créditos</h2>
-<p>Criado por Michael Dias. As fontes Roboto, Inter, Arimo, Noto Sans, Open Sans, Source Sans 3, Lato e Atkinson Hyperlegible usam a SIL Open Font License 1.1, e a DejaVu Sans usa a licença Bitstream Vera; os textos completos vão no pacote, na pasta <code>fontes</code>. O código do SubDrive está no <a href="https://github.com/michaelfdias/subdrive">GitHub</a>, sob a licença MIT.</p>
+<section class="secao" id="presente" aria-labelledby="t-presente">
+  <div class="estreito">
+    <header class="titulo-secao">
+      <h2 id="t-presente">Um presente para quem gosta de mídia física</h2>
+    </header>
+    <figure class="carta">
+        <blockquote>
+          <p>Quem coleciona Blu-ray e 4K UHD no Brasil conhece o problema: muitos discos vêm de fora sem legenda em português, e o player não abre um arquivo de legenda junto com o disco. Por muito tempo, a saída foi deixar o disco na estante.</p>
+          <p>Encontrei um jeito de fazer o meu Panasonic DP-UB450-K mostrar legendas externas, sem abrir o aparelho e sem trocar o firmware, e transformei isso no SubDrive. Não estou vendendo nada: ele é de graça, sem anúncios, com o código aberto. É a minha forma de retribuir a uma comunidade que me ajudou muito.</p>
+          <p>Se ele ajudar você a ver aquele filme parado na estante, já valeu.</p>
+        </blockquote>
+        <figcaption>
+          <span class="avatar" aria-hidden="true"><img src="img/autor.jpg" alt="" width="56" height="56" onerror="this.remove()">MD</span>
+          <span><strong>Michael Dias</strong>Criador do SubDrive e colecionador de mídia física</span>
+        </figcaption>
+      </figure>
+  </div>
+</section>
+
+<section class="secao" id="recursos" aria-labelledby="t-recursos">
+  <div class="largo">
+    <header class="titulo-secao">
+      <h2 id="t-recursos">O que ele faz</h2>
+    </header>
+    <div class="recursos-grade">
+    <ul class="recursos">
+      <li><h3>SRT e PGS</h3><p>Abre legendas de texto (<code>.srt</code>) e de imagem (<code>.sup</code>).</p></li>
+      <li><h3>Do seu jeito</h3><p>10 fontes, 12 tamanhos, 20 cores, negrito, sombra, fundo e 20 posições na tela.</p></li>
+      <li><h3>Sincronia no controle</h3><p>Adiante ou atrase a legenda durante o filme, em vários pontos. <a href="sincronia.html">Como funciona</a></p></li>
+      <li><h3>Preferências guardadas</h3><p>Fonte, tamanho, cor e o resto do visual da legenda ficam salvos no pendrive. Desligou o aparelho, nada se perde.</p></li>
+      <li><h3>Português ou inglês</h3><p>O painel fala as duas línguas e tem 4 temas de cor.</p></li>
+      <li><h3>Letras caprichadas</h3><p>As letras já vão desenhadas pelo computador, com bordas suaves. Muitas vezes ficam mais legíveis que a legenda do próprio disco.</p></li>
+    </ul>
+    <div>
+    <figure class="figura">
+      <img src="img/painel.jpg" width="1440" height="810" loading="lazy" alt="Painel do SubDrive aberto sobre O Show de Truman, com as linhas Arquivo, Fonte, Negrito, Tamanho, Posição, Cor, Sombra, Fundo, Sincronia e Configurações.">
+      <figcaption>O painel do SubDrive, aberto pela tecla <kbd class="vermelha">VERMELHA</kbd> durante o filme.</figcaption>
+    </figure>
+    <p class="observacao">Fonte, cor, tamanho, negrito, sombra e fundo valem para legendas SRT. Numa legenda PGS, que já vem desenhada, você ajusta a posição. <a href="#srt-pgs">Entenda a diferença</a></p>
+    </div>
+    </div>
+  </div>
+</section>
+
+<section class="secao" id="compativeis" aria-labelledby="t-aparelhos">
+  <div class="largo">
+    <header class="titulo-secao">
+      <h2 id="t-aparelhos">Aparelhos compatíveis</h2>
+      <p>O SubDrive funciona só com os modelos vendidos nos EUA, com firmware 1.13.</p>
+    </header>
+    <div class="aparelhos">
+      <article class="aparelho testado">
+        <h3 class="modelo">DP-UB450</h3>
+        <p class="regiao">Modelo dos EUA</p>
+        <dl><dt>Etiqueta</dt><dd><code>DP-UB450-K</code></dd><dt>No site da Panasonic</dt><dd><code>DP-UB450P-K</code></dd></dl>
+        <p class="estado"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Testado e funcionando</p>
+      </article>
+      <article class="aparelho">
+        <h3 class="modelo">DP-UB150</h3>
+        <p class="regiao">Modelo dos EUA</p>
+        <dl><dt>Etiqueta</dt><dd><code>DP-UB150-K</code></dd><dt>No site da Panasonic</dt><dd><code>DP-UB150P-K</code></dd></dl>
+        <p class="estado"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>Deve funcionar: mesmo firmware, mas ainda sem teste real</p>
+      </article>
+      <article class="aparelho">
+        <h3 class="modelo">DP-UB154</h3>
+        <p class="regiao">Modelo dos EUA</p>
+        <dl><dt>Etiqueta</dt><dd><code>DP-UB154</code></dd></dl>
+        <p class="estado"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>Deve funcionar: mesmo firmware, mas ainda sem teste real</p>
+      </article>
+    </div>
+    <div class="apos-grade">
+    <div class="aviso" role="note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 4.2 2.8 17.5A2 2 0 0 0 4.5 20.5h15a2 2 0 0 0 1.7-3L13.7 4.2a2 2 0 0 0-3.4 0Z"/><path d="M12 9.5v4M12 17h.01"/></svg>
+      <div>
+        <p>Não use em outro modelo, em aparelhos de outra região (Europa, Ásia e outras) nem com outra versão de firmware. Eles usam outro firmware, e o SubDrive não foi feito para eles.</p>
+        <p>Se você tem um DP-UB150 ou DP-UB154 e testou, <a href="#conte">conte como foi</a>. É assim que o projeto cresce.</p>
+      </div>
+    </div>
+    <div class="apos-aparelhos"><p>O nome do modelo está na etiqueta do aparelho, que costuma ficar atrás ou embaixo dele, e também na caixa. Para ver a versão do firmware, e atualizar para a 1.13 se precisar, siga o <a href="firmware.html">passo a passo do firmware</a>.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="secao" id="baixar" aria-labelledby="t-baixar">
+  <div class="largo">
+    <header class="titulo-secao">
+      <h2 id="t-baixar">Baixe o ZIP certo</h2>
+      <p>Há um ZIP para cada tipo de disco e cada computador. Escolha os seus e veja qual baixar.</p>
+    </header>
+    <form class="baixar" id="escolher-zip" onsubmit="return false">
+      <fieldset class="escolha">
+        <legend>Seu computador</legend>
+        <div class="opcoes quatro">
+          <label><input type="radio" name="pc" value="Windows"><span>Windows 10 ou 11</span></label>
+          <label><input type="radio" name="pc" value="macOS-AppleSilicon"><span>Mac com chip Apple<br>(M1 em diante)</span></label>
+          <label><input type="radio" name="pc" value="macOS-Intel"><span>Mac com processador Intel</span></label>
+          <label><input type="radio" name="pc" value="Linux"><span>Linux</span></label>
+        </div>
+      </fieldset>
+      <fieldset class="escolha">
+        <legend>Tipo de disco</legend>
+        <div class="opcoes duas">
+          <label><input type="radio" name="disco" value="BD"><span>Blu-ray</span></label>
+          <label><input type="radio" name="disco" value="UHD"><span>4K UHD</span></label>
+        </div>
+      </fieldset>
+      <div class="resultado" aria-live="polite">
+        <div class="arquivo">
+          <span class="rotulo">Na página de downloads, procure o arquivo</span>
+          <code id="nome-zip" hidden></code>
+          <span class="vazio" id="zip-vazio">Escolha o computador e o tipo de disco.</span>
+        </div>
+        <a class="botao principal" href="https://github.com/michaelfdias/subdrive/releases">Abrir a página de downloads<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+    </form>
+    <ul class="notas-baixar">
+      <li>Assiste os dois tipos de disco? Baixe os dois e use um pendrive para cada.</li>
+      <li>Não precisa instalar nada: nem Java, nem outro programa.</li>
+      <li>Ignore os outros arquivos da página de downloads (<code>SubDrive-CLI-…</code>, <code>…-pacote-…</code> e <code>subdrive-release.json</code>): o SubDrive CLI usa esses quando procura atualização.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="secao" id="como-usar" aria-labelledby="t-usar">
+  <div class="largo">
+    <header class="titulo-secao">
+      <h2 id="t-usar">Como usar</h2>
+      <p>Cinco passos. O guia completo tem cada um em detalhe, com as mensagens do Windows e do Mac.</p>
+    </header>
+    <ol class="resumo">
+      <li><h3><a href="guia.html#passo-1">Baixe o ZIP certo</a></h3><p>Um para cada disco e computador.</p></li>
+      <li><h3><a href="guia.html#passo-2">Veja o que vem dentro</a></h3><p>Não precisa instalar nada.</p></li>
+      <li><h3><a href="guia.html#passo-3">Prepare o pendrive</a></h3><p>Formatado em FAT32; o SubDrive CLI grava o pacote.</p></li>
+      <li><h3><a href="guia.html#passo-4">Coloque as legendas</a></h3><p>Verificadas, na pasta <code>legendas</code>.</p></li>
+      <li><h3><a href="guia.html#passo-5">Assista</a></h3><p>Pendrive antes do disco; durante o filme, tecla <kbd class="vermelha">VERMELHA</kbd>.</p></li>
+    </ol>
+    <div class="centro"><a class="botao" href="guia.html">Abrir o guia completo<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+  </div>
+</section>
+
+<section class="secao" id="perguntas" aria-labelledby="t-duvidas">
+  <div class="largo">
+    <header class="titulo-secao">
+      <h2 id="t-duvidas">Dúvidas</h2>
+    </header>
+    <div class="duvidas">
+      <aside class="bom-saber" id="limites" aria-labelledby="t-bom">
+        <h3 id="t-bom">Bom saber</h3>
+        <ul>
+          <li>Funciona com discos. Streaming e vídeos do pendrive ficam de fora.</li>
+          <li>O pacote BD só funciona com discos Blu-ray, e o pacote UHD só com discos 4K UHD. Se você assiste os dois tipos, prepare dois pendrives, um com cada pacote, e coloque no player o que combina com o disco antes de começar o filme.</li>
+          <li>O player só mostra letras latinas, então emoji e símbolos como ♪ não aparecem. O SubDrive CLI avisa e corrige.</li>
+          <li>O SubDrive não usa a internet no player. O SubDrive CLI só se conecta para baixar o firmware da Panasonic, uma vez, e para procurar atualizações quando você pede. Nenhum dado seu é enviado.</li>
+          <li>Esta página conta as visitas de forma anônima, pelo Cloudflare Web Analytics, sem cookies.</li>
+        </ul>
+      </aside>
+      <div class="perguntas">
+        <details>
+          <summary>Isso pode estragar o meu aparelho?</summary>
+          <p>O SubDrive não grava nada no aparelho e não troca o firmware: tudo fica no pendrive. Mesmo assim, é um projeto feito por uma pessoa, testado num aparelho e num número limitado de discos. Leia a <a href="#isencao">isenção de responsabilidade</a>.</p>
+        </details>
+        <details>
+          <summary>Meu aparelho é europeu. Funciona?</summary>
+          <p>Não. O firmware europeu é outro, e o SubDrive depende do firmware dos EUA. Não tente.</p>
+        </details>
+        <details>
+          <summary>Posso atualizar o firmware do player para uma versão mais nova?</summary>
+          <p>Se a Panasonic lançar uma versão depois da 1.13, espere o SubDrive confirmar que ela funciona. A página do <a href="firmware.html">firmware</a> explica como desligar a atualização automática.</p>
+        </details>
+        <details id="srt-pgs">
+          <summary>Qual a diferença entre SRT e PGS?</summary>
+          <p>O SRT (<code>.srt</code>) é uma legenda de texto: um arquivo pequeno com as falas e os horários. É o formato mais fácil de achar na internet. Como é texto, o SubDrive desenha as letras na hora, e você escolhe fonte, tamanho, cor, negrito, sombra e fundo.</p>
+          <p>O PGS (<code>.sup</code>) é a legenda em imagem, o mesmo formato dos discos Blu-ray. Cada fala já vem desenhada, então ela aparece exatamente como foi feita, mas dá para mudar só a posição. O SubDrive CLI cria um PGS a partir de um SRT, com o visual que você escolher.</p>
+          <p>Na dúvida, use SRT.</p>
+        </details>
+        <details>
+          <summary>A legenda sumiu depois do menu do disco.</summary>
+          <p>Aperte <kbd class="vermelha">VERMELHA</kbd>, ou aperte <kbd>PAUSE</kbd>, espere uns 3 segundos e aperte <kbd>PLAY</kbd>. Veja <a href="guia.html#menus">Menus do disco</a>.</p>
+        </details>
+        <details>
+          <summary>A tecla VERMELHA não abre nada.</summary>
+          <p>Confira se o aparelho e o firmware são compatíveis e se o pendrive é do tipo do disco (BD para Blu-ray, UHD para 4K UHD). Depois tire o disco, volte à tela inicial, espere alguns segundos com o pendrive conectado e comece o filme de novo.</p>
+        </details>
+        <details>
+          <summary>A legenda aparece com letras estranhas no lugar dos acentos.</summary>
+          <p>Use "Corrigir uma legenda" no SubDrive CLI. Ele cria uma cópia corrigida ao lado da original.</p>
+        </details>
+        <details>
+          <summary>A legenda começa certa e vai se atrasando.</summary>
+          <p>Ela foi feita para outra versão do filme. A sincronia em dois pontos resolve: <a href="sincronia.html">veja como</a>.</p>
+        </details>
+        <details>
+          <summary>Como removo o SubDrive?</summary>
+          <p>Desligue o player e só então tire o pendrive. Sem ele, o aparelho funciona exatamente como antes.</p>
+        </details>
+        <details>
+          <summary>Posso tirar dúvidas com o ChatGPT ou outra IA?</summary>
+          <p>Pode. Este <a href="subdrive-ia.txt">texto completo sobre o SubDrive</a> foi feito para isso: copie, cole no começo da conversa e faça a sua pergunta.</p>
+          <p><button type="button" class="botao" data-arquivo="subdrive-ia.txt">Copiar o texto para a IA</button></p>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="secao" id="contato" aria-label="Fale comigo e apoio">
+  <div class="largo">
+    <div class="contato">
+        <section id="conte" aria-labelledby="t-conte">
+          <h2 id="t-conte">Fale comigo</h2>
+          <p>Quero saber como foi com você, tanto quando funcionou quanto quando deu problema. É assim que o SubDrive melhora e que mais aparelhos entram na lista.</p>
+          <a class="botao principal" href="https://forms.gle/VtNmmcMs9byjnQvP8">Mandar uma mensagem</a>
+          <p>O formulário não pede conta nem cadastro. Para um problema no player, conte o que aconteceu e, se eu precisar dos relatórios da pasta <code>relatorios</code> do pendrive, peço na resposta.</p>
+        </section>
+        <section id="apoie" data-secao-pix aria-labelledby="t-apoie">
+          <h2 id="t-apoie">Quer retribuir?</h2>
+          <p>Não precisa. Mas se quiser, qualquer valor no Pix ajuda a manter o projeto. A chave também aparece como QR code em Configurações, no painel do player.</p>
+          <div class="pix"><code id="chave-pix" data-pix>__PIX_KEY__</code><button type="button" class="botao" data-copiar="#chave-pix">Copiar a chave Pix</button></div>
+        </section>
+  </div>
+</section>
 
 </main>
-<footer>
-<p>SubDrive · <a href="firmware.html">Firmware</a> · <a href="sincronia.html">Sincronia</a> · <a href="cli.html">SubDrive CLI</a> · <a href="subdrive-ia.txt">Texto para IA</a> · <a href="https://github.com/michaelfdias/subdrive">GitHub</a></p>
+
+<footer class="rodape">
+  <div class="largo">
+    <div class="rodape-topo">
+      <a class="marca" href="./"><img src="img/icone.svg" alt="" width="28" height="28">SubDrive</a>
+      <ul class="rodape-links">
+        <li><a href="guia.html">Como usar</a></li>
+        <li><a href="firmware.html">Firmware</a></li>
+        <li><a href="sincronia.html">Sincronia</a></li>
+        <li><a href="cli.html">SubDrive CLI</a></li>
+        <li><a href="subdrive-ia.txt">Texto para IA</a></li>
+        <li><a href="https://github.com/michaelfdias/subdrive">GitHub</a></li>
+      </ul>
+    </div>
+    <div class="rodape-colunas">
+      <section id="isencao" aria-labelledby="t-isencao">
+        <h2 id="t-isencao">Isenção de responsabilidade</h2>
+        <p>O SubDrive é um projeto independente e não tem nenhuma ligação com a Panasonic. Panasonic, Blu-ray e os nomes dos aparelhos são marcas dos seus donos.</p>
+        <p>Ele é oferecido como está, sem garantia de nenhum tipo. Foi testado num DP-UB450-K e num número limitado de discos, e pode não funcionar no seu aparelho ou em algum disco. Você usa por sua conta e risco. O autor não se responsabiliza por defeitos, perda de dados, falhas do aparelho ou qualquer outro problema causado pelo uso.</p>
+        <p>O firmware do aparelho não é alterado. O programa que o player carrega do pendrive é montado no seu computador a partir do firmware oficial da Panasonic, baixado do site dela, e não é distribuído pelo SubDrive.</p>
+        <p>Use o SubDrive com discos e legendas que você tem o direito de usar.</p>
+      </section>
+      <section id="creditos" aria-labelledby="t-creditos">
+        <h2 id="t-creditos">Créditos</h2>
+        <p>Criado por Michael Dias. As fontes Roboto, Inter, Arimo, Noto Sans, Open Sans, Source Sans 3, Lato e Atkinson Hyperlegible usam a SIL Open Font License 1.1, e a DejaVu Sans usa a licença Bitstream Vera; os textos completos vão no pacote, na pasta <code>fontes</code>. O código do SubDrive está no <a href="https://github.com/michaelfdias/subdrive">GitHub</a>, sob a licença MIT.</p>
+        <p>Este site usa as fontes Archivo e Source Sans 3 (SIL Open Font License 1.1).</p>
+      </section>
+    </div>
+  </div>
 </footer>
-<script src="copiar.js"></script>
+<script src="site.js"></script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "1a49458c22b84f23902cab09c972c71c"}'></script>
 </body>
 </html>

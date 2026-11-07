@@ -7,58 +7,94 @@
 <meta name="description" content="Como ver a região e a versão do firmware do Panasonic DP-UB450, DP-UB150 e DP-UB154, e como atualizar para a 1.13 pela rede ou por pendrive.">
 <meta property="og:title" content="Firmware do player: verificar e atualizar · SubDrive">
 <meta property="og:image" content="https://michaelfdias.github.io/subdrive/img/compartilhar.png">
+<meta name="theme-color" content="#f7f7f5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111214" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="img/icone.svg" type="image/svg+xml">
+<link rel="preload" href="fontes/sourcesans3.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="estilo.css">
 <script src="tema.js"></script>
 </head>
 <body>
+<a class="sr" href="#conteudo">Pular para o conteúdo</a>
 <header class="topo">
-<nav class="menu">
-  <a class="marca" href="./"><img src="img/icone.svg" alt="">SubDrive</a>
-  <a href="./#baixar">Baixar</a>
-  <a href="firmware.html">Firmware</a>
-  <a href="sincronia.html">Sincronia</a>
-  <a href="cli.html">SubDrive CLI</a>
-  <button type="button" class="tema">🌙 Escuro</button>
-</nav>
+<div class="largo">
+  <a class="marca" href="./"><img src="img/icone.svg" alt="" width="28" height="28">SubDrive</a>
+  <nav aria-label="Principal">
+    <ul class="menu" id="menu">
+      <li><a href="./#como-funciona">Como funciona</a></li>
+      <li><a href="./#compativeis">Aparelhos</a></li>
+      <li><a href="guia.html">Como usar</a></li>
+      <li><a href="./#perguntas">Dúvidas</a></li>
+      <li><a href="./#conte">Fale comigo</a></li>
+    </ul>
+  </nav>
+  <a class="botao principal" href="./#baixar">Baixar</a>
+  <button type="button" class="icone-botao tema" aria-label="Mudar o tema"><svg class="sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></svg><svg class="lua" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg></button>
+  <button type="button" class="icone-botao abrir-menu" aria-label="Abrir o menu" aria-controls="menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</div>
 </header>
-<main>
-<h1>Firmware do player</h1>
-<p>O SubDrive funciona com o firmware 1.13 dos modelos vendidos nos EUA. Esta página mostra como conferir o seu aparelho e, se precisar, como chegar à 1.13.</p>
-<p class="nota">A atualização de firmware é um procedimento oficial da Panasonic, feito com os arquivos e as instruções dela. Ela não faz parte do SubDrive e não muda nada nele: o SubDrive só precisa que o aparelho esteja na versão 1.13.</p>
 
-<h2 id="regiao">1. Confira a região do aparelho</h2>
+<main id="conteudo">
+<header class="cabeca-pagina">
+  <div class="estreito">
+    <h1>Firmware do player</h1>
+    <p>O SubDrive funciona com o firmware 1.13 dos modelos vendidos nos EUA. Esta página mostra como conferir o seu aparelho e, se precisar, como chegar à 1.13.</p>
+  </div>
+</header>
+
+<div class="largo guia">
+  <nav class="indice" aria-label="Nesta página">
+    <p>Nesta página</p>
+    <ol>
+      <li><a href="#regiao">1. Confira a região do aparelho</a></li>
+      <li><a href="#versao">2. Veja a versão do firmware</a></li>
+      <li><a href="#automatica">Desligue a atualização automática</a></li>
+      <li><a href="#rede">3a. Atualizar pela rede</a></li>
+      <li><a href="#pendrive">3b. Atualizar por pendrive</a></li>
+    </ol>
+  </nav>
+
+  <div class="conteudo">
+    <section class="intro">
+<p class="nota">A atualização de firmware é um procedimento oficial da Panasonic, feito com os arquivos e as instruções dela. Ela não faz parte do SubDrive e não muda nada nele: o SubDrive só precisa que o aparelho esteja na versão 1.13.</p>
+    </section>
+    <section id="regiao" aria-labelledby="t-regiao">
+<h2 id="t-regiao">1. Confira a região do aparelho</h2>
 <p>O nome completo do modelo está na etiqueta do aparelho, que costuma ficar atrás ou embaixo dele, e também na caixa.</p>
 <ul>
   <li><code>DP-UB450-K</code>, <code>DP-UB150-K</code> ou <code>DP-UB154</code> (no site da Panasonic dos EUA também aparecem como <code>DP-UB450P-K</code> e <code>DP-UB150P-K</code>): é o modelo dos EUA. Siga em frente.</li>
   <li>Com outras letras no nome, como <code>EB</code>, <code>EG</code> ou <code>GN</code> (por exemplo <code>DP-UB450EB-K</code>): é de outra região. O firmware é outro, e o SubDrive não funciona nele. Não tente.</li>
 </ul>
-
-<h2 id="versao">2. Veja a versão do firmware</h2>
-<ol>
+    </section>
+    <section id="versao" aria-labelledby="t-versao">
+<h2 id="t-versao">2. Veja a versão do firmware</h2>
+<ol class="numerada">
   <li>Ligue o player sem disco.</li>
   <li>Aperte <kbd>HOME</kbd> e vá em <em>Setup</em> › <em>Player Settings</em> › <em>System</em> › <em>System Information</em> › <em>Firmware Version Information</em>.</li>
   <li>A versão instalada aparece nessa tela.</li>
 </ol>
 <p>Se for 1.13, está tudo certo e você pode <a href="./#baixar">baixar o SubDrive</a>. Se for menor, atualize por um dos caminhos abaixo.</p>
 <p class="nota">Se a versão for maior que a 1.13, o SubDrive ainda não funciona no seu aparelho. A Panasonic não oferece um jeito oficial de voltar para uma versão anterior.</p>
-
-<h2 id="automatica">Desligue a atualização automática</h2>
+    </section>
+    <section id="automatica" aria-labelledby="t-automatica">
+<h2 id="t-automatica">Desligue a atualização automática</h2>
 <p>Com o player na internet, ele pode instalar sozinho uma versão nova assim que a Panasonic publicar. Uma versão depois da 1.13 pode deixar o SubDrive sem funcionar até sair uma versão compatível. Para evitar surpresa, procure em <em>Setup</em> › <em>Player Settings</em> › <em>System</em> a parte de atualização de firmware. Se houver uma opção de atualização automática, deixe-a desligada.</p>
-
-<h2 id="rede">3a. Atualizar pela rede</h2>
+    </section>
+    <section id="rede" aria-labelledby="t-rede">
+<h2 id="t-rede">3a. Atualizar pela rede</h2>
 <p>É o caminho mais simples, se o player estiver ligado à internet por cabo ou Wi-Fi.</p>
-<ol>
+<ol class="numerada">
   <li>Em <em>Setup</em> › <em>Player Settings</em> › <em>System</em>, entre na parte de atualização de firmware e peça para atualizar agora.</li>
   <li>O player procura a versão mais recente da Panasonic. Siga as mensagens na tela.</li>
   <li>Durante a atualização, não desligue o aparelho nem aperte nenhuma tecla. Quando terminar, ele reinicia.</li>
   <li>Confira a versão de novo, como no passo 2.</li>
 </ol>
 <p>A atualização pela rede instala a versão mais nova que existir. Hoje ela é a 1.13. Se a Panasonic publicar outra depois, use o pendrive para instalar exatamente a 1.13.</p>
-
-<h2 id="pendrive">3b. Atualizar por pendrive</h2>
+    </section>
+    <section id="pendrive" aria-labelledby="t-pendrive">
+<h2 id="t-pendrive">3b. Atualizar por pendrive</h2>
 <p>Foi assim que preparamos o aparelho de testes. Serve também para quem não tem o player na internet.</p>
-<ol>
+<ol class="numerada">
   <li>Baixe o arquivo oficial da Panasonic: <a href="https://fdl.jpn.support.panasonic.com/pc/en/bd/ub450/UPDATE_UB450P_UB150P_V113.zip"><code>UPDATE_UB450P_UB150P_V113.zip</code></a> (91 MB). É o mesmo arquivo que o SubDrive CLI usa.</li>
   <li>Use um pendrive vazio, formatado em FAT32. Não use o pendrive do SubDrive para isto.</li>
   <li>Extraia o ZIP e copie os dois arquivos de dentro, <code>PANA_DVD.FRM</code> e <code>PANA_DVD_ID.bin</code>, direto na raiz do pendrive, fora de qualquer pasta.</li>
@@ -68,17 +104,40 @@
   <li>Quando terminar, tire o pendrive, aperte <kbd>OK</kbd> no controle e desligue pelo botão do próprio aparelho.</li>
   <li>Ligue de novo e confira a versão, como no passo 2.</li>
 </ol>
-<div class="aviso">
+<div class="aviso" role="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 4.2 2.8 17.5A2 2 0 0 0 4.5 20.5h15a2 2 0 0 0 1.7-3L13.7 4.2a2 2 0 0 0-3.4 0Z"/><path d="M12 9.5v4M12 17h.01"/></svg><div>
 <p>Depois de atualizar, apague o <code>PANA_DVD.FRM</code> e o <code>PANA_DVD_ID.bin</code> do pendrive. Nunca deixe esses arquivos junto com o SubDrive: com eles no pendrive, o player tenta atualizar de novo toda vez que você o conectar.</p>
 <p>A atualização de firmware é um procedimento da Panasonic. Faltar energia no meio dela pode danificar o aparelho. Deixe o aparelho numa tomada confiável durante todo o processo.</p>
-</div>
+</div></div>
 <p>As instruções oficiais estão no <a href="https://av.jpn.support.panasonic.com/support/global/cs/bd/download/ub450/us/index.html">site de suporte da Panasonic</a>.</p>
+    </section>
 
-<p><a href="./">Voltar para a página do SubDrive</a></p>
+    <div class="fim-guia">
+      <a class="botao" href="./">Voltar para o início</a>
+      <a class="botao" href="guia.html">Como usar</a>
+      <a class="botao" href="./#conte">Fale comigo</a>
+    </div>
+  </div>
+</div>
 </main>
-<footer>
-<p>SubDrive · <a href="./">Início</a> · <a href="sincronia.html">Sincronia</a> · <a href="cli.html">SubDrive CLI</a> · <a href="https://github.com/michaelfdias/subdrive">GitHub</a></p>
+
+<footer class="rodape">
+  <div class="largo">
+    <div class="rodape-topo simples">
+      <a class="marca" href="./"><img src="img/icone.svg" alt="" width="28" height="28">SubDrive</a>
+      <ul class="rodape-links">
+        <li><a href="./">Início</a></li>
+        <li><a href="guia.html">Como usar</a></li>
+        <li><a href="firmware.html">Firmware</a></li>
+        <li><a href="sincronia.html">Sincronia</a></li>
+        <li><a href="cli.html">SubDrive CLI</a></li>
+        <li><a href="./#isencao">Isenção</a></li>
+        <li><a href="https://github.com/michaelfdias/subdrive">GitHub</a></li>
+      </ul>
+    </div>
+  </div>
 </footer>
+
+<script src="site.js"></script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "1a49458c22b84f23902cab09c972c71c"}'></script>
 </body>
 </html>

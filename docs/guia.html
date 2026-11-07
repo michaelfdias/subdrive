@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Como usar o SubDrive: passo a passo · SubDrive</title>
+<meta name="description" content="Do ZIP ao filme com legenda: baixar, preparar o pendrive, colocar as legendas e assistir no Panasonic DP-UB450, DP-UB150 e DP-UB154.">
+<meta property="og:title" content="Como usar o SubDrive: passo a passo">
+<meta property="og:image" content="https://michaelfdias.github.io/subdrive/img/compartilhar.png">
+<meta name="theme-color" content="#f7f7f5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111214" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="img/icone.svg" type="image/svg+xml">
+<link rel="preload" href="fontes/sourcesans3.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="estilo.css">
+<script src="tema.js"></script>
+</head>
+<body>
+<a class="sr" href="#conteudo">Pular para o conteúdo</a>
+<header class="topo">
+<div class="largo">
+  <a class="marca" href="./"><img src="img/icone.svg" alt="" width="28" height="28">SubDrive</a>
+  <nav aria-label="Principal">
+    <ul class="menu" id="menu">
+      <li><a href="./#como-funciona">Como funciona</a></li>
+      <li><a href="./#compativeis">Aparelhos</a></li>
+      <li><a href="guia.html">Como usar</a></li>
+      <li><a href="./#perguntas">Dúvidas</a></li>
+      <li><a href="./#conte">Fale comigo</a></li>
+    </ul>
+  </nav>
+  <a class="botao principal" href="./#baixar">Baixar</a>
+  <button type="button" class="icone-botao tema" aria-label="Mudar o tema"><svg class="sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></svg><svg class="lua" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg></button>
+  <button type="button" class="icone-botao abrir-menu" aria-label="Abrir o menu" aria-controls="menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</div>
+</header>
+
+<main id="conteudo">
+<header class="cabeca-pagina">
+  <div class="estreito">
+    <h1>Como usar</h1>
+    <p>Do ZIP ao filme com legenda, em cinco passos.</p>
+  </div>
+</header>
+
+<div class="largo guia">
+  <nav class="indice" aria-label="Etapas">
+    <p>Etapas</p>
+    <ol>
+      <li><a href="#passo-1">1. Baixe o ZIP certo</a></li>
+      <li><a href="#passo-2">2. Veja o que vem dentro</a></li>
+      <li><a href="#passo-3">3. Prepare o pendrive</a></li>
+      <li><a href="#passo-4">4. Coloque as legendas</a></li>
+      <li><a href="#passo-5">5. Assista</a></li>
+      <li><a href="#menus">Menus do disco</a></li>
+    </ol>
+  </nav>
+
+  <div class="conteudo">
+    <section id="passo-1" aria-labelledby="t1">
+      <h2 id="t1"><span class="n">1</span>Baixe o ZIP certo</h2>
+      <p>Na <a href="https://github.com/michaelfdias/subdrive/releases">página de downloads</a> há um ZIP para cada tipo de disco e cada computador. O nome diz qual é qual:</p>
+      <table class="arquivos">
+        <thead><tr><th>Seu computador</th><th>Para Blu-ray</th><th>Para 4K UHD</th></tr></thead>
+        <tbody>
+          <tr><td>Windows 10 ou 11</td><td data-rotulo="Blu-ray"><code>…-BD-Windows.zip</code></td><td data-rotulo="4K UHD"><code>…-UHD-Windows.zip</code></td></tr>
+          <tr><td>Mac com chip Apple (M1 em diante)</td><td data-rotulo="Blu-ray"><code>…-BD-macOS-AppleSilicon.zip</code></td><td data-rotulo="4K UHD"><code>…-UHD-macOS-AppleSilicon.zip</code></td></tr>
+          <tr><td>Mac com processador Intel</td><td data-rotulo="Blu-ray"><code>…-BD-macOS-Intel.zip</code></td><td data-rotulo="4K UHD"><code>…-UHD-macOS-Intel.zip</code></td></tr>
+          <tr><td>Linux</td><td data-rotulo="Blu-ray"><code>…-BD-Linux.zip</code></td><td data-rotulo="4K UHD"><code>…-UHD-Linux.zip</code></td></tr>
+        </tbody>
+      </table>
+      <p>Assiste os dois tipos de disco? Baixe os dois e use um pendrive para cada.</p>
+      <p>Ignore os outros arquivos da página de downloads (<code>SubDrive-CLI-…</code>, <code>…-pacote-…</code> e <code>subdrive-release.json</code>): o SubDrive CLI usa esses quando procura atualização.</p>
+      <div class="lista-detalhes">
+        <details>
+          <summary>O Chrome bloqueia o download</summary>
+          <p>Abra a lista de downloads (<kbd>Ctrl</kbd>+<kbd>J</kbd> no Windows, <kbd>⌘</kbd>+<kbd>Shift</kbd>+<kbd>J</kbd> no Mac), encontre o arquivo e escolha "Manter". Ou baixe por outro navegador.</p>
+        </details>
+      </div>
+    </section>
+
+    <section id="passo-2" aria-labelledby="t2">
+      <h2 id="t2"><span class="n">2</span>Veja o que vem dentro</h2>
+      <dl class="itens">
+        <dt><code>SubDrive-CLI</code> (no Windows, <code>SubDrive-CLI.exe</code>)</dt><dd>O programa que prepara o pendrive e cuida das legendas.</dd>
+        <dt><code>pacote</code></dt><dd>O pacote SubDrive, que o SubDrive CLI grava no pendrive. Não precisa mexer nele.</dd>
+        <dt><code>LEIA-ME.txt</code></dt><dd>Estes mesmos passos, resumidos.</dd>
+      </dl>
+      <p>Não precisa instalar nada: nem Java, nem outro programa. Extraia o ZIP e deixe os três juntos na mesma pasta.</p>
+    </section>
+
+    <section id="passo-3" aria-labelledby="t3">
+      <h2 id="t3"><span class="n">3</span>Prepare o pendrive</h2>
+      <ol class="numerada">
+        <li>Conecte um pendrive formatado em FAT32. Se ele estiver em outro formato, o SubDrive CLI avisa e explica como formatar.</li>
+        <li>Abra o SubDrive CLI com dois cliques. Ele abre um menu; use as setas e o <kbd>Enter</kbd>.</li>
+        <li>Escolha "Preparar pendrive". Na primeira vez, ele pede para baixar o firmware oficial da Panasonic (91 MB) e monta o programa do player. Depois mostra o que vai gravar e pede confirmação.</li>
+      </ol>
+      <p>No fim, o pendrive fica assim:</p>
+<pre><code>legendas/     onde você coloca as legendas
+sincronia/    os ajustes de sincronia que você fizer no player
+relatorios/   relatórios do que aconteceu, se algo der errado
+fontes/       as letras já desenhadas
+BDJ.jar e outros arquivos do SubDrive</code></pre>
+      <p>Se você preparar o mesmo pendrive de novo, por exemplo depois de uma atualização, suas legendas, ajustes e preferências ficam onde estão.</p>
+      <h3>Se algo impedir de abrir</h3>
+      <div class="lista-detalhes">
+        <details>
+          <summary>O Windows diz "O Windows protegeu o computador"</summary>
+          <p>Aparece com programas novos que não pagam por um certificado digital. Clique em "Mais informações" e depois em "Executar assim mesmo". Só na primeira vez.</p>
+        </details>
+        <details>
+          <summary>O Mac diz que não pode abrir o SubDrive CLI</summary>
+          <p>Abra Ajustes do Sistema, vá em Privacidade e Segurança, desça até a mensagem sobre o SubDrive CLI e clique em "Abrir Mesmo Assim". Depois disso ele abre com dois cliques, numa janela do Terminal.</p>
+        </details>
+        <details>
+          <summary>No Linux, como abro?</summary>
+          <p>Num terminal, dentro da pasta extraída, rode <code>./SubDrive-CLI</code>.</p>
+        </details>
+      </div>
+    </section>
+
+    <section id="passo-4" aria-labelledby="t4">
+      <h2 id="t4"><span class="n">4</span>Coloque as legendas</h2>
+      <p>Copie os arquivos <code>.srt</code> ou <code>.sup</code> para a pasta <code>legendas</code> do pendrive. Antes, passe cada um pelo "Verificar legendas" do menu: o player é exigente, e o SubDrive CLI diz se a legenda vai funcionar. Se não for, "Corrigir uma legenda" cria uma cópia consertada.</p>
+      <p>O SubDrive CLI também cria um PGS a partir de um SRT e transforma a sincronia feita no player numa legenda nova. <a href="cli.html">Veja tudo o que ele faz</a>.</p>
+      <figure class="figura">
+        <img src="img/cli-menu.png" width="1200" height="351" loading="lazy" alt="Menu do SubDrive CLI no Terminal do Mac, com o pendrive pronto para o player.">
+        <figcaption>O menu do SubDrive CLI no Mac.</figcaption>
+      </figure>
+    </section>
+
+    <section id="passo-5" aria-labelledby="t5">
+      <h2 id="t5"><span class="n">5</span>Assista</h2>
+      <p>Na primeira vez:</p>
+      <ol class="numerada">
+        <li>Ejete o pendrive do computador.</li>
+        <li>Ligue o player sem disco e espere a tela inicial carregar por completo.</li>
+        <li>Coloque o pendrive. O player abre uma janela perguntando o que fazer com ele: feche essa janela sem escolher nada.</li>
+        <li>Espere de 10 a 15 segundos.</li>
+        <li>Coloque o disco e comece o filme.</li>
+        <li>Aperte a tecla <kbd class="vermelha">VERMELHA</kbd>. No painel, em "Arquivo", escolha a legenda. As setas para cima e para baixo trocam de linha; para os lados, mudam o valor.</li>
+      </ol>
+      <p>Nas próximas vezes, pode deixar o pendrive no aparelho. Só espere alguns segundos na tela inicial antes de começar o filme.</p>
+      <p class="nota">Se o seu player começa o disco sozinho assim que você o coloca, recomendo desligar essa opção nas configurações do aparelho. O SubDrive pode funcionar mesmo assim, mas às vezes o filme começa antes de o pendrive estar pronto.</p>
+      <p>Se o disco tiver legenda própria ligada, desligue-a para não aparecerem duas.</p>
+    </section>
+
+    <section id="menus" aria-labelledby="tm">
+      <h2 id="tm">Menus do disco</h2>
+      <p>O SubDrive esconde a legenda quando um menu do disco aparece, para não ficar por cima dele.</p>
+      <ul>
+        <li>Menu que abre por cima do filme (tecla <kbd>POP-UP MENU</kbd>): a legenda some e, ao fechar o menu, deve voltar sozinha.</li>
+        <li>Menu principal do disco: depois de voltar para o filme, a legenda pode não voltar sozinha.</li>
+      </ul>
+      <p>Nos dois casos, se a legenda não voltar, aperte <kbd class="vermelha">VERMELHA</kbd> de novo. Outro jeito é apertar <kbd>PAUSE</kbd>, esperar uns 3 segundos e apertar <kbd>PLAY</kbd>.</p>
+    </section>
+
+    <div class="fim-guia">
+      <a class="botao" href="./">Voltar para o início</a>
+      <a class="botao" href="./#perguntas">Ver as dúvidas</a>
+      <a class="botao" href="./#conte">Fale comigo</a>
+    </div>
+  </div>
+</div>
+</main>
+
+<footer class="rodape">
+  <div class="largo">
+    <div class="rodape-topo simples">
+      <a class="marca" href="./"><img src="img/icone.svg" alt="" width="28" height="28">SubDrive</a>
+      <ul class="rodape-links">
+        <li><a href="./">Início</a></li>
+        <li><a href="guia.html">Como usar</a></li>
+        <li><a href="firmware.html">Firmware</a></li>
+        <li><a href="sincronia.html">Sincronia</a></li>
+        <li><a href="cli.html">SubDrive CLI</a></li>
+        <li><a href="./#isencao">Isenção</a></li>
+        <li><a href="https://github.com/michaelfdias/subdrive">GitHub</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script src="site.js"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "1a49458c22b84f23902cab09c972c71c"}'></script>
+</body>
+</html>
