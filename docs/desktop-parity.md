@@ -80,7 +80,8 @@ fixtures e simulações, além dos testes originais.
 
 Os binários ainda não têm certificados de assinatura Windows ou notarização
 Apple. O índice original ainda precisa publicar assets `desktop-<sistema>-<arch>`
-assinados para a autoatualização da GUI; a atualização do pacote funciona com
+assinados para a autoatualização da GUI (executável no Windows/Linux, ZIP da
+`.app` completa no macOS para preservar assinatura e metadados); a atualização do pacote funciona com
 as chaves existentes. Nenhuma chave privada foi criada ou assinatura contornada.
 
 Revisão visual independente: [desktop-ux-review.md](desktop-ux-review.md).

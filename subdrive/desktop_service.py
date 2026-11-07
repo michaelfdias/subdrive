@@ -3,7 +3,11 @@ from __future__ import annotations
 
 import io
 import json
+import os
+import shutil
 import sys
+import tempfile
+import zipfile
 from argparse import Namespace
 from pathlib import Path
 
@@ -17,6 +21,43 @@ def program_dir():
             if parent.suffix == ".app":
                 return parent.parent
     return here
+
+
+def replace_macos_app(executable, data):
+    """Replace the whole signed .app, preserving its signature and Info.plist."""
+    current = next((p for p in executable.parents if p.suffix == ".app"), None)
+    if current is None:
+        raise ValueError("Abra a edição .app para atualizar o aplicativo no macOS.")
+    with tempfile.TemporaryDirectory(prefix=".subdrive-update-", dir=current.parent) as temp:
+        root = Path(temp).resolve()
+        try:
+            with zipfile.ZipFile(io.BytesIO(data)) as archive:
+                for entry in archive.infolist():
+                    if entry.filename.startswith("__MACOSX/"):
+                        continue
+                    target = (root / entry.filename).resolve()
+                    if not target.is_relative_to(root) or (entry.external_attr >> 16) & 0o170000 == 0o120000:
+                        raise update.UpdateError("damaged", "app archive")
+                    archive.extract(entry, root)
+                    if not entry.is_dir() and (entry.external_attr >> 16) & 0o111:
+                        target.chmod(0o755)
+        except zipfile.BadZipFile:
+            raise update.UpdateError("damaged", "app archive") from None
+        apps = list(root.glob("*.app"))
+        if len(apps) != 1 or not (apps[0] / "Contents/Info.plist").is_file():
+            raise update.UpdateError("damaged", "app bundle")
+        if not (apps[0] / "Contents/MacOS/SubDrive-Desktop").is_file():
+            raise update.UpdateError("damaged", "app executable")
+        backup = current.with_name(current.name + ".previous")
+        if backup.exists():
+            raise ValueError("Existe um backup de atualização ao lado do aplicativo. Mova-o antes de atualizar novamente.")
+        os.replace(current, backup)
+        try:
+            os.replace(apps[0], current)
+        except OSError:
+            os.replace(backup, current)
+            raise
+        shutil.rmtree(backup, ignore_errors=True)
 
 
 class Output(ui.Out):
@@ -92,6 +133,8 @@ def find_update(folder, beta, settings, out):
     current = VERSION
     if folder:
         current = package.load(folder).version or VERSION
+        if update.newer(current, VERSION):
+            current = VERSION
     rel = update.best(releases, current, beta)
     if rel:
         out.line("Versão disponível: " + rel.version)
@@ -116,7 +159,10 @@ def install_update(rel, folder, out):
         update.replace_package(folder, pack)
         out.line("Pacote do player atualizado. Prepare o pendrive novamente para copiar a atualização.")
     if prog is not None:
-        update.replace_program(Path(sys.executable), prog)
+        if sys.platform == "darwin":
+            replace_macos_app(Path(sys.executable), prog)
+        else:
+            update.replace_program(Path(sys.executable), prog)
         out.line("Aplicativo atualizado. Feche e abra novamente.")
     else:
         out.line("A edição gráfica não foi alterada: não há um executável desktop assinado nesta versão.")
