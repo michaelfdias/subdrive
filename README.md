@@ -19,3 +19,17 @@ SubDrive adds external subtitles (SRT and PGS) to any Blu-ray or 4K UHD disc on 
 ## Licença
 
 MIT. Veja o arquivo [LICENSE](LICENSE). As fontes mantêm as licenças delas.
+
+## Interface desktop
+
+Esta branch adiciona **SubDrive Desktop**, uma aplicação Qt local para Windows,
+Linux e macOS, sem navegador e com o motor original do CLI. Os downloads portáteis
+são produzidos pela workflow **Desktop** e incluem Python, Qt e as fontes.
+
+- [Recursos, arquitetura e paridade com o CLI](docs/desktop-parity.md)
+- [Revisão independente de experiência de uso](docs/desktop-ux-review.md)
+- [Como abrir e usar](packaging/DESKTOP-LEIA-ME.txt)
+
+Para desenvolvimento: instale `requirements-desktop.txt` em um ambiente virtual
+e execute `python -m subdrive.desktop`. Para gerar o executável, instale
+`pyinstaller==6.16.0` e execute `pyinstaller packaging/desktop.spec` no SO alvo.

@@ -40,7 +40,7 @@ jobs:
       - name: Test engine and desktop
         run: python -m unittest discover -s tests -t .
       - name: Launch desktop from source
-        run: python -m subdrive.desktop --smoke-test
+        run: python tools/desktop_source_smoke.py
       - name: Build self-contained application
         run: pyinstaller --noconfirm --clean packaging/desktop.spec
       - name: Launch bundled desktop without Python

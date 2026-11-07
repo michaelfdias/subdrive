@@ -18,9 +18,9 @@ Não houve teste com usuários, leitor de tela real, desktop Windows ou macOS. O
 | --- | --- | --- |
 | Alta | Estilo aplicado à página propagava o fundo claro aos botões primários, deixando texto branco pouco legível. | Corrigido com seletor específico da página e estado desabilitado explícito. Confirmado nas novas capturas. |
 | Alta | Resultado vazio ocupava cerca de 205 px permanentemente; ações principais de PGS e pendrive ficavam abaixo da área visível, inclusive na janela padrão. | Corrigido: resultado inicialmente oculto e ação principal fixa fora da rolagem. Confirmado nas duas dimensões. |
-| Média | Alguns combos eram identificados pela API acessível somente pelo valor atual, sem contexto como fonte ou cor; botões de seleção repetiam “Escolher…”. | Recomendados nomes acessíveis explícitos e associação de rótulos. A consulta pontual não equivale a teste de leitor de tela. |
-| Baixa | Abrir pasta permanecia ativo sem seleção e não produzia resposta; salvar relatório estava disponível com conteúdo vazio. | Recomendado desabilitar ações sem contexto. |
-| Baixa | Campo de pacote expunha nomes internos como `manifest.json`. | Recomendado orientar a escolher a pasta extraída do download. |
+| Média | Alguns combos eram identificados pela API acessível somente pelo valor atual, sem contexto como fonte ou cor; botões de seleção repetiam “Escolher…”. | Nomes explícitos adicionados e confirmados nas propriedades dos widgets, inclusive botões de seleção contextualizados. A API Qt offscreen ainda devolve o valor atual para o nome dos combos; validar o anúncio com leitor de tela real continua pendente. |
+| Baixa | Abrir pasta permanecia ativo sem seleção e não produzia resposta; salvar relatório estava disponível com conteúdo vazio. | Corrigido e verificado: ambos começam desabilitados; seleção habilita abrir pasta e conteúdo no resultado habilita salvar. |
+| Baixa | Campo de pacote expunha nomes internos como `manifest.json`. | Corrigido e verificado: “Pasta extraída do download do SubDrive”. |
 
 ## Avaliação dos fluxos revisados
 

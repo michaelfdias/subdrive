@@ -537,6 +537,10 @@ def main():
     app.setApplicationName("SubDrive Desktop")
     app.setOrganizationName("SubDrive")
     app.setFont(QFont("", 11))
+    icon = Path(__file__).parent / "assets" / "icone.svg"
+    if not icon.exists():
+        icon = Path(__file__).parent.parent / "docs" / "img" / "icone.svg"
+    app.setWindowIcon(QIcon(str(icon)))
     window = Window()
     app.opened.connect(lambda path: window.set_paths([path]) if not window.worker else None)
     window.show()
