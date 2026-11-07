@@ -7,7 +7,8 @@
 <meta name="description" content="Do ZIP ao filme com legenda: baixar, preparar o pendrive, colocar as legendas e assistir no Panasonic DP-UB450, DP-UB150 e DP-UB154.">
 <meta property="og:title" content="Como usar o SubDrive: passo a passo">
 <meta property="og:image" content="https://michaelfdias.github.io/subdrive/img/compartilhar.png">
-<meta name="theme-color" content="#0d0e10">
+<meta name="theme-color" content="#f7f7f5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111214" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="img/icone.svg" type="image/svg+xml">
 <link rel="preload" href="fontes/sourcesans3.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="estilo.css">
@@ -68,6 +69,13 @@
         </tbody>
       </table>
       <p>Assiste os dois tipos de disco? Baixe os dois e use um pendrive para cada.</p>
+      <p>Ignore os outros arquivos da página (<code>SubDrive-CLI-…</code>, <code>…-pacote-…</code> e <code>subdrive-release.json</code>): o SubDrive CLI usa esses quando procura atualização.</p>
+      <div class="lista-detalhes">
+        <details>
+          <summary>O Chrome bloqueia o download</summary>
+          <p>Abra a lista de downloads (<kbd>Ctrl</kbd>+<kbd>J</kbd> no Windows, <kbd>⌘</kbd>+<kbd>Shift</kbd>+<kbd>J</kbd> no Mac), encontre o arquivo e escolha "Manter". Ou baixe por outro navegador.</p>
+        </details>
+      </div>
     </section>
 
     <section id="passo-2" aria-labelledby="t2">
@@ -103,10 +111,6 @@ BDJ.jar e outros arquivos do SubDrive</code></pre>
         <details>
           <summary>O Mac diz que não pode abrir o SubDrive CLI</summary>
           <p>Abra Ajustes do Sistema, vá em Privacidade e Segurança, desça até a mensagem sobre o SubDrive CLI e clique em "Abrir Mesmo Assim". Depois disso ele abre com dois cliques, numa janela do Terminal.</p>
-        </details>
-        <details>
-          <summary>O Chrome bloqueia o download</summary>
-          <p>Abra a lista de downloads (<kbd>Ctrl</kbd>+<kbd>J</kbd> no Windows, <kbd>⌘</kbd>+<kbd>Shift</kbd>+<kbd>J</kbd> no Mac), encontre o arquivo e escolha "Manter". Ou baixe por outro navegador.</p>
         </details>
         <details>
           <summary>No Linux, como abro?</summary>

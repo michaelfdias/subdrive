@@ -1,3 +1,16 @@
+// Link para uma pergunta (<details>) abre a resposta, além de rolar até ela.
+function abrirAlvo() {
+  if (!location.hash) return;
+  var el = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+  var det = el && el.closest("details");
+  if (det) det.open = true;
+}
+window.addEventListener("hashchange", abrirAlvo);
+document.addEventListener("click", function (e) {
+  var a = e.target.closest('a[href^="#"]');
+  if (a) setTimeout(abrirAlvo, 0);
+});
+
 // Ao abrir uma página por um link, começa do topo (ou da âncora pedida).
 // Navegadores fazem isso sozinhos; alguns visualizadores, que mostram o site dentro de outra janela,
 // mantêm a rolagem da página anterior. Ao voltar (botão Voltar), o navegador restaura a posição normalmente.
@@ -7,6 +20,7 @@
   function posicionar() {
     var alvo = location.hash ? document.getElementById(decodeURIComponent(location.hash.slice(1))) : document.documentElement;
     if (!alvo) return;
+    abrirAlvo();
     try { alvo.scrollIntoView({ block: "start", behavior: "instant" }); } catch (e) { alvo.scrollIntoView(true); }
   }
   posicionar();

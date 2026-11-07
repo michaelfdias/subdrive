@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SubDrive: legendas em português no Panasonic DP-UB450, UB150 e UB154</title>
-<meta name="description" content="Legendas SRT e PGS em qualquer Blu-ray ou 4K UHD no Panasonic DP-UB450, DP-UB150 e DP-UB154, pelo pendrive, sem mexer no aparelho. Grátis, feito pela comunidade para a comunidade.">
+<meta name="description" content="Legendas SRT e PGS em qualquer Blu-ray ou 4K UHD no Panasonic DP-UB450, DP-UB150 e DP-UB154, pelo pendrive, sem mexer no aparelho. Grátis, feito por um colecionador para a comunidade.">
 <meta property="og:title" content="SubDrive: legendas em português no seu Panasonic 4K">
 <meta property="og:description" content="Legendas SRT e PGS em qualquer Blu-ray ou 4K UHD, pelo pendrive, com fonte, cor, tamanho e sincronia no controle remoto. Grátis.">
 <meta property="og:type" content="website">
@@ -13,7 +13,8 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#0d0e10">
+<meta name="theme-color" content="#f7f7f5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111214" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="img/icone.svg" type="image/svg+xml">
 <link rel="preload" href="fontes/sourcesans3.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fontes/archivo.woff2" as="font" type="font/woff2" crossorigin>
@@ -24,7 +25,7 @@
 <a class="sr" href="#conteudo">Pular para o conteúdo</a>
 <header class="topo">
 <div class="largo">
-  <a class="marca" href=""><img src="img/icone.svg" alt="" width="28" height="28">SubDrive</a>
+  <a class="marca" href="./"><img src="img/icone.svg" alt="" width="28" height="28">SubDrive</a>
   <nav aria-label="Principal">
     <ul class="menu" id="menu">
       <li><a href="#como-funciona">Como funciona</a></li>
@@ -108,14 +109,14 @@
       <li><h3>Sincronia no controle</h3><p>Adiante ou atrase a legenda durante o filme, em vários pontos. <a href="sincronia.html">Como funciona</a></p></li>
       <li><h3>Preferências guardadas</h3><p>Fonte, tamanho, cor e o resto do visual da legenda ficam salvos no pendrive. Desligou o aparelho, nada se perde.</p></li>
       <li><h3>Português ou inglês</h3><p>O painel fala as duas línguas e tem 4 temas de cor.</p></li>
-      <li><h3>Letras caprichadas</h3><p>As letras vão desenhadas do computador, com bordas suaves. Muitas vezes ficam mais legíveis que a legenda do próprio disco.</p></li>
+      <li><h3>Letras caprichadas</h3><p>As letras já vão desenhadas pelo computador, com bordas suaves. Muitas vezes ficam mais legíveis que a legenda do próprio disco.</p></li>
     </ul>
     <div>
     <figure class="figura">
       <img src="img/painel.jpg" width="1440" height="810" loading="lazy" alt="Painel do SubDrive aberto sobre O Show de Truman, com as linhas Arquivo, Fonte, Negrito, Tamanho, Posição, Cor, Sombra, Fundo, Sincronia e Configurações.">
       <figcaption>O painel do SubDrive, aberto pela tecla <kbd class="vermelha">VERMELHA</kbd> durante o filme.</figcaption>
     </figure>
-    <p class="observacao">Fonte, cor, tamanho, negrito, sombra e fundo valem para legendas SRT. Na PGS, que já vem desenhada, você ajusta a posição. <a href="#srt-pgs">Entenda a diferença</a></p>
+    <p class="observacao">Fonte, cor, tamanho, negrito, sombra e fundo valem para legendas SRT. Numa legenda PGS, que já vem desenhada, você ajusta a posição. <a href="#srt-pgs">Entenda a diferença</a></p>
     </div>
     </div>
   </div>
@@ -177,7 +178,7 @@
         </div>
       </fieldset>
       <fieldset class="escolha">
-        <legend>Seus discos</legend>
+        <legend>Tipo de disco</legend>
         <div class="opcoes duas">
           <label><input type="radio" name="disco" value="BD"><span>Blu-ray</span></label>
           <label><input type="radio" name="disco" value="UHD"><span>4K UHD</span></label>
@@ -195,6 +196,7 @@
     <ul class="notas-baixar">
       <li>Assiste os dois tipos de disco? Baixe os dois e use um pendrive para cada.</li>
       <li>Não precisa instalar nada: nem Java, nem outro programa.</li>
+      <li>Ignore os outros arquivos da página (<code>SubDrive-CLI-…</code>, <code>…-pacote-…</code> e <code>subdrive-release.json</code>): o SubDrive CLI usa esses quando procura atualização.</li>
     </ul>
   </div>
 </section>
@@ -208,9 +210,9 @@
     <ol class="resumo">
       <li><h3><a href="guia.html#passo-1">Baixe o ZIP certo</a></h3><p>Um para cada disco e computador.</p></li>
       <li><h3><a href="guia.html#passo-2">Veja o que vem dentro</a></h3><p>Não precisa instalar nada.</p></li>
-      <li><h3><a href="guia.html#passo-3">Prepare o pendrive</a></h3><p>Em FAT32, pelo SubDrive CLI.</p></li>
+      <li><h3><a href="guia.html#passo-3">Prepare o pendrive</a></h3><p>Formatado em FAT32; o SubDrive CLI grava o pacote.</p></li>
       <li><h3><a href="guia.html#passo-4">Coloque as legendas</a></h3><p>Verificadas, na pasta <code>legendas</code>.</p></li>
-      <li><h3><a href="guia.html#passo-5">Assista</a></h3><p>Disco tocando, tecla <kbd class="vermelha">VERMELHA</kbd>.</p></li>
+      <li><h3><a href="guia.html#passo-5">Assista</a></h3><p>Pendrive antes do disco; durante o filme, tecla <kbd class="vermelha">VERMELHA</kbd>.</p></li>
     </ol>
     <div class="centro"><a class="botao" href="guia.html">Abrir o guia completo<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
   </div>
@@ -339,6 +341,7 @@
       <section id="creditos" aria-labelledby="t-creditos">
         <h2 id="t-creditos">Créditos</h2>
         <p>Criado por Michael Dias. As fontes Roboto, Inter, Arimo, Noto Sans, Open Sans, Source Sans 3, Lato e Atkinson Hyperlegible usam a SIL Open Font License 1.1, e a DejaVu Sans usa a licença Bitstream Vera; os textos completos vão no pacote, na pasta <code>fontes</code>. O código do SubDrive está no <a href="https://github.com/michaelfdias/subdrive">GitHub</a>, sob a licença MIT.</p>
+        <p>Este site usa as fontes Archivo e Source Sans 3 (SIL Open Font License 1.1).</p>
       </section>
     </div>
   </div>

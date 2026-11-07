@@ -5,6 +5,8 @@
   function escuro() { return root.dataset.tema ? root.dataset.tema === "escuro" : midia.matches; }
   function aplicar() {
     root.toggleAttribute("data-escuro", escuro());
+    // Barra do navegador no celular: acompanha o tema escolhido no botão.
+    if (root.dataset.tema) document.querySelectorAll('meta[name="theme-color"]').forEach(function (m) { m.content = escuro() ? "#111214" : "#f7f7f5"; });
     document.querySelectorAll("button.tema").forEach(function (b) {
       b.setAttribute("aria-label", escuro() ? "Mudar para o tema claro" : "Mudar para o tema escuro");
       b.title = b.getAttribute("aria-label");

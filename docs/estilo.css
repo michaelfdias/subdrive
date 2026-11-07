@@ -56,6 +56,7 @@ pre{background:var(--codigo);padding:16px 20px;border-radius:8px;overflow-x:auto
 pre code{background:none;padding:0;white-space:pre}
 kbd{display:inline-block;min-width:1.9em;padding:.05em .45em;border:1px solid var(--linha-forte);border-radius:5px;background:var(--tecla);box-shadow:var(--sombra-tecla);text-align:center;line-height:1.5;white-space:nowrap;vertical-align:.05em}
 kbd.vermelha{background:#c8102e;border-color:#9e0c24;color:#fff;box-shadow:0 1px 0 #6d0818;font-weight:700;letter-spacing:.04em;font-size:.74em;padding:.12em .6em}
+[hidden]{display:none!important}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
 /* ---------- Grade ---------- */
@@ -208,7 +209,7 @@ kbd.vermelha{background:#c8102e;border-color:#9e0c24;color:#fff;box-shadow:0 1px
 .resultado .rotulo{display:block;color:var(--fraco);font-size:.8125rem;margin-bottom:4px}
 .resultado code{font-size:1rem;padding:.25em .5em}
 .resultado .vazio{color:var(--suave)}
-.notas-baixar{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 32px;margin:24px auto 0;padding:0;list-style:none;color:var(--suave);font-size:.9375rem;text-align:center}
+.notas-baixar{display:flex;flex-direction:column;align-items:center;gap:6px;margin:24px auto 0;padding:0;list-style:none;color:var(--suave);font-size:.9375rem;text-align:center}
 .notas-baixar li{margin:0}
 .todos{max-width:880px;margin:24px auto 0}
 @media (max-width:720px){
