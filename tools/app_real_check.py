@@ -53,7 +53,15 @@ def main():
             print("versões publicadas e assinadas conferidas; mais nova que %s: %s" % (VERSION, rel.version if rel else "nenhuma"))
         except acoes.Falha as e:
             print("atualização:", e.message)
-            raise
+            cause, x = "", e
+            while x is not None:  # a cadeia inteira: Falha <- UpdateError <- HTTPError 403
+                cause += repr(x) + str(getattr(x, "code", ""))
+                x = x.__cause__ or x.__context__
+            if "rate limit" in cause.lower() or "403" in cause:
+                # A API do GitHub limita consultas anônimas por computador; não é defeito do SubDrive.
+                print("aviso: a API do GitHub limitou este computador (consultas anônimas); a consulta é conferida nos outros sistemas")
+            else:
+                raise
     print("OK")
 
 
