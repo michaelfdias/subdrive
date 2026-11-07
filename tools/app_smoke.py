@@ -41,6 +41,8 @@ def stop(p):
 
 
 def main():
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")  # o console do Windows não é UTF-8
     program, out = Path(sys.argv[1]).resolve(), Path(sys.argv[2]).resolve()
     out.mkdir(parents=True, exist_ok=True)
     work = Path(tempfile.mkdtemp(prefix="subdrive-smoke-"))
