@@ -56,7 +56,7 @@ jobs:
         run: QT_QPA_PLATFORM=xcb xvfb-run -a python tools/desktop_bundle_smoke.py
       - name: Verify Linux bundle on a clean OS without Python or Qt
         if: runner.os == 'Linux'
-        run: docker run --rm -v "$PWD/dist:/app:ro" -e QT_QPA_PLATFORM=offscreen ubuntu:22.04 /app/SubDrive-Desktop --smoke-test
+        run: python tools/desktop_clean_smoke.py
       - name: Package portable download
         run: |
           mkdir -p out
