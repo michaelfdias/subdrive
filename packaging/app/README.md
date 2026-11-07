@@ -14,5 +14,8 @@ o pacote `subdrive/` sem mudar nada nele.
 O workflow `.github/workflows/app.yml` monta e confere em Windows, macOS (Apple Silicon e Intel) e Linux.
 Para a atualização pelo programa, o índice assinado de cada versão precisa das chaves
 `app-windows-x86_64`, `app-linux-x86_64`, `app-macos-arm64` e `app-macos-x86_64` (o `.app` vai num ZIP);
-os arquivos saem do workflow com esses nomes (artefato `programa-app-*`). Sem elas, a atualização troca só o
-pacote do player e avisa.
+o workflow de publicação (`build.yml`, "Publicar esta versão") já monta o SubDrive com janelas nos 4 sistemas,
+põe essas chaves no índice assinado e publica os 8 downloads dele junto com os do CLI. Uma versão publicada
+sem elas faz a atualização trocar só o pacote do player, com um aviso.
+
+Onde está cada comando e opção do CLI na janela: `PARIDADE.md`.
