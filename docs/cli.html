@@ -7,30 +7,67 @@
 <meta name="description" content="Tudo o que o SubDrive CLI faz: verificar e corrigir legendas, criar PGS, aplicar a sincronia, preparar o pendrive e atualizar. Pelo menu ou pelo terminal.">
 <meta property="og:title" content="SubDrive CLI: guia completo · SubDrive">
 <meta property="og:image" content="https://michaelfdias.github.io/subdrive/img/compartilhar.png">
+<meta name="theme-color" content="#0d0e10">
 <link rel="icon" href="img/icone.svg" type="image/svg+xml">
+<link rel="preload" href="fontes/sourcesans3.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="estilo.css">
 <script src="tema.js"></script>
 </head>
 <body>
+<a class="sr" href="#conteudo">Pular para o conteúdo</a>
 <header class="topo">
-<nav class="menu">
-  <a class="marca" href="./"><img src="img/icone.svg" alt="">SubDrive</a>
-  <a href="./#baixar">Baixar</a>
-  <a href="firmware.html">Firmware</a>
-  <a href="sincronia.html">Sincronia</a>
-  <a href="cli.html">SubDrive CLI</a>
-  <button type="button" class="tema">🌙 Escuro</button>
-</nav>
+<div class="largo">
+  <a class="marca" href="./"><img src="img/icone.svg" alt="" width="28" height="28">SubDrive</a>
+  <nav aria-label="Principal">
+    <ul class="menu" id="menu">
+      <li><a href="./#como-funciona">Como funciona</a></li>
+      <li><a href="./#compativeis">Aparelhos</a></li>
+      <li><a href="guia.html">Como usar</a></li>
+      <li><a href="./#perguntas">Dúvidas</a></li>
+      <li><a href="./#conte">Fale comigo</a></li>
+    </ul>
+  </nav>
+  <a class="botao principal" href="./#baixar">Baixar</a>
+  <button type="button" class="icone-botao tema" aria-label="Mudar o tema"><svg class="sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></svg><svg class="lua" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg></button>
+  <button type="button" class="icone-botao abrir-menu" aria-label="Abrir o menu" aria-controls="menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</div>
 </header>
-<main>
-<h1>SubDrive CLI</h1>
-<p>O SubDrive CLI (arquivo <code>SubDrive-CLI</code>, ou <code>SubDrive-CLI.exe</code> no Windows) é o programa de computador que acompanha o pacote SubDrive. Ele prepara o pendrive e deixa as legendas do jeito que o player aceita. Roda no Windows, no macOS e no Linux, sem instalar nada, nem Java.</p>
-<p>Há dois jeitos de usar. O menu atende quase todo mundo. Os comandos de terminal fazem as mesmas coisas e servem para quem quer rapidez ou automatizar.</p>
 
-<h2 id="menu">O menu</h2>
+<main id="conteudo">
+<header class="cabeca-pagina">
+  <div class="estreito">
+    <h1>SubDrive CLI</h1>
+    <p>O SubDrive CLI (arquivo <code>SubDrive-CLI</code>, ou <code>SubDrive-CLI.exe</code> no Windows) é o programa de computador que acompanha o pacote SubDrive. Ele prepara o pendrive e deixa as legendas do jeito que o player aceita. Roda no Windows, no macOS e no Linux, sem instalar nada, nem Java.</p>
+  </div>
+</header>
+
+<div class="largo guia">
+  <nav class="indice" aria-label="Nesta página">
+    <p>Nesta página</p>
+    <ol>
+      <li><a href="#menu">O menu</a></li>
+      <li><a href="#terminal">Pelo terminal</a></li>
+      <li><a href="#check">verificar (check)</a></li>
+      <li><a href="#fix">corrigir (fix)</a></li>
+      <li><a href="#pgs">pgs</a></li>
+      <li><a href="#sync">sincronizar (sync)</a></li>
+      <li><a href="#drives">pendrives (drives)</a></li>
+      <li><a href="#prepare">preparar (prepare)</a></li>
+      <li><a href="#update">atualizar (update)</a></li>
+      <li><a href="#rules">regras (rules)</a></li>
+      <li><a href="#codigos">Códigos de saída</a></li>
+    </ol>
+  </nav>
+
+  <div class="conteudo">
+    <section class="intro">
+<p>Há dois jeitos de usar. O menu atende quase todo mundo. Os comandos de terminal fazem as mesmas coisas e servem para quem quer rapidez ou automatizar.</p>
+    </section>
+    <section id="menu" aria-labelledby="t-menu">
+<h2 id="t-menu">O menu</h2>
 <p>Abra o SubDrive CLI com dois cliques. As setas <kbd>↑</kbd> e <kbd>↓</kbd> escolhem, <kbd>Enter</kbd> confirma e <kbd>Esc</kbd> volta. Os números também funcionam como atalho. Você pode arrastar um arquivo de legenda para cima do programa, ou para dentro da janela: o SubDrive CLI verifica o arquivo e oferece o que faz sentido para ele.</p>
-<figure class="imagem"><img src="img/cli-menu.png" width="1200" height="351" alt="Menu principal do SubDrive CLI no Terminal do Mac."><figcaption>O menu principal do SubDrive CLI.</figcaption></figure>
-<table>
+<figure class="figura"><img src="img/cli-menu.png" width="1200" height="351" alt="Menu principal do SubDrive CLI no Terminal do Mac."><figcaption>O menu principal do SubDrive CLI.</figcaption></figure>
+<div class="tabela"><table>
   <thead><tr><th>Opção do menu</th><th>Para que serve</th></tr></thead>
   <tbody>
     <tr><td>Verificar legendas</td><td>Diz se cada legenda vai funcionar no player e explica o que estiver errado.</td></tr>
@@ -42,16 +79,17 @@
     <tr><td>Procurar atualização</td><td>Procura uma versão nova do SubDrive e instala, se você quiser.</td></tr>
     <tr><td>O que é verificado e por quê</td><td>Lista as regras que uma legenda precisa seguir.</td></tr>
   </tbody>
-</table>
+</table></div>
 <p>Para escolher a legenda, o SubDrive CLI procura arquivos <code>.srt</code> e <code>.sup</code> no pendrive, na pasta do pacote e na pasta do programa. Também dá para arrastar um arquivo de qualquer lugar.</p>
-
-<h2 id="terminal">Pelo terminal</h2>
+    </section>
+    <section id="terminal" aria-labelledby="t-terminal">
+<h2 id="t-terminal">Pelo terminal</h2>
 <p>Abra um terminal na pasta do SubDrive CLI e use:</p>
 <pre><code>Windows:        .\SubDrive-CLI.exe comando opções
 macOS e Linux:  ./SubDrive-CLI comando opções</code></pre>
 <p>Nos exemplos abaixo aparece só <code>SubDrive-CLI</code>; no seu computador, escreva como acima. Coloque entre aspas os nomes de arquivo com espaço. Sem nenhum comando, o programa abre o menu.</p>
 <p>Cada comando e cada opção têm um nome em português e outro em inglês, e os dois funcionam: <code>verificar</code> é o mesmo que <code>check</code>, e <code>--mostrar</code> é o mesmo que <code>--show</code>. Aqui aparece primeiro o nome em português.</p>
-<table>
+<div class="tabela"><table>
   <thead><tr><th>Opção geral</th><th>O que faz</th></tr></thead>
   <tbody>
     <tr><td><code>--ajuda</code> (<code>--help</code>)</td><td>Mostra a ajuda. Também funciona depois de um comando, como em <code>SubDrive-CLI corrigir --ajuda</code>.</td></tr>
@@ -59,18 +97,20 @@ macOS e Linux:  ./SubDrive-CLI comando opções</code></pre>
     <tr><td><code>--sem-emoji</code> (<code>--no-emoji</code>)</td><td>Usa texto simples no lugar dos emojis, para terminais que não os mostram.</td></tr>
     <tr><td><code>--sem-cor</code> (<code>--no-color</code>)</td><td>Tira as cores das mensagens.</td></tr>
   </tbody>
-</table>
-
-<h2 id="check">verificar (check)</h2>
+</table></div>
+    </section>
+    <section id="check" aria-labelledby="t-check">
+<h2 id="t-check">verificar (check)</h2>
 <pre><code>SubDrive-CLI verificar "Filme.srt"
 SubDrive-CLI verificar legendas/</code></pre>
 <p>Confere um ou mais arquivos, ou todos os <code>.srt</code> e <code>.sup</code> de uma pasta. Para cada um, diz se está pronto para o player. Se não estiver, diz o motivo e como resolver.</p>
-<table>
+<div class="tabela"><table>
   <tbody><tr><td><code>--mostrar</code> (<code>--show</code>)</td><td>Lista cada fala com problema, com o horário dela no filme.</td></tr></tbody>
-</table>
+</table></div>
 <p>Use antes de copiar uma legenda nova para o pendrive. As regras completas estão em <code>SubDrive-CLI regras</code>, explicadas mais abaixo.</p>
-
-<h2 id="fix">corrigir (fix)</h2>
+    </section>
+    <section id="fix" aria-labelledby="t-fix">
+<h2 id="t-fix">corrigir (fix)</h2>
 <pre><code>SubDrive-CLI corrigir "Filme.srt"
 SubDrive-CLI corrigir "Filme.srt" --mostrar
 SubDrive-CLI corrigir "Filme.srt" --saida "Filme corrigido"</code></pre>
@@ -83,20 +123,21 @@ SubDrive-CLI corrigir "Filme.srt" --saida "Filme corrigido"</code></pre>
   <li>refaz a divisão das linhas que passam de 2 por fala ou de 64 letras;</li>
   <li>renumera as falas e corrige tempos e falas sobrepostas.</li>
 </ul>
-<table>
+<div class="tabela"><table>
   <tbody>
     <tr><td><code>--saida nome</code> (<code>--output</code>)</td><td>Escolhe o nome do arquivo novo.</td></tr>
     <tr><td><code>--mostrar</code> (<code>--show</code>)</td><td>Mostra cada mudança, com o antes e o depois.</td></tr>
     <tr><td><code>--remover-creditos</code> (<code>--remove-credits</code>)</td><td>Também tira as falas que parecem créditos ou propaganda, como "Legenda por…". O <code>verificar</code> avisa quando encontra falas assim.</td></tr>
   </tbody>
-</table>
+</table></div>
 <p>Se sobrar algo que não dá para corrigir sozinho, o SubDrive CLI diz em qual fala está, para você arrumar à mão.</p>
-
-<h2 id="pgs">pgs</h2>
+    </section>
+    <section id="pgs" aria-labelledby="t-pgs">
+<h2 id="t-pgs">pgs</h2>
 <pre><code>SubDrive-CLI pgs "Filme.srt"
 SubDrive-CLI pgs "Filme.srt" --cor amarelo-escuro --fonte inter --negrito</code></pre>
 <p>Desenha cada fala do SRT numa imagem e grava um PGS (<code>.sup</code>) de 1080p. Use quando quiser um visual que o player não faz sozinho, como uma fonte com contorno mais grosso, ou para guardar a legenda já no estilo que você gosta. O arquivo novo leva a cor no nome, como <code>Filme.dark-yellow.sup</code>, e o painel do player mostra o nome dessa cor.</p>
-<table>
+<div class="tabela"><table>
   <tbody>
     <tr><td><code>--cor</code> (<code>--color</code>)</td><td>A cor da letra. Padrão: branco suave. Aceita o nome em português ou em inglês: branco, branco-suave, cinza-claro, cinza, creme, amarelo, amarelo-claro, amarelo-escuro, ambar, laranja, verde, verde-claro, verde-limao, ciano, ciano-claro, azul-claro, lilas, rosa, magenta e vermelho-claro.</td></tr>
     <tr><td><code>--fonte</code> (<code>--font</code>)</td><td>A fonte. Padrão: <code>roboto</code>. Opções: <code>roboto</code>, <code>inter</code>, <code>arimo</code>, <code>notosans</code>, <code>opensans</code>, <code>sourcesans3</code>, <code>lato</code>, <code>atkinson</code> e <code>dejavusans</code>.</td></tr>
@@ -105,30 +146,33 @@ SubDrive-CLI pgs "Filme.srt" --cor amarelo-escuro --fonte inter --negrito</code>
     <tr><td><code>--contorno</code> (<code>--outline</code>)</td><td>Espessura do contorno preto em pixels. Padrão: 2. Aceita de 0 a 6.</td></tr>
     <tr><td><code>--saida</code> (<code>--output</code>)</td><td>Escolhe o nome do arquivo novo.</td></tr>
   </tbody>
-</table>
+</table></div>
 <p>O SRT precisa passar na verificação antes. Se não passar, use o <code>corrigir</code> primeiro. Com tamanhos grandes, uma fala muito longa pode não caber nos limites de imagem do player; o SubDrive CLI diz qual fala é, e um tamanho menor resolve.</p>
-
-<h2 id="sync">sincronizar (sync)</h2>
+    </section>
+    <section id="sync" aria-labelledby="t-sync">
+<h2 id="t-sync">sincronizar (sync)</h2>
 <pre><code>SubDrive-CLI sincronizar "legendas/Filme.srt"</code></pre>
 <p>Lê os pontos de sincronia que você criou no player, na pasta <code>sincronia</code> do pendrive, e grava uma legenda nova com os tempos já acertados, como <code>Filme_2.srt</code>. Funciona com SRT e com PGS. A original fica como estava. <a href="sincronia.html">Veja como funciona a sincronia</a>.</p>
-<table>
+<div class="tabela"><table>
   <tbody>
     <tr><td><code>--pontos</code> (<code>--points</code>)</td><td>Usa outro arquivo de pontos. Padrão: <code>sincronia/&lt;nome da legenda&gt;.txt</code>, ao lado da pasta <code>legendas</code>.</td></tr>
     <tr><td><code>--saida</code> (<code>--output</code>)</td><td>Escolhe o nome do arquivo novo.</td></tr>
   </tbody>
-</table>
-
-<h2 id="drives">pendrives (drives)</h2>
+</table></div>
+    </section>
+    <section id="drives" aria-labelledby="t-drives">
+<h2 id="t-drives">pendrives (drives)</h2>
 <pre><code>SubDrive-CLI pendrives</code></pre>
 <p>Lista os pendrives conectados e diz se o player consegue ler cada um. O player só lê pendrives em FAT32, com uma partição e esquema MBR. Se o seu estiver diferente, o SubDrive CLI explica como formatar no seu sistema. Ele nunca formata nada sozinho.</p>
-
-<h2 id="prepare">preparar (prepare)</h2>
+    </section>
+    <section id="prepare" aria-labelledby="t-prepare">
+<h2 id="t-prepare">preparar (prepare)</h2>
 <pre><code>SubDrive-CLI preparar
 SubDrive-CLI preparar --pendrive E:\ --ejetar
 SubDrive-CLI preparar --pendrive /Volumes/PENDRIVE --firmware UPDATE_UB450P_UB150P_V113.zip</code></pre>
 <p>Instala ou atualiza o pacote SubDrive no pendrive. Antes de gravar, mostra o que vai fazer e pede confirmação. Na primeira vez, baixa o firmware oficial do site da Panasonic, confere o arquivo e guarda numa pasta <code>firmware</code> ao lado do programa, para não baixar de novo. Com ele, monta o programa do player no seu computador e confere cada parte com a versão testada.</p>
 <p>O pendrive fica com as pastas <code>legendas</code>, <code>sincronia</code>, <code>relatorios</code> e <code>fontes</code> já criadas. O player não consegue criar pastas sozinho, então é o SubDrive CLI que faz isso. Suas legendas, os pontos de sincronia, as preferências e os relatórios que já estão no pendrive nunca são apagados.</p>
-<table>
+<div class="tabela"><table>
   <tbody>
     <tr><td><code>--pendrive</code> (<code>--drive</code>)</td><td>O pendrive, como <code>E:\</code> no Windows ou <code>/Volumes/NOME</code> no Mac. Só é preciso quando há mais de um conectado.</td></tr>
     <tr><td><code>--pacote</code> (<code>--package</code>)</td><td>A pasta do pacote SubDrive. Padrão: a pasta <code>pacote</code> ao lado do programa.</td></tr>
@@ -137,23 +181,25 @@ SubDrive-CLI preparar --pendrive /Volumes/PENDRIVE --firmware UPDATE_UB450P_UB15
     <tr><td><code>--sim</code> (<code>--yes</code>)</td><td>Não pede confirmação.</td></tr>
     <tr><td><code>--ejetar</code> (<code>--eject</code>)</td><td>Ejeta o pendrive no fim, quando tudo deu certo.</td></tr>
   </tbody>
-</table>
-
-<h2 id="update">atualizar (update)</h2>
+</table></div>
+    </section>
+    <section id="update" aria-labelledby="t-update">
+<h2 id="t-update">atualizar (update)</h2>
 <pre><code>SubDrive-CLI atualizar
 SubDrive-CLI atualizar --verificar
 SubDrive-CLI atualizar --beta sim</code></pre>
 <p>Procura no GitHub uma versão mais nova do SubDrive CLI e do pacote SubDrive e instala, se você confirmar. Só procura quando você pede. Antes de instalar, confere a assinatura digital do arquivo baixado.</p>
-<table>
+<div class="tabela"><table>
   <tbody>
     <tr><td><code>--verificar</code> (<code>--check</code>)</td><td>Só diz se existe versão nova, sem instalar.</td></tr>
     <tr><td><code>--beta sim</code> ou <code>nao</code> (<code>on</code> ou <code>off</code>)</td><td>Liga ou desliga o recebimento de versões de teste. A escolha fica guardada ao lado do programa.</td></tr>
     <tr><td><code>--sim</code> (<code>--yes</code>)</td><td>Não pede confirmação.</td></tr>
   </tbody>
-</table>
+</table></div>
 <p>Depois de atualizar, prepare o pendrive de novo para levar a versão nova para o player.</p>
-
-<h2 id="rules">regras (rules)</h2>
+    </section>
+    <section id="rules" aria-labelledby="t-rules">
+<h2 id="t-rules">regras (rules)</h2>
 <pre><code>SubDrive-CLI regras</code></pre>
 <p>Lista as regras que uma legenda SRT precisa seguir para o player aceitar:</p>
 <ul>
@@ -166,15 +212,39 @@ SubDrive-CLI atualizar --beta sim</code></pre>
   <li>até 4 horas, 3.000 falas e 256 KB, por causa da memória do player;</li>
   <li>nome de arquivo simples, terminado em <code>.srt</code> ou <code>.sup</code>.</li>
 </ul>
-
-<h2 id="codigos">Códigos de saída</h2>
+    </section>
+    <section id="codigos" aria-labelledby="t-codigos">
+<h2 id="t-codigos">Códigos de saída</h2>
 <p>Para quem usa o SubDrive CLI em scripts: <code>0</code> quer dizer que deu tudo certo, <code>1</code> que algo precisa da sua atenção (uma legenda com problema, por exemplo) e <code>2</code> que o comando foi usado de um jeito errado, como um arquivo que não existe.</p>
+    </section>
 
-<p><a href="./">Voltar para a página do SubDrive</a></p>
+    <div class="fim-guia">
+      <a class="botao" href="./">Voltar para o início</a>
+      <a class="botao" href="guia.html">Como usar</a>
+      <a class="botao" href="./#conte">Fale comigo</a>
+    </div>
+  </div>
+</div>
 </main>
-<footer>
-<p>SubDrive · <a href="./">Início</a> · <a href="firmware.html">Firmware</a> · <a href="sincronia.html">Sincronia</a> · <a href="https://github.com/michaelfdias/subdrive">GitHub</a></p>
+
+<footer class="rodape">
+  <div class="largo">
+    <div class="rodape-topo simples">
+      <a class="marca" href="./"><img src="img/icone.svg" alt="" width="28" height="28">SubDrive</a>
+      <ul class="rodape-links">
+        <li><a href="./">Início</a></li>
+        <li><a href="guia.html">Como usar</a></li>
+        <li><a href="firmware.html">Firmware</a></li>
+        <li><a href="sincronia.html">Sincronia</a></li>
+        <li><a href="cli.html">SubDrive CLI</a></li>
+        <li><a href="./#isencao">Isenção</a></li>
+        <li><a href="https://github.com/michaelfdias/subdrive">GitHub</a></li>
+      </ul>
+    </div>
+  </div>
 </footer>
+
+<script src="site.js"></script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "1a49458c22b84f23902cab09c972c71c"}'></script>
 </body>
 </html>
