@@ -159,16 +159,16 @@ BDJ.jar e outros arquivos do SubDrive</code></pre>
     <section id="sem-java" aria-labelledby="tj">
       <h2 id="tj">Discos que não abrem o painel</h2>
       <p>O SubDrive é um programa Java que o player carrega do pendrive. O player só liga o Java quando o disco tem menus feitos em Java, o tipo usado pela maioria dos grandes estúdios. Alguns discos usam outro tipo de menu, mais simples, chamado HDMV. Com eles o player nunca liga o Java, o SubDrive não chega a ser carregado e a tecla <kbd class="vermelha">VERMELHA</kbd> não faz nada. Isso é um limite do aparelho, não do seu pendrive, e não há como contornar sem modificar o player.</p>
-      <p>Pela tela não dá para saber o tipo de menu, mas a pasta <code>relatorios</code> mostra:</p>
+      <p>Pela tela não dá para saber o tipo de menu, mas um teste rápido mostra:</p>
       <ol class="numerada">
-        <li>Com o pendrive no player, comece o filme e aperte <kbd class="vermelha">VERMELHA</kbd>.</li>
-        <li>Pare o disco, desligue o player e leve o pendrive ao computador.</li>
-        <li>Veja a pasta <code>relatorios</code>. O SubDrive cria um relatório novo toda vez que o player o carrega.</li>
+        <li>Comece o filme e aperte <kbd class="vermelha">VERMELHA</kbd> durante o filme, fora de qualquer menu. Se o painel não abrir, tente de novo uma vez depois de alguns segundos.</li>
+        <li>Troque por um disco do mesmo tipo (Blu-ray ou 4K UHD) em que o SubDrive já funcionou, sem mexer no pendrive, e aperte <kbd class="vermelha">VERMELHA</kbd> durante o filme.</li>
       </ol>
       <ul>
-        <li><strong>Apareceu um relatório novo:</strong> o SubDrive rodou, e o problema é outro. Siga as dúvidas sobre a tecla VERMELHA e, se não resolver, fale comigo e mande o relatório.</li>
-        <li><strong>Não apareceu nada:</strong> teste em seguida, com o mesmo pendrive, um disco em que o SubDrive já funcionou. Se esse outro disco criar relatório e o primeiro não, o primeiro usa menus sem Java e não é compatível.</li>
+        <li><strong>O outro disco abre o painel:</strong> o pendrive está certo, e o primeiro disco usa menus sem Java. Ele não é compatível.</li>
+        <li><strong>Nenhum dos dois abre:</strong> o problema não é o disco. Siga as dúvidas sobre a tecla VERMELHA.</li>
       </ul>
+      <p>Se você me escrever sobre um disco assim, ajuda mandar a pasta <code>relatorios</code> do pendrive. O SubDrive grava um relatório cada vez que é carregado, então um disco sem Java não deixa nenhum.</p>
       <p>Num computador com leitor de Blu-ray dá para confirmar: discos sem Java não têm arquivos na pasta <code>BDMV/JAR</code>.</p>
     </section>
 
