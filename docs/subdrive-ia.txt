@@ -190,6 +190,7 @@ PGS (`.sup`): precisa ser 1080p (1920x1080).
 | Sintoma | O que fazer |
 |---|---|
 | A tecla VERMELHA não abre nada | Conferir firmware 1.13 e região EUA; conferir se o pacote certo (BD ou UHD) está no pendrive para o tipo de disco; tirar o disco, voltar à tela inicial, esperar alguns segundos com o pendrive conectado e começar o filme de novo; na primeira vez, fechar a janela que o player abre ao detectar o pendrive e esperar 10 a 15 s; desligar o início automático do disco; preparar o pendrive de novo pelo SubDrive CLI. |
+| A VERMELHA não abre o painel só num disco | Trocar por um disco do mesmo tipo em que o SubDrive já funcionou, sem mexer no pendrive. Se o outro abre o painel, o primeiro usa menus HDMV (sem Java): o player não liga o Java e o SubDrive não é carregado. Não há como contornar. Esse disco também não deixa relatório em `relatorios/`. Ao avisar o autor, informar o filme e a edição (distribuidora, Blu-ray ou 4K UHD, edição especial ou de colecionador) e mandar a pasta `relatorios`. Num computador, discos sem Java não têm arquivos em `BDMV/JAR`. |
 | A legenda não aparece na lista | Arquivo precisa estar em `legendas/` e terminar em `.srt` ou `.sup`; passar no "Verificar legendas". |
 | Acentos trocados por símbolos estranhos | Arquivo não está em UTF-8; usar "Corrigir uma legenda". |
 | Algumas letras ou símbolos não aparecem | O player só mostra letras latinas; "Corrigir uma legenda" troca ou remove os símbolos. |
@@ -208,6 +209,7 @@ Se nada resolver: mandar uma mensagem pelo formulário https://forms.gle/VtNmmcM
 - Só os aparelhos e o firmware listados.
 - Só discos; nada de streaming.
 - Um pendrive por tipo de disco (BD ou UHD).
+- Só discos com menus em Java (BD-J), o tipo da maioria dos grandes estúdios. Discos com menus HDMV não carregam o SubDrive: o painel não abre e nenhum relatório é criado. Não há como contornar sem modificar o player.
 - PGS só em 1080p; no PGS só a posição muda.
 - Alguns discos têm menus fora do comum; a legenda pode não voltar sozinha depois deles (usar VERMELHA).
 
