@@ -1,1 +1,1 @@
-Primeira versão do SubDrive.
+Lista de legendas com muitos arquivos: os arquivos ocultos do Mac (._*) não contam mais no limite da pasta legendas/, e com mais de 64 legendas o painel mostra as 64 primeiras em vez de dizer que a lista está indisponível.
