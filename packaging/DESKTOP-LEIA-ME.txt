@@ -1,0 +1,32 @@
+SubDrive Desktop
+
+Extraia o download antes de abrir. Não é preciso instalar Python, Qt, Java ou fontes.
+
+Windows 10/11 x64: abra SubDrive-Desktop.exe.
+macOS: extraia o ZIP e abra SubDrive Desktop.app. Escolha a edição Apple Silicon
+ou Intel conforme seu Mac. O aplicativo ainda não tem assinatura/notarização Apple.
+Linux x64: extraia o tar.gz, mantenha a permissão de execução e abra SubDrive-Desktop.
+Compatibilidade alvo: Ubuntu 22.04 ou mais recente, sessão gráfica X11/Wayland.
+
+LEGENDAS
+Escolha SRT/SUP ou arraste para a janela. Verifique antes de usar no player.
+Para corrigir, criar PGS ou sincronizar, escolha um arquivo. Novos arquivos são
+gravados ao lado do original; arquivos existentes não são sobrescritos.
+As opções avançadas permitem nome personalizado, detalhes, remoção de créditos
+e arquivo de pontos de sincronia. Pastas são verificadas sem recursão, como no CLI.
+
+PENDRIVE
+Conecte o pendrive, clique em Procurar pendrives e escolha a pasta do pacote
+original (manifest.json, player e USB). Obtenha o pacote pelos downloads do projeto.
+Revise o destino e confirme a cópia. O firmware oficial é baixado quando necessário;
+um ZIP local também pode ser selecionado. O aplicativo não formata discos.
+
+ATUALIZAÇÕES
+O pacote do player usa o índice assinado original. O aplicativo gráfico só pode
+atualizar a si mesmo se a versão publicar um arquivo desktop-* no índice assinado.
+Executáveis CLI nunca substituem o aplicativo gráfico. Não há publicação desktop
+assinada no índice original no momento desta implementação.
+
+O SubDrive é compatível com Panasonic DP-UB450/150/154 dos EUA, firmware 1.13.
+Projeto original: https://github.com/michaelfdias/subdrive
+Licença MIT e licenças das fontes preservadas. Veja licencas para Qt/PySide6.
